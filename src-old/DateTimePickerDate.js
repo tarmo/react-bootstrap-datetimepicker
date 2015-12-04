@@ -23,7 +23,8 @@ export default class DateTimePickerDate extends Component {
     addDecade: PropTypes.func.isRequired,
     subtractDecade: PropTypes.func.isRequired,
     minDate: PropTypes.object,
-    maxDate: PropTypes.object
+    maxDate: PropTypes.object,
+    icons: PropTypes.object
   }
 
   constructor(props) {
@@ -92,6 +93,7 @@ export default class DateTimePickerDate extends Component {
             showToday={this.props.showToday}
             subtractMonth={this.props.subtractMonth}
             viewDate={this.props.viewDate}
+            icons={this.props.icons}
       />
       );
     } else {
@@ -109,6 +111,7 @@ export default class DateTimePickerDate extends Component {
             showYears={this.showYears}
             subtractYear={this.props.subtractYear}
             viewDate={this.props.viewDate}
+            icons={this.props.icons}
       />
       );
     } else {
@@ -125,6 +128,7 @@ export default class DateTimePickerDate extends Component {
             setViewYear={this.setViewYear}
             subtractDecade={this.props.subtractDecade}
             viewDate={this.props.viewDate}
+            icons={this.props.icons}
       />
       );
     } else {

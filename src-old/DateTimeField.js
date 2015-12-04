@@ -15,7 +15,18 @@ export default class DateTimeField extends Component {
     mode: Constants.MODE_DATETIME,
     onChange: (x) => {
       console.log(x);
-    }
+    },
+    icons: {}
+  }
+
+  static defaultIcons = {
+    base: "glyphicon",
+    time: "glyphicon-time",
+    date: "glyphicon-date",
+    next: "glyphicon-chevron-right",
+    prev: "glyphicon-chevron-left",
+    up: "glyphicon-chevron-up",
+    down: "glyphicon-chevron-down"
   }
 
   resolvePropsInputFormat = () => {
@@ -47,14 +58,20 @@ export default class DateTimeField extends Component {
     showToday: PropTypes.bool,
     viewMode: PropTypes.string,
     size: PropTypes.oneOf([Constants.SIZE_SMALL, Constants.SIZE_MEDIUM, Constants.SIZE_LARGE]),
-    daysOfWeekDisabled: PropTypes.arrayOf(PropTypes.number)
+    daysOfWeekDisabled: PropTypes.arrayOf(PropTypes.number),
+    icons: PropTypes.object
   }
 
-  state = {
+  constructor (...args) {
+    super(...args);
+
+    const icons = Object.assign({}, this.defaultIcons, this.props.icons);
+
+    this.state = {
       showDatePicker: this.props.mode !== Constants.MODE_TIME,
       showTimePicker: this.props.mode === Constants.MODE_TIME,
       inputFormat: this.resolvePropsInputFormat(),
-      buttonIcon: this.props.mode === Constants.MODE_TIME ? "glyphicon-time" : "glyphicon-calendar",
+      buttonIcon: this.props.mode === Constants.MODE_TIME ? icons.time : icons.date,
       widgetStyle: {
         display: "block",
         position: "absolute",
@@ -63,7 +80,9 @@ export default class DateTimeField extends Component {
       },
       viewDate: moment(this.props.dateTime, this.props.format, true).startOf("month"),
       selectedDate: moment(this.props.dateTime, this.props.format, true),
-      inputValue: typeof this.props.defaultText !== "undefined" ? this.props.defaultText : moment(this.props.dateTime, this.props.format, true).format(this.resolvePropsInputFormat())
+      inputValue: typeof this.props.defaultText !== "undefined" ? this.props.defaultText : moment(this.props.dateTime, this.props.format, true).format(this.resolvePropsInputFormat()),
+      icons: icons
+    }
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -371,15 +390,18 @@ export default class DateTimeField extends Component {
                   viewMode={this.props.viewMode}
                   widgetClasses={this.state.widgetClasses}
                   widgetStyle={this.state.widgetStyle}
+                  icons={this.state.icons}
             />
             <div className={"input-group date " + this.size()} ref="datetimepicker">
               <input className="form-control" onChange={this.onChange} type="text" value={this.state.inputValue} {...this.props.inputProps}/>
               <span className="input-group-addon" onBlur={this.onBlur} onClick={this.onClick} ref="dtpbutton">
-                <span className={classnames("glyphicon", this.state.buttonIcon)} />
+                <span className={classnames(this.state.icons.base, this.state.buttonIcon)} />
               </span>
             </div>
           </div>
     );
   }
 }
+
+
 

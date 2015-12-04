@@ -37,7 +37,8 @@ export default class DateTimePicker extends Component {
     widgetStyle: PropTypes.object,
     togglePicker: PropTypes.func,
     setSelectedHour: PropTypes.func,
-    setSelectedMinute: PropTypes.func
+    setSelectedMinute: PropTypes.func,
+    icons: PropTypes.object
   }
 
   renderDatePicker = () => {
@@ -61,6 +62,7 @@ export default class DateTimePicker extends Component {
               subtractYear={this.props.subtractYear}
               viewDate={this.props.viewDate}
               viewMode={this.props.viewMode}
+              icons={this.props.icons}
         />
       </li>
       );
@@ -82,6 +84,7 @@ export default class DateTimePicker extends Component {
               subtractMinute={this.props.subtractMinute}
               togglePeriod={this.props.togglePeriod}
               viewDate={this.props.viewDate}
+              icons={this.props.icons}
         />
       </li>
       );
@@ -92,7 +95,7 @@ export default class DateTimePicker extends Component {
       return this.props.mode === Constants.MODE_DATETIME ?
           (
               <li>
-                <span className="btn picker-switch" onClick={this.props.togglePicker} style={{width: "100%"}} ><span className={classnames("glyphicon", this.props.showTimePicker ? "glyphicon-calendar" : "glyphicon-time")} /></span>
+                <span className="btn picker-switch" onClick={this.props.togglePicker} style={{width: "100%"}} ><span className={classnames(this.props.icons.base, this.props.showTimePicker ? this.props.icons.date : this.props.icons.time)} /></span>
               </li>
           ) :
           null;

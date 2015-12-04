@@ -44,6 +44,7 @@ DateTimeField
 | **maxDate** | moment | undefined | The latest date allowed for entry in the calendar view. |
 | **mode** | string | undefined | Allows to selectively display only the time picker ('time') or the date picker ('date') |
 | **defaultText** | string | {dateTime} | Sets the initial value. Could be an empty string, or helper text. |
+| **icons** | object | `{base: "glyphicon",time: "glyphicon-time",date: "glyphicon-date",next: "glyphicon-chevron-right",prev: "glyphicon-chevron-left",up: "glyphicon-chevron-up",down: "glyphicon-chevron-down"}` | Sets custom icons classes in case of use icon set other than glyphicons ie. font awesome. |
 
 Update Warning
 ===============================
