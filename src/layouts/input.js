@@ -10,14 +10,14 @@ import DateTimePickerLayoutVertical from "./vertical.js"
 class DateTimePickerLayoutPopup extends Component {
 
     static propTypes = {
-        bsSize : React.PropTypes.string,
-        container : mountable,
+        bsSize     : React.PropTypes.string,
+        container  : mountable,
         datePicker : React.PropTypes.node,
-        icon : React.PropTypes.bool,
-        icons : React.PropTypes.object,
+        icon       : React.PropTypes.bool,
+        icons      : React.PropTypes.object,
         sideBySide : React.PropTypes.bool,
         timePicker : React.PropTypes.node,
-        value : React.PropTypes.string
+        value      : React.PropTypes.string
     }
 
     state = {
@@ -69,7 +69,7 @@ class DateTimePickerLayoutPopup extends Component {
         }
 
         return (
-            <div style={ { position:"relative"} }>
+            <div style={ { position : "relative" } }>
                 <DateTimePickerInput ref="input"
                                      bsSize={ bsSize }
                                      icon={ icon }

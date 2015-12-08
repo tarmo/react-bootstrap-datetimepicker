@@ -22,10 +22,14 @@ class DateTimePickerLayoutInline extends Component {
         return (
             <div className="bootstrap-datetimepicker-widget">
                 <div style={ sideBySide && style }>
-                    { datePicker }
+                    <div style={ style }>
+                        { datePicker }
+                    </div>
                 </div>
                 <div style={ sideBySide && style }>
-                    { timePicker }
+                    <div style={ style }>
+                        { timePicker }
+                    </div>
                 </div>
             </div>
         )

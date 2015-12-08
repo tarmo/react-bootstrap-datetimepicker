@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import { mountable } from "react-prop-types"
 import classNames from "classnames"
 import Config from "../config.js"
 

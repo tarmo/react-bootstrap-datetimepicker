@@ -1,17 +1,17 @@
 import React, { Component } from "react"
-import moment from "moment"
 import classNames from "classnames"
 import Config from "../config.js"
 
 class DateTimePickerInput extends Component {
 
     static propTypes = {
-        bsSize : React.PropTypes.string,
-        icon : React.PropTypes.bool,
-        icons : React.PropTypes.object,
+        bsSize     : React.PropTypes.string,
+        icon       : React.PropTypes.bool,
+        icons      : React.PropTypes.object,
         inputProps : React.PropTypes.object,
-        onClick : React.PropTypes.func,
-        value : React.PropTypes.string
+        mode       : React.PropTypes.string,
+        onClick    : React.PropTypes.func,
+        value      : React.PropTypes.string
     }
 
     onChangeInput = (e) => {
@@ -46,10 +46,10 @@ class DateTimePickerInput extends Component {
                        value={ value }
                        onChange={ this.onChangeInput }
                       { ...inputProps } />
-                    <span className="input-group-addon"
-                          onClick={ onClick }>
-                        <span className={ iconClasses } />
-                    </span>
+                <span className="input-group-addon"
+                      onClick={ onClick }>
+                    <span className={ iconClasses } />
+                </span>
             </div>
         )
     }

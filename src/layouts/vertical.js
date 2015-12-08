@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import { mountable } from "react-prop-types"
 import classNames from "classnames"
 import Config from "../config.js"
 import DateTimeSwitch from "../components/switch.js"
@@ -9,7 +8,7 @@ class DateTimePickerLayoutVertical extends Component {
 
     static propTypes = {
         datePicker : React.PropTypes.node,
-        icons : React.PropTypes.object,
+        icons      : React.PropTypes.object,
         timePicker : React.PropTypes.node
     }
 
@@ -50,11 +49,11 @@ class DateTimePickerLayoutVertical extends Component {
         const picker = viewType === Config.VIEW_TIME ? timePicker : datePicker
 
         return (
-            <DateTimeViewSlide in={ viewType === view }>
-                <li>
+            <li>
+                <DateTimeViewSlide in={ viewType === view }>
                     { picker }
-                </li>
-            </DateTimeViewSlide>
+                </DateTimeViewSlide>
+            </li>
         )
     }
 

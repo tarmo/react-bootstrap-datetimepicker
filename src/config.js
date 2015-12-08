@@ -1,5 +1,7 @@
 class Config {
 
+    DEFAULT_FORMAT = "x"
+
     BOOTSTRAP_SIZE_SM = "sm"
     BOOTSTRAP_SIZE_LG = "lg"
 
@@ -10,6 +12,11 @@ class Config {
     VIEW_MODE_DAYS = "days"
     VIEW_MODE_MONTHS = "months"
     VIEW_MODE_YEARS = "years"
+
+    VIEW_MODE_TIME = "time"
+    VIEW_MODE_HOURS = "hours"
+    VIEW_MODE_MINUTES = "minutes"
+    VIEW_MODE_SECONDS = "seconds"
 
     INPUT_FORMAT_DATE = "L"
     INPUT_FORMAT_TIME = "LT"

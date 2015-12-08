@@ -47,6 +47,12 @@ class Docs extends Component {
                             <DateTimePicker inline sideBySide />
                         </div>
                     </div>
+
+                    <div className="row" style={ style }>
+                        <div className="col-md-12">
+                            <DateTimePicker inline sideBySide locale="pl" />
+                        </div>
+                    </div>
                 </div>
             </div>
         )
