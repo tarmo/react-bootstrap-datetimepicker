@@ -15,6 +15,9 @@ class Config {
     INPUT_FORMAT_TIME = "LT"
     INPUT_FORMAT_DATETIME = "L LT"
 
+    VIEW_DATE = "date"
+    VIEW_TIME = "time"
+
     PLACEMENT_TOP = "top"
     PLACEMENT_BOTTOM = "bottom"
 

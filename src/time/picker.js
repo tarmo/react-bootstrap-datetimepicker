@@ -5,7 +5,7 @@ class TimePicker extends Component {
 
     render () {
         return (
-            <div>
+            <div className="timepicker">
                 Time Picker
             </div>
         )

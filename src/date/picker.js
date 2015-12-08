@@ -5,7 +5,7 @@ class DatePicker extends Component {
 
     render () {
         return (
-            <div>
+            <div className="datepicker">
                 Date Picker
             </div>
         )
