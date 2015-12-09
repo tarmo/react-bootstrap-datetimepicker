@@ -6,7 +6,7 @@ class TimePickerMinutes extends Component {
 
     static propTypes = {
         dateTime        : MomentPropTypes.momentObj,
-        onChange        : React.PropTypes.func,
+        onSelect        : React.PropTypes.func,
         onSelectMinutes : React.PropTypes.func
     }
 
@@ -20,12 +20,10 @@ class TimePickerMinutes extends Component {
         return () => {
             const {
                 dateTime,
-                onChange,
-                onSelectMinutes
+                onSelect
             } = this.props
 
-            onChange(moment(dateTime).minutes(parseInt(value, 10)))
-            onSelectMinutes()
+            onSelect(moment(dateTime).minutes(parseInt(value, 10)))
         }
     }
 

@@ -6,7 +6,7 @@ class TimePickerHours extends Component {
 
     static propTypes = {
         dateTime     : MomentPropTypes.momentObj,
-        onChange     : React.PropTypes.func,
+        onSelect     : React.PropTypes.func,
         onSelectHour : React.PropTypes.func,
         use24Hours   : React.PropTypes.bool
     }
@@ -30,27 +30,24 @@ class TimePickerHours extends Component {
         return () => {
             const {
                 dateTime,
-                onChange,
-                onSelectHour,
+                onSelect,
                 use24Hours
             } = this.props
-            const hour = parseInt(value, 10)
-            let adjustedHour = hour
+            const date = moment(dateTime).hour(parseInt(value, 10))
 
             if (!use24Hours) {
-                if (dateTime.format("a") === "pm") {
-                    if (hour !== 12) {
-                        adjustedHour += 12
+                if (dateTime.hour() >= 12) {
+                    if (date.hour() !== 12) {
+                        date.add(12, "hours")
                     }
                 } else {
-                    if (hour === 12) {
-                        adjustedHour = 0
+                    if (date.hour() === 12) {
+                        date.hour(0)
                     }
                 }
             }
 
-            onChange(moment(dateTime).hours(adjustedHour))
-            onSelectHour()
+            onSelect(date.minutes(dateTime.minutes()))
         }
     }
 

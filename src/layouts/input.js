@@ -20,6 +20,10 @@ class DateTimePickerLayoutPopup extends Component {
         value      : React.PropTypes.string
     }
 
+    static defaultProps = {
+        container : global.document.querySelector("body")
+    }
+
     state = {
         show : false
     }
@@ -41,6 +45,7 @@ class DateTimePickerLayoutPopup extends Component {
     render () {
         const {
             bsSize,
+            container,
             datePicker,
             icon,
             icons,
@@ -79,6 +84,7 @@ class DateTimePickerLayoutPopup extends Component {
                 <Overlay placement="bottom"
                          show={ show }
                          onHide={ this.onHidePopup }
+                         container={ container }
                          target={ () => findDOMNode(this.refs.input) }>
                     <DateTimePickerContainer>
                         { picker }

@@ -70,7 +70,6 @@ class DateTimePicker extends Component {
 
     static propTypes = {
         bsSize : React.PropTypes.oneOf([BOOTSTRAP_SIZE_SM, BOOTSTRAP_SIZE_LG]),
-        container   : mountable,
         dateTime    : deprecated(React.PropTypes.string, "Use \"value\" instead"),
         format      : React.PropTypes.string,
         icon        : React.PropTypes.bool,
@@ -91,31 +90,49 @@ class DateTimePicker extends Component {
             React.PropTypes.instanceOf(Date),
             MomentPropTypes.momentObj
         ]),
-        mode : React.PropTypes.oneOf([MODE_DATE, MODE_TIME, MODE_DATETIME]),
-        onChange  : React.PropTypes.func,
-        placement : React.PropTypes.oneOf([PLACEMENT_TOP, PLACEMENT_BOTTOM]),
-        showClear       : React.PropTypes.bool,
-        showClose       : React.PropTypes.bool,
-        showToday       : React.PropTypes.bool,
-        showTodayButton : React.PropTypes.bool,
-        sideBySide      : React.PropTypes.bool,
-        size            : deprecated(React.PropTypes.string, "Use \"bsSize\" instead"),
-        tooltips        : React.PropTypes.object,
-        value           : React.PropTypes.oneOfType([
+        mode              : React.PropTypes.oneOf([MODE_DATE, MODE_TIME, MODE_DATETIME]),
+        onChange          : React.PropTypes.func,
+        showToday         : React.PropTypes.bool,
+        sideBySide        : React.PropTypes.bool,
+        size              : deprecated(React.PropTypes.string, "Use \"bsSize\" instead"),
+        tooltips          : React.PropTypes.object,
+        value             : React.PropTypes.oneOfType([
             React.PropTypes.number,
             React.PropTypes.string,
             React.PropTypes.instanceOf(Date),
             MomentPropTypes.momentObj
         ]),
         viewMode : React.PropTypes.oneOf([VIEW_MODE_DAYS, VIEW_MODE_MONTHS, VIEW_MODE_YEARS]),
+        widgetParent      : mountable,
+        widgetPositioning : React.PropTypes.oneOf([PLACEMENT_TOP, PLACEMENT_BOTTOM]),
 
         // TODO: Properties to implement
-        direction          : React.PropTypes.string,
+        dayViewHeaderFormat          : React.PropTypes.any,
+        extraFormats          : React.PropTypes.any,
+        stepping :React.PropTypes.any,
+        useCurrent: React.PropTypes.any,
+        collapse : React.PropTypes.any,
+        defaultDate : React.PropTypes.any,
+        disabledDates: React.PropTypes.any,
+        enabledDates: React.PropTypes.any,
+        useStrict : React.PropTypes.any,
+        calendarWeeks: React.PropTypes.any,
+        toolbarPlacement: React.PropTypes.any,
+        showClear       : React.PropTypes.any,
+        showClose       : React.PropTypes.any,
+        showTodayButton : React.PropTypes.any,
+        direction          : React.PropTypes.any,
+        keepOpen: React.PropTypes.any,
+        keepInvalid : React.PropTypes.any,
+        debug: React.PropTypes.any,
+        disabledTimeIntervals: React.PropTypes.any,
+        focusOnShow: React.PropTypes.any,
+        enabledHours: React.PropTypes.any,
+        disabledHours: React.PropTypes.any,
         daysOfWeekDisabled : React.PropTypes.arrayOf(React.PropTypes.number)
     }
 
     static defaultProps = {
-        container : global.document.querySelector("body"),
         format    : DEFAULT_FORMAT,
         icon : true,
         icons     : {},
@@ -141,18 +158,9 @@ class DateTimePicker extends Component {
 
         const {
             icons,
-            locale,
             tooltips
         } = this.props
 
-        moment.locale(locale)
-
-        const actualFormat = ["LT", "LTS"].map((f) => moment.localeData().longDateFormat(f)).join(" ")
-        const use24Hours = (
-            actualFormat.toLowerCase().indexOf("a") < 1 && actualFormat.replace(/\[.*?\]/g, "").indexOf("h") < 1
-        )
-
-        this.state = Object.assign({}, this.state, { use24Hours })
         this.icons = Object.assign({}, icons, defaultIcons)
         this.tooltips = Object.assign({}, tooltips, defaultTooltips)
     }
@@ -190,7 +198,6 @@ class DateTimePicker extends Component {
 
         const {
             dateTime,
-            use24Hours,
             view
         } = this.state
 
@@ -201,7 +208,6 @@ class DateTimePicker extends Component {
                             locale={ locale }
                             onChange={ this.onChangeDateTime }
                             dateTime={ dateTime }
-                            use24Hours={ use24Hours }
                             show={ view === VIEW_TIME } />
             )
         }
@@ -209,7 +215,7 @@ class DateTimePicker extends Component {
 
     onChangeDateTime = (date) => {
         this.setState({
-            dateTime : date.clone()
+            dateTime : moment(date)
         }, () => {
             const {
                 format,
@@ -233,7 +239,8 @@ class DateTimePicker extends Component {
             inputFormat,
             mode,
             sideBySide,
-            size
+            size,
+            widgetParent
         } = this.props
         let displayFormat = inputFormat
 
@@ -269,6 +276,7 @@ class DateTimePicker extends Component {
                                            icons={ this.icons }
                                            bsSize={ bsSize || size }
                                            value={ inputValue }
+                                           container={ widgetParent }
                                            datePicker={ this.renderDatePicker() }
                                            timePicker={ this.renderTimePicker() } />
             )

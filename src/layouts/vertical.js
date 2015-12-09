@@ -49,38 +49,11 @@ class DateTimePickerLayoutVertical extends Component {
         const picker = viewType === Config.VIEW_TIME ? timePicker : datePicker
 
         return (
-            <li>
-                <DateTimeViewSlide in={ viewType === view }>
-                    { picker }
-                </DateTimeViewSlide>
-            </li>
+            <DateTimeViewSlide in={ viewType === view }>
+                <li>{ picker }</li>
+            </DateTimeViewSlide>
         )
     }
-
-    enter () {
-        console.warn("enter")
-    }
-
-    entering () {
-        console.warn("entering")
-    }
-
-    entered () {
-        console.warn("entered")
-    }
-
-    exit () {
-        console.warn("exit")
-    }
-
-    exiting () {
-        console.warn("exiting")
-    }
-
-    exited () {
-        console.warn("exited")
-    }
-
 
     onClickSwitch = (e) => {
         e.preventDefault()

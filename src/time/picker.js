@@ -15,7 +15,28 @@ import {
 class TimePicker extends Component {
 
     state = {
-        viewMode : VIEW_MODE_TIME
+        use24Hours : false,
+        viewMode   : VIEW_MODE_TIME
+    }
+
+    constructor (...args) {
+        super(...args)
+
+        this.state = Object.assign({}, this.state, { use24Hours : this.get24HoursFlag() })
+    }
+
+    componentWillReceiveProps () {
+        this.setState({ use24Hours : this.get24HoursFlag() })
+    }
+
+    get24HoursFlag () {
+        const { locale } = this.props
+        const momentLocale = moment().locale(locale)
+        const actualFormat = ["LT", "LTS"].map((f) => momentLocale.localeData().longDateFormat(f)).join(" ")
+
+        return (
+            actualFormat.toLowerCase().indexOf("a") < 1 && actualFormat.replace(/\[.*?\]/g, "").indexOf("h") < 1
+        )
     }
 
     onClickHours = (e) => {
@@ -32,26 +53,41 @@ class TimePicker extends Component {
         })
     }
 
-    onSelectHourOrMinutes = () => {
+    onSelectTime = (date) => {
+        const {
+            dateTime,
+            onChange
+        } = this.props
+
+        onChange(moment(dateTime).hour(date.hour()).minutes(date.minutes()))
+
         this.setState({
             viewMode : VIEW_MODE_TIME
         })
     }
 
     renderViewMode () {
-        const { viewMode } = this.state
+        const {
+            use24Hours,
+            viewMode
+        } = this.state
 
         switch (viewMode) {
             case VIEW_MODE_HOURS :
-                return (<TimePickerHours onSelectHour={ this.onSelectHourOrMinutes } { ...this.props } />)
+                return (<TimePickerHours use24Hours={ use24Hours }
+                                         onSelect={ this.onSelectTime }
+                                         { ...this.props } />)
 
             case VIEW_MODE_MINUTES :
-                return (<TimePickerMinutes onSelectMinutes={ this.onSelectHourOrMinutes } { ...this.props } />)
+                return (<TimePickerMinutes onSelect={ this.onSelectTime }
+                                           { ...this.props } />)
 
             default :
                 return (
-                    <TimePickerTime onClickHours={ this.onClickHours }
+                    <TimePickerTime use24Hours={ use24Hours }
+                                    onClickHours={ this.onClickHours }
                                     onClickMinutes={ this.onClickMinutes }
+                                    onSelect={ this.onSelectTime }
                                     { ...this.props } />
                 )
         }

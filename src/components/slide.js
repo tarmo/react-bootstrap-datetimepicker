@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { findDOMNode } from "react-dom"
 import { Transition } from "react-overlays"
 
-const TRANSITION_DURATION = 5000
+const TRANSITION_DURATION = 500
 const MAX_HEIGHT = "100vh"
 
 class DateTimePickerViewSlide extends Component {
@@ -67,15 +67,11 @@ class DateTimePickerViewSlide extends Component {
         return (
             <Transition in={ this.props.in }
                         timeout={ TRANSITION_DURATION }
-                        onEnter={ this.enter }
-                        onEntering={ this.entering }
-                        onEntered={ this.entered }
-                        onExit={ this.exit }
-                        onExiting={ this.exiting }
-                        onExited={ this.exited }>
-                <div style={ style } ref="slide">
-                    { children }
-                </div>
+                        enteredClassName="collapse in"
+                        enteringClassName="collapsing"
+                        exitedClassName="collapse"
+                        exitingClassName="collapsing">
+                { children }
             </Transition>
         )
     }
@@ -86,26 +82,10 @@ class DateTimePickerViewSlide extends Component {
         console.warn("enter", slide)
     }
 
-    entering () {
-        console.warn("entering")
-    }
-
-    entered () {
-        console.warn("entered")
-    }
-
     exit = () => {
         const slide = findDOMNode(this.refs.slide)
         slide.style.maxHeight = 0
         console.warn("exit", slide)
-    }
-
-    exiting () {
-        console.warn("exiting")
-    }
-
-    exited () {
-        console.warn("exited")
     }
 
 }

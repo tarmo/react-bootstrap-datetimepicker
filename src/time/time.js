@@ -1,17 +1,18 @@
 import React, { Component } from "react"
 import MomentPropTypes from "react-moment-proptypes"
+import moment from "moment"
 import classNames from "classnames"
 
 class TimePickerTime extends Component {
 
     static propTypes = {
-        addSubtractDateTime : React.PropTypes.func,
         dateTime       : MomentPropTypes.momentObj,
         icons          : React.PropTypes.object,
         locale         : React.PropTypes.string,
         modifyDateTime : React.PropTypes.func,
         onClickHours   : React.PropTypes.func,
         onClickMinutes : React.PropTypes.func,
+        onSelect       : React.PropTypes.func,
         use24Hours     : React.PropTypes.bool,
         tooltips       : React.PropTypes.object
     }
@@ -40,61 +41,84 @@ class TimePickerTime extends Component {
         e.preventDefault()
 
         const {
-            addSubtractDateTime,
             dateTime,
-            modifyDateTime
+            onSelect
         } = this.props
-        const unit = "hours"
-        const date = addSubtractDateTime(12, unit, dateTime.format("a") === "pm")
-        modifyDateTime(date.get(unit), unit)
+        const date = moment(dateTime)
+
+        onSelect(dateTime.hour() >= 12 ? date.subtract(12, "hours") : date.add(12, "hours"))
     }
 
     onClickAddHour = (e) => {
         e.preventDefault()
 
         const {
-            addSubtractDateTime,
-            modifyDateTime
+            dateTime,
+            onSelect,
+            use24Hours
         } = this.props
-        const unit = "hour"
-        const date = addSubtractDateTime(1, unit)
-        modifyDateTime(date.get(unit), unit)
+        const date = moment(dateTime).add(1, "hour")
+
+        if (!use24Hours) {
+            if (dateTime.hour() >= 12) {
+                if (date.hour() < 12) {
+                    date.add(12, "hours")
+                }
+            } else {
+                if (date.hour() >= 12) {
+                    date.subtract(12, "hours")
+                }
+            }
+        }
+
+        onSelect(date.minutes(dateTime.minutes()))
     }
 
     onClickSubtractHour = (e) => {
         e.preventDefault()
 
         const {
-            addSubtractDateTime,
-            modifyDateTime
+            dateTime,
+            onSelect,
+            use24Hours
         } = this.props
-        const unit = "hour"
-        const date = addSubtractDateTime(1, unit, true)
-        modifyDateTime(date.get(unit), unit)
+        const date = moment(dateTime).subtract(1, "hour")
+
+        if (!use24Hours) {
+            if (dateTime.hour() >= 12) {
+                if (date.hour() < 12) {
+                    date.add(12, "hours")
+                }
+            } else {
+                if (date.hour() >= 12) {
+                    date.subtract(12, "hours")
+                }
+            }
+        }
+
+        onSelect(date.minutes(dateTime.minutes()))
     }
 
     onClickAddMinute = (e) => {
         e.preventDefault()
 
         const {
-            addSubtractDateTime,
-            modifyDateTime
+            dateTime,
+            onSelect
         } = this.props
-        const unit = "minute"
-        const date = addSubtractDateTime(1, unit)
-        modifyDateTime(date.get(unit), unit)
+
+        onSelect(moment(dateTime).add(1, "minute").hours(dateTime.hours()))
     }
 
     onClickSubtractMinute = (e) => {
         e.preventDefault()
 
         const {
-            addSubtractDateTime,
-            modifyDateTime
+            dateTime,
+            onSelect
         } = this.props
-        const unit = "minute"
-        const date = addSubtractDateTime(1, unit, true)
-        modifyDateTime(date.get(unit), unit)
+
+        onSelect(moment(dateTime).subtract(1, "minute").hours(dateTime.hours()))
     }
 
     render () {
