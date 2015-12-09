@@ -1,13 +1,14 @@
 import React, { Component } from "react"
 import MomentPropTypes from "react-moment-proptypes"
+import moment from "moment"
 
 class TimePickerHours extends Component {
 
     static propTypes = {
-        dateTime       : MomentPropTypes.momentObj,
-        modifyDateTime : React.PropTypes.func,
-        onSelectHour   : React.PropTypes.func,
-        use24Hours     : React.PropTypes.bool
+        dateTime     : MomentPropTypes.momentObj,
+        onChange     : React.PropTypes.func,
+        onSelectHour : React.PropTypes.func,
+        use24Hours   : React.PropTypes.bool
     }
 
     hours12 = [
@@ -29,7 +30,7 @@ class TimePickerHours extends Component {
         return () => {
             const {
                 dateTime,
-                modifyDateTime,
+                onChange,
                 onSelectHour,
                 use24Hours
             } = this.props
@@ -48,8 +49,8 @@ class TimePickerHours extends Component {
                 }
             }
 
+            onChange(moment(dateTime).hours(adjustedHour))
             onSelectHour()
-            modifyDateTime(adjustedHour, "hours")
         }
     }
 

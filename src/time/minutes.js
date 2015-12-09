@@ -1,9 +1,12 @@
 import React, { Component } from "react"
+import MomentPropTypes from "react-moment-proptypes"
+import moment from "moment"
 
 class TimePickerMinutes extends Component {
 
     static propTypes = {
-        modifyDateTime  : React.PropTypes.func,
+        dateTime        : MomentPropTypes.momentObj,
+        onChange        : React.PropTypes.func,
         onSelectMinutes : React.PropTypes.func
     }
 
@@ -16,11 +19,13 @@ class TimePickerMinutes extends Component {
     onClickSetMinutes (value) {
         return () => {
             const {
-                modifyDateTime,
+                dateTime,
+                onChange,
                 onSelectMinutes
             } = this.props
+
+            onChange(moment(dateTime).minutes(parseInt(value, 10)))
             onSelectMinutes()
-            modifyDateTime(parseInt(value, 10), "minutes")
         }
     }
 

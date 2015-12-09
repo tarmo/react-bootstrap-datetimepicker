@@ -2,20 +2,74 @@ import "core-js/fn/object/assign"
 import React, { Component } from "react"
 import MomentPropTypes from "react-moment-proptypes"
 import moment from "moment"
-import Config from "./config.js"
 import { mountable, deprecated } from "react-prop-types"
 import DatePicker from "./date/picker.js"
 import TimePicker from "./time/picker.js"
 import DateTimePickerLayoutInline from "./layouts/inline.js"
 import DateTimePickerLayoutInput from "./layouts/input.js"
+import {
+    BOOTSTRAP_SIZE_SM,
+    BOOTSTRAP_SIZE_LG,
+    DEFAULT_FORMAT,
+    INPUT_FORMAT_DATE,
+    INPUT_FORMAT_DATETIME,
+    INPUT_FORMAT_TIME,
+    MODE_DATE,
+    MODE_DATETIME,
+    MODE_TIME,
+    PLACEMENT_TOP,
+    PLACEMENT_BOTTOM,
+    VIEW_MODE_DAYS,
+    VIEW_MODE_MONTHS,
+    VIEW_MODE_YEARS,
+    VIEW_DATE,
+    VIEW_TIME
+} from "./config.js"
+
+const defaultIcons = {
+    time     : "glyphicon glyphicon-time",
+    date     : "glyphicon glyphicon-calendar",
+    up       : "glyphicon glyphicon-chevron-up",
+    down     : "glyphicon glyphicon-chevron-down",
+    previous : "glyphicon glyphicon-chevron-left",
+    next     : "glyphicon glyphicon-chevron-right",
+    today    : "glyphicon glyphicon-screenshot",
+    clear    : "glyphicon glyphicon-trash",
+    close    : "glyphicon glyphicon-remove"
+}
+
+const defaultTooltips = {
+    today           : "Go to today",
+    clear           : "Clear selection",
+    close           : "Close the picker",
+    selectMonth     : "Select Month",
+    prevMonth       : "Previous Month",
+    nextMonth       : "Next Month",
+    selectYear      : "Select Year",
+    prevYear        : "Previous Year",
+    nextYear        : "Next Year",
+    selectDecade    : "Select Decade",
+    prevDecade      : "Previous Decade",
+    nextDecade      : "Next Decade",
+    prevCentury     : "Previous Century",
+    nextCentury     : "Next Century",
+    pickHour        : "Pick Hour",
+    incrementHour   : "Increment Hour",
+    decrementHour   : "Decrement Hour",
+    pickMinute      : "Pick Minute",
+    incrementMinute : "Increment Minute",
+    decrementMinute : "Decrement Minute",
+    pickSecond      : "Pick Second",
+    incrementSecond : "Increment Second",
+    decrementSecond : "Decrement Second",
+    togglePeriod    : "Toggle Period",
+    selectTime      : "Select Time"
+}
 
 class DateTimePicker extends Component {
 
     static propTypes = {
-        bsSize : React.PropTypes.oneOf([
-            Config.BOOTSTRAP_SIZE_SM,
-            Config.BOOTSTRAP_SIZE_LG
-        ]),
+        bsSize : React.PropTypes.oneOf([BOOTSTRAP_SIZE_SM, BOOTSTRAP_SIZE_LG]),
         container   : mountable,
         dateTime    : deprecated(React.PropTypes.string, "Use \"value\" instead"),
         format      : React.PropTypes.string,
@@ -37,16 +91,9 @@ class DateTimePicker extends Component {
             React.PropTypes.instanceOf(Date),
             MomentPropTypes.momentObj
         ]),
-        mode : React.PropTypes.oneOf([
-            Config.MODE_DATE,
-            Config.MODE_TIME,
-            Config.MODE_DATETIME
-        ]),
+        mode : React.PropTypes.oneOf([MODE_DATE, MODE_TIME, MODE_DATETIME]),
         onChange  : React.PropTypes.func,
-        placement : React.PropTypes.oneOf([
-            Config.PLACEMENT_TOP,
-            Config.PLACEMENT_BOTTOM
-        ]),
+        placement : React.PropTypes.oneOf([PLACEMENT_TOP, PLACEMENT_BOTTOM]),
         showClear       : React.PropTypes.bool,
         showClose       : React.PropTypes.bool,
         showToday       : React.PropTypes.bool,
@@ -60,11 +107,7 @@ class DateTimePicker extends Component {
             React.PropTypes.instanceOf(Date),
             MomentPropTypes.momentObj
         ]),
-        viewMode : React.PropTypes.oneOf([
-            Config.VIEW_MODE_DAYS,
-            Config.VIEW_MODE_MONTHS,
-            Config.VIEW_MODE_YEARS
-        ]),
+        viewMode : React.PropTypes.oneOf([VIEW_MODE_DAYS, VIEW_MODE_MONTHS, VIEW_MODE_YEARS]),
 
         // TODO: Properties to implement
         direction          : React.PropTypes.string,
@@ -73,65 +116,33 @@ class DateTimePicker extends Component {
 
     static defaultProps = {
         container : global.document.querySelector("body"),
-        format    : Config.DEFAULT_FORMAT,
+        format    : DEFAULT_FORMAT,
         icon : true,
-        icons     : {
-            time     : "glyphicon glyphicon-time",
-            date     : "glyphicon glyphicon-calendar",
-            up       : "glyphicon glyphicon-chevron-up",
-            down     : "glyphicon glyphicon-chevron-down",
-            previous : "glyphicon glyphicon-chevron-left",
-            next     : "glyphicon glyphicon-chevron-right",
-            today    : "glyphicon glyphicon-screenshot",
-            clear    : "glyphicon glyphicon-trash",
-            close    : "glyphicon glyphicon-remove"
-        },
+        icons     : {},
         locale      : moment.locale(),
-        mode        : Config.MODE_DATETIME,
+        mode        : MODE_DATETIME,
         onChange    : (v) => console.log(v),
-        placement   : Config.PLACEMENT_BOTTOM,
-        tooltips    : {
-            today           : "Go to today",
-            clear           : "Clear selection",
-            close           : "Close the picker",
-            selectMonth     : "Select Month",
-            prevMonth       : "Previous Month",
-            nextMonth       : "Next Month",
-            selectYear      : "Select Year",
-            prevYear        : "Previous Year",
-            nextYear        : "Next Year",
-            selectDecade    : "Select Decade",
-            prevDecade      : "Previous Decade",
-            nextDecade      : "Next Decade",
-            prevCentury     : "Previous Century",
-            nextCentury     : "Next Century",
-            pickHour        : "Pick Hour",
-            incrementHour   : "Increment Hour",
-            decrementHour   : "Decrement Hour",
-            pickMinute      : "Pick Minute",
-            incrementMinute : "Increment Minute",
-            decrementMinute : "Decrement Minute",
-            pickSecond      : "Pick Second",
-            incrementSecond : "Increment Second",
-            decrementSecond : "Decrement Second",
-            togglePeriod    : "Toggle Period",
-            selectTime      : "Select Time"
-        },
-        viewMode    : Config.VIEW_MODE_DAYS
+        placement   : PLACEMENT_BOTTOM,
+        tooltips    : {},
+        viewMode    : VIEW_MODE_DAYS
     }
 
     state = {
         show     : false,
         dateTime : moment(),
-        view     : Config.VIEW_DATE
+        view     : VIEW_DATE
     }
+
+    icons = {}
+    tooltips = {}
 
     constructor (...args) {
         super(...args)
 
         const {
-            format,
-            locale
+            icons,
+            locale,
+            tooltips
         } = this.props
 
         moment.locale(locale)
@@ -142,11 +153,12 @@ class DateTimePicker extends Component {
         )
 
         this.state = Object.assign({}, this.state, { use24Hours })
+        this.icons = Object.assign({}, icons, defaultIcons)
+        this.tooltips = Object.assign({}, tooltips, defaultTooltips)
     }
 
     renderDatePicker () {
         const {
-            icons,
             locale,
             mode,
             viewMode
@@ -157,12 +169,13 @@ class DateTimePicker extends Component {
             view
         } = this.state
 
-        if (mode === Config.MODE_DATETIME || mode === Config.MODE_DATE) {
+        if (mode === MODE_DATETIME || mode === MODE_DATE) {
             return (
-                <DatePicker icons={ icons }
-                            show={ view === Config.VIEW_DATE }
+                <DatePicker icons={ this.icons }
+                            tooltips={ this.tooltips }
+                            show={ view === VIEW_DATE }
                             locale={ locale }
-                            // mopduify
+                            onChange={ this.onChangeDateTime }
                             dateTime={ dateTime }
                             viewMode={ viewMode } />
             )
@@ -171,10 +184,8 @@ class DateTimePicker extends Component {
 
     renderTimePicker () {
         const {
-            icons,
             locale,
-            mode,
-            tooltips
+            mode
         } = this.props
 
         const {
@@ -183,41 +194,17 @@ class DateTimePicker extends Component {
             view
         } = this.state
 
-        if (mode === Config.MODE_DATETIME || mode === Config.MODE_TIME) {
+        if (mode === MODE_DATETIME || mode === MODE_TIME) {
             return (
-                <TimePicker icons={ icons }
-                            tooltips={ tooltips }
+                <TimePicker icons={ this.icons }
+                            tooltips={ this.tooltips }
                             locale={ locale }
-                            addSubtractDateTime={ this.addSubtractDateTime }
-                            modifyDateTime={ this.modifyDateTime }
+                            onChange={ this.onChangeDateTime }
                             dateTime={ dateTime }
                             use24Hours={ use24Hours }
-                            show={ view === Config.VIEW_TIME } />
+                            show={ view === VIEW_TIME } />
             )
         }
-    }
-
-    addSubtractDateTime = (value, unit, subtract = false) => {
-        const { dateTime } = this.state
-        const date = dateTime.clone()
-
-        if (subtract) {
-            date.subtract(value, unit)
-        } else {
-            date.add(value, unit)
-        }
-
-        return date
-    }
-
-    modifyDateTime = (value, unit) => {
-        const { dateTime } = this.state
-        const date = dateTime.clone()
-
-        date.set(unit, value)
-
-        console.warn(value, unit, date.toISOString())
-        this.onChangeDateTime(date)
     }
 
     onChangeDateTime = (date) => {
@@ -226,6 +213,7 @@ class DateTimePicker extends Component {
         }, () => {
             const {
                 format,
+                locale,
                 onChange
             } = this.props
 
@@ -233,7 +221,7 @@ class DateTimePicker extends Component {
                 dateTime
             } = this.state
 
-            onChange(dateTime.format(format))
+            onChange(moment(dateTime).locale(locale).format(format))
         })
     }
 
@@ -241,7 +229,6 @@ class DateTimePicker extends Component {
         const {
             bsSize,
             icon,
-            icons,
             inline,
             inputFormat,
             mode,
@@ -252,16 +239,16 @@ class DateTimePicker extends Component {
 
         if (!inputFormat) {
             switch (mode) {
-                case Config.MODE_DATE :
-                    displayFormat = Config.INPUT_FORMAT_DATE
+                case MODE_DATE :
+                    displayFormat = INPUT_FORMAT_DATE
                     break
 
-                case Config.MODE_TIME :
-                    displayFormat = Config.INPUT_FORMAT_TIME
+                case MODE_TIME :
+                    displayFormat = INPUT_FORMAT_TIME
                     break
 
                 default :
-                    displayFormat = Config.INPUT_FORMAT_DATETIME
+                    displayFormat = INPUT_FORMAT_DATETIME
             }
         }
 
@@ -279,7 +266,7 @@ class DateTimePicker extends Component {
             picker = (
                 <DateTimePickerLayoutInput sideBySide={ sideBySide }
                                            icon={ icon }
-                                           icons={ icons }
+                                           icons={ this.icons }
                                            bsSize={ bsSize || size }
                                            value={ inputValue }
                                            datePicker={ this.renderDatePicker() }

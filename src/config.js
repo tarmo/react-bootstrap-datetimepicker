@@ -43,3 +43,26 @@ class Config {
 }
 
 export default new Config()
+
+
+export const BOOTSTRAP_SIZE_SM = "sm"
+export const BOOTSTRAP_SIZE_LG = "lg"
+export const DEFAULT_FORMAT = "x"
+export const INPUT_FORMAT_DATE = "L"
+export const INPUT_FORMAT_TIME = "LT"
+export const INPUT_FORMAT_DATETIME = "L LT"
+export const MODE_DATE = "date"
+export const MODE_TIME = "time"
+export const MODE_DATETIME = "datetime"
+export const PLACEMENT_TOP = "top"
+export const PLACEMENT_BOTTOM = "bottom"
+export const VIEW_MODE_DAYS = "days"
+export const VIEW_MODE_MONTHS = "months"
+export const VIEW_MODE_YEARS = "years"
+export const VIEW_MODE_DECADES = "decades"
+export const VIEW_MODE_TIME = "time"
+export const VIEW_MODE_HOURS = "hours"
+export const VIEW_MODE_MINUTES = "minutes"
+export const VIEW_MODE_SECONDS = "seconds"
+export const VIEW_DATE = "date"
+export const VIEW_TIME = "time"

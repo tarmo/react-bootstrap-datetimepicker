@@ -50,7 +50,7 @@ class Docs extends Component {
 
                     <div className="row" style={ style }>
                         <div className="col-md-12">
-                            <DateTimePicker inline sideBySide locale="pl" />
+                            <DateTimePicker inline sideBySide locale="pl" format="LLL" />
                         </div>
                     </div>
                 </div>
