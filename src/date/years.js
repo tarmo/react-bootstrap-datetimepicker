@@ -7,30 +7,14 @@ import classNames from "classnames"
 class DatePickerYears extends Component {
 
     static propTypes = {
-        dateTime : MomentPropTypes.momentObj,
-        locale   : React.PropTypes.string,
-        onSelect : React.PropTypes.func
-    }
-
-    months = [
-        0, 1, 2, 3,
-        4, 5, 6, 7,
-        8, 9, 10, 11
-    ]
-
-    state = {
-        date : null
-    }
-
-    constructor (...args) {
-        super(...args)
-
-        const { date } = this.props
-        this.state = Object.assign({}, this.state, { date : moment(date) })
-    }
-
-    componentWillReceiveProps (props) {
-        this.setState({ date : moment(props.date) })
+        dateTime       : MomentPropTypes.momentObj,
+        decade         : React.PropTypes.number,
+        icons          : React.PropTypes.object,
+        onClickDecades : React.PropTypes.func,
+        onSelect       : React.PropTypes.func,
+        selected       : React.PropTypes.bool,
+        tooltips       : React.PropTypes.object,
+        updateDecade   : React.PropTypes.func
     }
 
     startOfDecade (date) {
@@ -38,7 +22,7 @@ class DatePickerYears extends Component {
     }
 
     endOfDecade (date) {
-        return moment(date).year(Math.ceil(date.year() / 10 + 1) * 10 - 1).endOf("year")
+        return moment(date).year(Math.floor(date.year() / 10 + 1) * 10 - 1).endOf("year")
     }
 
     onClickYear (date) {
@@ -52,75 +36,86 @@ class DatePickerYears extends Component {
         }
     }
 
-    onClickPreviousYear = () => {
-        const { date } = this.state
-
-        this.setState({ date : moment(date).subtract(1, "year") })
+    onClickPreviousDecade = () => {
+        const {
+            decade,
+            updateDecade
+        } = this.props
+        updateDecade(decade - 10)
     }
 
-    onClickNextYear = () => {
-        const { date } = this.state
-
-        this.setState({ date : moment(date).add(1, "year") })
+    onClickNextDecade = () => {
+        const {
+            decade,
+            updateDecade
+            } = this.props
+        updateDecade(decade + 10)
     }
 
     render () {
         const {
             dateTime,
+            decade,
             icons,
             onClickDecades,
+            selected,
             tooltips
-            } = this.props
-        const { date } = this.state
+        } = this.props
+        const date = moment([decade])
         const firstYear = this.startOfDecade(date)
         const lastYear = this.endOfDecade(date)
-        const decade = moment.range(firstYear, lastYear)
+        const decadeYears = moment.range(firstYear, lastYear)
         const years = []
 
-        decade.by("year", (y) => {
-            years.push(y)
-        })
+        decadeYears.by("year", (y) => years.push(y))
 
         return (
             <div className="datepicker-years">
                 <table className="table-condensed">
                     <thead>
-                    <tr>
-                        <th className="prev" onClick={ this.onClickPreviousYear }>
-                            <span className={ icons.previous } title={ tooltips.prevYear } />
-                        </th>
-                        <th className="picker-switch"
-                            colSpan="5"
-                            title={ tooltips.selectDecade }
-                            onClick={ onClickDecades }>
-                            { `${firstYear.year()}-${lastYear.year()}` }
-                        </th>
-                        <th className="next" onClick={ this.onClickNextYear }>
-                            <span className={ icons.next } title={ tooltips.nextYear } />
-                        </th>
-                    </tr>
+                        <tr>
+                            <th className="prev" onClick={ this.onClickPreviousDecade }>
+                                <span className={ icons.previous } title={ tooltips.prevDecade } />
+                            </th>
+                            <th className="picker-switch"
+                                colSpan="5"
+                                title={ tooltips.selectDecade }
+                                onClick={ onClickDecades }>
+                                { `${firstYear.year()}-${lastYear.year()}` }
+                            </th>
+                            <th className="next" onClick={ this.onClickNextDecade }>
+                                <span className={ icons.next } title={ tooltips.nextDecade } />
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td colSpan="7">
-                            { years.map((y) => {
-                                const classes = classNames(
-                                    "year",
-                                    {
-                                        active : y.diff(moment(dateTime).startOf("year"), "years") === 0
-                                    }
-                                )
+                        <tr>
+                            <td colSpan="7">
+                                <span className="year old" onClick={ this.onClickPreviousDecade }>
+                                    { `…${moment(firstYear).subtract(1, "year").year()}` }
 
-                                return (
-                                    <span className={ classes }
-                                          key={ y.year() }
-                                          onClick={ this.onClickYear(y) }>
-                                            { y.year() }
-                                        </span>
-                                )
-                            }) }
-                        </td>
-                    </tr>
+                                </span>
+                                { years.map((y) => {
+                                    const classes = classNames(
+                                        "year",
+                                        {
+                                            active : selected && y.diff(moment(dateTime).startOf("year"), "years") === 0
+                                        }
+                                    )
+
+                                    return (
+                                        <span className={ classes }
+                                              key={ y.year() }
+                                              onClick={ this.onClickYear(y) }>
+                                                { y.year() }
+                                            </span>
+                                    )
+                                }) }
+                                <span className="year old" onClick={ this.onClickNextDecade }>
+                                    { `${moment(lastYear).add(1, "year").year()}…` }
+                                </span>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

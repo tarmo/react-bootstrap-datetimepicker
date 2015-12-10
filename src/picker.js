@@ -17,11 +17,13 @@ import {
     MODE_DATE,
     MODE_DATETIME,
     MODE_TIME,
+    PLACEMENT_DEFAULT,
     PLACEMENT_TOP,
     PLACEMENT_BOTTOM,
     VIEW_MODE_DAYS,
     VIEW_MODE_MONTHS,
     VIEW_MODE_YEARS,
+    VIEW_MODE_DECADES,
     VIEW_DATE,
     VIEW_TIME
 } from "./config.js"
@@ -69,8 +71,15 @@ const defaultTooltips = {
 class DateTimePicker extends Component {
 
     static propTypes = {
-        bsSize : React.PropTypes.oneOf([BOOTSTRAP_SIZE_SM, BOOTSTRAP_SIZE_LG]),
+        bsSize      : React.PropTypes.oneOf([BOOTSTRAP_SIZE_SM, BOOTSTRAP_SIZE_LG]),
+        collapse    : React.PropTypes.bool,
         dateTime    : deprecated(React.PropTypes.string, "Use \"value\" instead"),
+        defaultDate : React.PropTypes.oneOfType([
+            React.PropTypes.number,
+            React.PropTypes.string,
+            React.PropTypes.instanceOf(Date),
+            MomentPropTypes.momentObj
+        ]),
         format      : React.PropTypes.string,
         icon        : React.PropTypes.bool,
         icons       : React.PropTypes.objectOf(React.PropTypes.string),
@@ -90,158 +99,190 @@ class DateTimePicker extends Component {
             React.PropTypes.instanceOf(Date),
             MomentPropTypes.momentObj
         ]),
-        mode              : React.PropTypes.oneOf([MODE_DATE, MODE_TIME, MODE_DATETIME]),
-        onChange          : React.PropTypes.func,
-        showToday         : React.PropTypes.bool,
-        sideBySide        : React.PropTypes.bool,
-        size              : deprecated(React.PropTypes.string, "Use \"bsSize\" instead"),
-        tooltips          : React.PropTypes.object,
-        value             : React.PropTypes.oneOfType([
+        mode             : React.PropTypes.oneOf([MODE_DATE, MODE_TIME, MODE_DATETIME]),
+        onChange         : React.PropTypes.func,
+        showClear        : React.PropTypes.bool,
+        showClose        : React.PropTypes.bool,
+        showToday        : React.PropTypes.bool,
+        showTodayButton  : React.PropTypes.bool,
+        sideBySide       : React.PropTypes.bool,
+        size             : deprecated(React.PropTypes.string, "Use \"bsSize\" instead"),
+        stepping         : React.PropTypes.number,
+        toolbarPlacement : React.PropTypes.oneOf([PLACEMENT_DEFAULT, PLACEMENT_TOP, PLACEMENT_BOTTOM]),
+        tooltips         : React.PropTypes.object,
+        useCurrent       : React.PropTypes.bool,
+        value            : React.PropTypes.oneOfType([
             React.PropTypes.number,
             React.PropTypes.string,
             React.PropTypes.instanceOf(Date),
             MomentPropTypes.momentObj
         ]),
-        viewMode : React.PropTypes.oneOf([VIEW_MODE_DAYS, VIEW_MODE_MONTHS, VIEW_MODE_YEARS]),
+        viewMode : React.PropTypes.oneOf([
+            VIEW_MODE_DAYS,
+            VIEW_MODE_MONTHS,
+            VIEW_MODE_YEARS,
+            VIEW_MODE_DECADES
+        ]),
         widgetParent      : mountable,
-        widgetPositioning : React.PropTypes.oneOf([PLACEMENT_TOP, PLACEMENT_BOTTOM]),
+        widgetPositioning : React.PropTypes.oneOf([PLACEMENT_TOP, PLACEMENT_BOTTOM])
 
         // TODO: Properties to implement
-        dayViewHeaderFormat          : React.PropTypes.any,
+        /*
+        dayViewHeaderFormat   : React.PropTypes.any,
         extraFormats          : React.PropTypes.any,
-        stepping :React.PropTypes.any,
-        useCurrent: React.PropTypes.any,
-        collapse : React.PropTypes.any,
-        defaultDate : React.PropTypes.any,
-        disabledDates: React.PropTypes.any,
-        enabledDates: React.PropTypes.any,
-        useStrict : React.PropTypes.any,
-        calendarWeeks: React.PropTypes.any,
-        toolbarPlacement: React.PropTypes.any,
-        showClear       : React.PropTypes.any,
-        showClose       : React.PropTypes.any,
-        showTodayButton : React.PropTypes.any,
-        direction          : React.PropTypes.any,
-        keepOpen: React.PropTypes.any,
-        keepInvalid : React.PropTypes.any,
-        debug: React.PropTypes.any,
-        disabledTimeIntervals: React.PropTypes.any,
-        focusOnShow: React.PropTypes.any,
-        enabledHours: React.PropTypes.any,
-        disabledHours: React.PropTypes.any,
-        daysOfWeekDisabled : React.PropTypes.arrayOf(React.PropTypes.number)
+
+        defaultDate           : React.PropTypes.any,
+        disabledDates         : React.PropTypes.any,
+        enabledDates          : React.PropTypes.any,
+        useStrict             : React.PropTypes.any,
+        calendarWeeks         : React.PropTypes.any,
+        direction             : React.PropTypes.any,
+        keepOpen              : React.PropTypes.any,
+        keepInvalid           : React.PropTypes.any,
+        debug                 : React.PropTypes.any,
+        disabledTimeIntervals : React.PropTypes.any,
+        focusOnShow           : React.PropTypes.any,
+        enabledHours          : React.PropTypes.any,
+        disabledHours         : React.PropTypes.any,
+        daysOfWeekDisabled    : React.PropTypes.arrayOf(React.PropTypes.number)
+        */
     }
 
     static defaultProps = {
-        format    : DEFAULT_FORMAT,
-        icon : true,
-        icons     : {},
-        locale      : moment.locale(),
-        mode        : MODE_DATETIME,
-        onChange    : (v) => console.log(v),
-        placement   : PLACEMENT_BOTTOM,
-        tooltips    : {},
-        viewMode    : VIEW_MODE_DAYS
+        collapse         : true,
+        format           : DEFAULT_FORMAT,
+        icon             : true,
+        icons            : {},
+        locale           : moment.locale(),
+        mode             : MODE_DATETIME,
+        onChange         : () => {},
+        placement        : PLACEMENT_BOTTOM,
+        showToday        : true,
+        stepping         : 1,
+        toolbarPlacement : PLACEMENT_DEFAULT,
+        tooltips         : {},
+        useCurrent       : true,
+        viewMode         : VIEW_MODE_DAYS
     }
-
-    state = {
-        show     : false,
-        dateTime : moment(),
-        view     : VIEW_DATE
-    }
-
-    icons = {}
-    tooltips = {}
 
     constructor (...args) {
         super(...args)
 
         const {
+            defaultDate,
             icons,
-            tooltips
+            tooltips,
+            useCurrent,
+            viewMode
         } = this.props
 
         this.icons = Object.assign({}, icons, defaultIcons)
         this.tooltips = Object.assign({}, tooltips, defaultTooltips)
+
+        this.state = Object.assign({}, this.state, {
+            dateTime : defaultDate ? moment(defaultDate) : moment(),
+            selected : defaultDate || useCurrent,
+            viewMode : this.state.viewMode || viewMode
+        })
     }
 
+    state = {
+        show : false,
+        view : VIEW_DATE
+    }
+
+    icons = {}
+    tooltips = {}
+
     renderDatePicker () {
-        const {
-            locale,
-            mode,
-            viewMode
-        } = this.props
+        const { mode } = this.props
 
         const {
             dateTime,
-            view
+            selected,
+            view,
+            viewMode
         } = this.state
 
         if (mode === MODE_DATETIME || mode === MODE_DATE) {
             return (
-                <DatePicker icons={ this.icons }
+                <DatePicker { ...this.props }
+                            icons={ this.icons }
                             tooltips={ this.tooltips }
                             show={ view === VIEW_DATE }
-                            locale={ locale }
                             onChange={ this.onChangeDateTime }
-                            dateTime={ dateTime }
-                            viewMode={ viewMode } />
+                            viewMode={ viewMode }
+                            selected={ selected }
+                            updateViewMode={ this.updateViewMode }
+                            dateTime={ dateTime } />
             )
         }
     }
 
     renderTimePicker () {
-        const {
-            locale,
-            mode
-        } = this.props
+        const { mode } = this.props
 
         const {
             dateTime,
+            selected,
             view
         } = this.state
 
         if (mode === MODE_DATETIME || mode === MODE_TIME) {
             return (
-                <TimePicker icons={ this.icons }
+                <TimePicker { ...this.props }
+                            icons={ this.icons }
                             tooltips={ this.tooltips }
-                            locale={ locale }
                             onChange={ this.onChangeDateTime }
                             dateTime={ dateTime }
+                            selected={ selected }
                             show={ view === VIEW_TIME } />
             )
         }
     }
 
-    onChangeDateTime = (date) => {
+    onChangeDateTime = (date, clear = false) => {
         this.setState({
-            dateTime : moment(date)
+            dateTime : moment(date),
+            selected : !clear
         }, () => {
             const {
                 format,
                 locale,
                 onChange
             } = this.props
-
-            const {
-                dateTime
-            } = this.state
+            const { dateTime } = this.state
 
             onChange(moment(dateTime).locale(locale).format(format))
         })
     }
 
+    onClickToday = () => {
+        const { dateTime } = this.state
+        const date = moment()
+
+        this.onChangeDateTime(moment(dateTime).year(date.year()).month(date.month()).date(date.date()))
+
+    }
+
+    onClickClear = () => {
+        this.onChangeDateTime(moment().startOf("day"), true)
+    }
+
+    updateViewMode = (viewMode) => {
+        this.setState({ viewMode })
+    }
+
     render () {
         const {
             bsSize,
-            icon,
             inline,
             inputFormat,
             mode,
-            sideBySide,
             size,
             widgetParent
         } = this.props
+        const { selected } = this.state
         let displayFormat = inputFormat
 
         if (!inputFormat) {
@@ -259,24 +300,30 @@ class DateTimePicker extends Component {
             }
         }
 
-        const inputValue = moment(this.state.dateTime).format(displayFormat)
+        const inputValue = selected ? moment(this.state.dateTime).format(displayFormat) : null
 
         let picker
 
         if (inline) {
             picker = (
-                <DateTimePickerLayoutInline sideBySide={ sideBySide }
+                <DateTimePickerLayoutInline { ...this.props }
+                                            tooltips={ this.tooltips }
+                                            icons={ this.icons }
+                                            onClickToday={ this.onClickToday }
+                                            onClickClear={ this.onClickClear }
                                             datePicker={ this.renderDatePicker() }
                                             timePicker={ this.renderTimePicker() } />
             )
         } else {
             picker = (
-                <DateTimePickerLayoutInput sideBySide={ sideBySide }
-                                           icon={ icon }
+                <DateTimePickerLayoutInput { ...this.props }
+                                           tooltips={ this.tooltips }
                                            icons={ this.icons }
                                            bsSize={ bsSize || size }
                                            value={ inputValue }
                                            container={ widgetParent }
+                                           onClickToday={ this.onClickToday }
+                                           onClickClear={ this.onClickClear }
                                            datePicker={ this.renderDatePicker() }
                                            timePicker={ this.renderTimePicker() } />
             )

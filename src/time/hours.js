@@ -40,10 +40,8 @@ class TimePickerHours extends Component {
                     if (date.hour() !== 12) {
                         date.add(12, "hours")
                     }
-                } else {
-                    if (date.hour() === 12) {
-                        date.hour(0)
-                    }
+                } else if (date.hour() === 12) {
+                    date.hour(0)
                 }
             }
 

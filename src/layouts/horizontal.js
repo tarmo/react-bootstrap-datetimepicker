@@ -13,18 +13,10 @@ class DateTimePickerLayoutHorizontal extends Component {
             timePicker
         } = this.props
 
-        const style = {
-            display : "inline-block"
-        }
-
         return (
-            <div>
-                <div style={ style }>
-                    { datePicker }
-                </div>
-                <div style={ style }>
-                    { timePicker }
-                </div>
+            <div className="row">
+                { datePicker }
+                { timePicker }
             </div>
         )
     }

@@ -1,40 +1,36 @@
 import React, { Component } from "react"
-import classNames from "classnames"
-import Config from "../config.js"
-import DateTimeSwitch from "../components/switch.js"
+import DateTimeToolbar from "../components/toolbar.js"
 import DateTimeViewSlide from "../components/slide.js"
+import {
+    VIEW_TIME,
+    VIEW_DATE,
+    PLACEMENT_DEFAULT,
+    PLACEMENT_TOP,
+    PLACEMENT_BOTTOM
+} from "../config.js"
 
 class DateTimePickerLayoutVertical extends Component {
 
     static propTypes = {
-        datePicker : React.PropTypes.node,
-        icons      : React.PropTypes.object,
-        timePicker : React.PropTypes.node
+        datePicker       : React.PropTypes.node,
+        icons            : React.PropTypes.object,
+        timePicker       : React.PropTypes.node,
+        toolbarPlacement : React.PropTypes.string
     }
 
     state = {
-        view : Config.VIEW_DATE
+        view : VIEW_DATE
     }
 
-    renderDateTimeSwitch () {
-        const {
-            datePicker,
-            icons,
-            timePicker
-        } = this.props
-
-        const {
-            view
-        } = this.state
-
-        if (!datePicker || !timePicker) {
-            return false
-        }
+    renderDateTimeToolbar () {
+        const { view } = this.state
 
         return (
-            <DateTimeSwitch icons={ icons }
-                            onClick={ this.onClickSwitch }
-                            view={ view } />
+            <li className="picker-switch">
+                <DateTimeToolbar { ...this.props }
+                                 onClickSwitch={ this.onClickSwitch }
+                                 view={ view } />
+            </li>
         )
     }
 
@@ -43,13 +39,12 @@ class DateTimePickerLayoutVertical extends Component {
             datePicker,
             timePicker
         } = this.props
-        const {
-            view
-        } = this.state
-        const picker = viewType === Config.VIEW_TIME ? timePicker : datePicker
+        const { view } = this.state
+        const picker = viewType === VIEW_TIME ? timePicker : datePicker
 
         return (
-            <DateTimeViewSlide in={ viewType === view }>
+            <DateTimeViewSlide { ...this.props }
+                               in={ viewType === view }>
                 <li>{ picker }</li>
             </DateTimeViewSlide>
         )
@@ -58,21 +53,23 @@ class DateTimePickerLayoutVertical extends Component {
     onClickSwitch = (e) => {
         e.preventDefault()
 
-        const {
-            view
-        } = this.state
+        const { view } = this.state
 
         this.setState({
-            view : view === Config.VIEW_DATE ? Config.VIEW_TIME : Config.VIEW_DATE
+            view : view === VIEW_DATE ? VIEW_TIME : VIEW_DATE
         })
     }
 
     render () {
+        const { toolbarPlacement } = this.props
+
         return (
             <ul className="list-unstyled">
-                { this.renderPicker(Config.VIEW_DATE) }
-                { this.renderDateTimeSwitch() }
-                { this.renderPicker(Config.VIEW_TIME) }
+                { toolbarPlacement === PLACEMENT_TOP && this.renderDateTimeToolbar() }
+                { this.renderPicker(VIEW_DATE) }
+                { toolbarPlacement === PLACEMENT_DEFAULT && this.renderDateTimeToolbar() }
+                { this.renderPicker(VIEW_TIME) }
+                { toolbarPlacement === PLACEMENT_BOTTOM && this.renderDateTimeToolbar() }
             </ul>
         )
     }

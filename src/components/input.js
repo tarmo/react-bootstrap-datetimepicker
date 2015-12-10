@@ -45,7 +45,8 @@ class DateTimePickerInput extends Component {
                        ref="input"
                        value={ value }
                        onChange={ this.onChangeInput }
-                      { ...inputProps } />
+                       { ...inputProps } />
+
                 <span className="input-group-addon"
                       onClick={ onClick }>
                     <span className={ iconClasses } />

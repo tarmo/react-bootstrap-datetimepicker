@@ -7,7 +7,7 @@ import DateTimePickerContainer from "../components/container.js"
 import DateTimePickerLayoutHorizontal from "./horizontal.js"
 import DateTimePickerLayoutVertical from "./vertical.js"
 
-class DateTimePickerLayoutPopup extends Component {
+class DateTimePickerLayoutInput extends Component {
 
     static propTypes = {
         bsSize     : React.PropTypes.string,
@@ -37,21 +37,17 @@ class DateTimePickerLayoutPopup extends Component {
     }
 
     onHidePopup = () => {
-        this.setState({
-            show : false
-        })
+        this.setState({ show : false })
+    }
+
+    onClickClose = () => {
+        this.setState({ show : false })
     }
 
     render () {
         const {
-            bsSize,
             container,
-            datePicker,
-            icon,
-            icons,
-            sideBySide,
-            timePicker,
-            value
+            sideBySide
         } = this.props
 
         const {
@@ -62,31 +58,26 @@ class DateTimePickerLayoutPopup extends Component {
 
         if (sideBySide) {
             picker = (
-                <DateTimePickerLayoutHorizontal datePicker={ datePicker }
-                                                timePicker={ timePicker } />
+                <DateTimePickerLayoutHorizontal { ...this.props } />
             )
         } else {
             picker = (
-                <DateTimePickerLayoutVertical datePicker={ datePicker }
-                                              icons={ icons }
-                                              timePicker={ timePicker } />
+                <DateTimePickerLayoutVertical { ...this.props }
+                                              onClickClose={ this.onClickClose } />
             )
         }
 
         return (
             <div style={ { position : "relative" } }>
-                <DateTimePickerInput ref="input"
-                                     bsSize={ bsSize }
-                                     icon={ icon }
-                                     icons={ icons }
-                                     onClick={ this.onClickInput }
-                                     value={ value } />
+                <DateTimePickerInput { ...this.props }
+                                     ref="input"
+                                     onClick={ this.onClickInput } />
                 <Overlay placement="bottom"
                          show={ show }
                          onHide={ this.onHidePopup }
                          container={ container }
                          target={ () => findDOMNode(this.refs.input) }>
-                    <DateTimePickerContainer>
+                    <DateTimePickerContainer { ...this.props } >
                         { picker }
                     </DateTimePickerContainer>
                 </Overlay>
@@ -96,4 +87,4 @@ class DateTimePickerLayoutPopup extends Component {
 
 }
 
-export default DateTimePickerLayoutPopup
+export default DateTimePickerLayoutInput

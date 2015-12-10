@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import MomentPropTypes from "react-moment-proptypes"
 import moment from "moment"
-import classNames from "classnames"
 
 class TimePickerTime extends Component {
 
@@ -13,8 +12,9 @@ class TimePickerTime extends Component {
         onClickHours   : React.PropTypes.func,
         onClickMinutes : React.PropTypes.func,
         onSelect       : React.PropTypes.func,
-        use24Hours     : React.PropTypes.bool,
-        tooltips       : React.PropTypes.object
+        stepping       : React.PropTypes.number,
+        tooltips       : React.PropTypes.object,
+        use24Hours     : React.PropTypes.bool
     }
 
     renderAmPmSwitch () {
@@ -30,9 +30,12 @@ class TimePickerTime extends Component {
 
         return (
             <td>
-                <a className="btn btn-primary" title={ tooltips.togglePeriod } onClick={ this.onClickAmPmToggle }>
+                <button data-action
+                        className="btn btn-primary"
+                        title={ tooltips.togglePeriod }
+                        onClick={ this.onClickAmPmToggle }>
                     { dateTime.format("A") }
-                </a>
+                </button>
             </td>
         )
     }
@@ -55,19 +58,18 @@ class TimePickerTime extends Component {
         const {
             dateTime,
             onSelect,
+            stepping,
             use24Hours
         } = this.props
-        const date = moment(dateTime).add(1, "hour")
+        const date = moment(dateTime).add(stepping, "hours")
 
         if (!use24Hours) {
             if (dateTime.hour() >= 12) {
                 if (date.hour() < 12) {
                     date.add(12, "hours")
                 }
-            } else {
-                if (date.hour() >= 12) {
-                    date.subtract(12, "hours")
-                }
+            } else if (date.hour() >= 12) {
+                date.subtract(12, "hours")
             }
         }
 
@@ -80,19 +82,18 @@ class TimePickerTime extends Component {
         const {
             dateTime,
             onSelect,
+            stepping,
             use24Hours
         } = this.props
-        const date = moment(dateTime).subtract(1, "hour")
+        const date = moment(dateTime).subtract(stepping, "hours")
 
         if (!use24Hours) {
             if (dateTime.hour() >= 12) {
                 if (date.hour() < 12) {
                     date.add(12, "hours")
                 }
-            } else {
-                if (date.hour() >= 12) {
-                    date.subtract(12, "hours")
-                }
+            } else if (date.hour() >= 12) {
+                date.subtract(12, "hours")
             }
         }
 
@@ -104,10 +105,11 @@ class TimePickerTime extends Component {
 
         const {
             dateTime,
+            stepping,
             onSelect
         } = this.props
 
-        onSelect(moment(dateTime).add(1, "minute").hours(dateTime.hours()))
+        onSelect(moment(dateTime).add(stepping, "minute").hours(dateTime.hours()))
     }
 
     onClickSubtractMinute = (e) => {
@@ -115,10 +117,11 @@ class TimePickerTime extends Component {
 
         const {
             dateTime,
+            stepping,
             onSelect
         } = this.props
 
-        onSelect(moment(dateTime).subtract(1, "minute").hours(dateTime.hours()))
+        onSelect(moment(dateTime).subtract(stepping, "minute").hours(dateTime.hours()))
     }
 
     render () {
@@ -135,64 +138,64 @@ class TimePickerTime extends Component {
             <div className="timepicker-picker">
                 <table className="table-condensed">
                     <tbody>
-                    <tr>
-                        <td>
-                            <a href="#"
-                               className="btn"
-                               title={ tooltips.incrementHour }
-                               onClick={ this.onClickAddHour }>
-                                <span className={ icons.up } />
-                            </a>
-                        </td>
-                        <td className="separator" />
-                        <td>
-                            <a href="#"
-                               className="btn"
-                               title={ tooltips.incrementMinute }
-                               onClick={ this.onClickAddMinute }>
-                                <span className={ icons.up } />
-                            </a>
-                        </td>
-                        <td className="separator" />
-                    </tr>
-                    <tr>
-                        <td>
-                            <span className="timepicker-hour"
-                                  title={ tooltips.pickHour }
-                                  onClick={ onClickHours }>
-                                { dateTime.format(use24Hours ? "HH" : "hh") }
-                            </span>
-                        </td>
-                        <td className="separator">:</td>
-                        <td>
-                            <span className="timepicker-minute"
-                                  title={ tooltips.pickMinute }
-                                  onClick={ onClickMinutes }>
-                                { dateTime.format("mm") }
-                            </span>
-                        </td>
-                        { this.renderAmPmSwitch() }
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#"
-                               className="btn"
-                               title={ tooltips.decrementHour }
-                               onClick={ this.onClickSubtractHour }>
-                                <span className={ icons.down } />
-                            </a>
-                        </td>
-                        <td className="separator" />
-                        <td>
-                            <a href="#"
-                               className="btn"
-                               title={ tooltips.decrementMinute }
-                               onClick={ this.onClickSubtractMinute }>
-                                <span className={ icons.down } />
-                            </a>
-                        </td>
-                        <td className="separator" />
-                    </tr>
+                        <tr>
+                            <td>
+                                <a href="#"
+                                   className="btn"
+                                   title={ tooltips.incrementHour }
+                                   onClick={ this.onClickAddHour }>
+                                    <span className={ icons.up } />
+                                </a>
+                            </td>
+                            <td className="separator" />
+                            <td>
+                                <a href="#"
+                                   className="btn"
+                                   title={ tooltips.incrementMinute }
+                                   onClick={ this.onClickAddMinute }>
+                                    <span className={ icons.up } />
+                                </a>
+                            </td>
+                            <td className="separator" />
+                        </tr>
+                        <tr>
+                            <td>
+                                <span className="timepicker-hour"
+                                      title={ tooltips.pickHour }
+                                      onClick={ onClickHours }>
+                                    { dateTime.format(use24Hours ? "HH" : "hh") }
+                                </span>
+                            </td>
+                            <td className="separator">{ ":" }</td>
+                            <td>
+                                <span className="timepicker-minute"
+                                      title={ tooltips.pickMinute }
+                                      onClick={ onClickMinutes }>
+                                    { dateTime.format("mm") }
+                                </span>
+                            </td>
+                            { this.renderAmPmSwitch() }
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="#"
+                                   className="btn"
+                                   title={ tooltips.decrementHour }
+                                   onClick={ this.onClickSubtractHour }>
+                                    <span className={ icons.down } />
+                                </a>
+                            </td>
+                            <td className="separator" />
+                            <td>
+                                <a href="#"
+                                   className="btn"
+                                   title={ tooltips.decrementMinute }
+                                   onClick={ this.onClickSubtractMinute }>
+                                    <span className={ icons.down } />
+                                </a>
+                            </td>
+                            <td className="separator" />
+                        </tr>
                     </tbody>
                 </table>
             </div>

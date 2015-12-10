@@ -10,20 +10,23 @@ class DateTimePickerContainer extends Component {
             Config.PLACEMENT_TOP,
             Config.PLACEMENT_BOTTOM
         ]),
-        style : React.PropTypes.object
+        sideBySide : React.PropTypes.bool,
+        style      : React.PropTypes.object
     }
 
     render () {
         const {
             children,
             placement,
+            sideBySide,
             style
         } = this.props
 
         const classes = classNames(
             "bootstrap-datetimepicker-widget",
             "dropdown-menu",
-            placement
+            placement,
+            { "timepicker-sbs" : sideBySide }
         )
 
         const inlineStyle = Object.assign({}, style, {

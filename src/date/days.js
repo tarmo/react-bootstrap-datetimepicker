@@ -7,15 +7,14 @@ import classNames from "classnames"
 class DatePickerDays extends Component {
 
     static propTypes = {
-        date     : MomentPropTypes.momentObj,
-        locale   : React.PropTypes.string,
-        icons    : React.PropTypes.object,
-        onSelect : React.PropTypes.func,
-        tooltips : React.PropTypes.object
-    }
-
-    state = {
-        date : null
+        date          : MomentPropTypes.momentObj,
+        icons         : React.PropTypes.object,
+        locale        : React.PropTypes.string,
+        onClickMonths : React.PropTypes.func,
+        onSelect      : React.PropTypes.func,
+        selected      : React.PropTypes.bool,
+        showToday     : React.PropTypes.bool,
+        tooltips      : React.PropTypes.object
     }
 
     constructor (...args) {
@@ -23,6 +22,10 @@ class DatePickerDays extends Component {
 
         const { date } = this.props
         this.state = Object.assign({}, this.state, { date : moment(date) })
+    }
+
+    state = {
+        date : null
     }
 
     componentWillReceiveProps (props) {
@@ -66,6 +69,10 @@ class DatePickerDays extends Component {
     }
 
     renderDays () {
+        const {
+            selected,
+            showToday
+        } = this.props
         const { date } = this.state
         const weeks = this.getCalendarDays()
 
@@ -77,11 +84,11 @@ class DatePickerDays extends Component {
                         const classes = classNames(
                             "day",
                             {
-                                active  : d.diff(moment(this.props.date).startOf("day"), "days") === 0,
-                                today   : d.diff(moment().startOf("day"), "days") === 0,
+                                active  : selected && d.diff(moment(this.props.date).startOf("day"), "days") === 0,
+                                today   : showToday && d.diff(moment().startOf("day"), "days") === 0,
                                 old     : d.month() < date.month(),
                                 weekend : [0, 6].indexOf(d.day()) !== -1,
-                                "new"   : d.month() > date.month()
+                                new     : d.month() > date.month()
                             }
                         )
 
@@ -94,7 +101,7 @@ class DatePickerDays extends Component {
                         )
                     })
                     return (<tr key={ i }>{ days }</tr>)
-                })}
+                }) }
             </tbody>
         )
     }

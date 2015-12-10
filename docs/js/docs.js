@@ -26,7 +26,13 @@ class Docs extends Component {
                 <h1>Works</h1>
                     <div className="row" style={ style }>
                         <div className="col-md-4">
-                            <DateTimePicker />
+                            <DateTimePicker useCurrent={false} showClose showClear showTodayButton toolbarPlacement="bottom" />
+                        </div>
+                    </div>
+
+                    <div className="row" style={ style }>
+                        <div className="col-md-4">
+                            <DateTimePicker showClose showClear showTodayButton toolbarPlacement="bottom" mode="date" />
                         </div>
                     </div>
 
@@ -37,19 +43,19 @@ class Docs extends Component {
                     </div>
 
                     <div className="row" style={ style }>
-                        <div className="col-md-12">
+                        <div className="col-md-4">
                             <DateTimePicker inline />
                         </div>
                     </div>
 
                     <div className="row" style={ style }>
-                        <div className="col-md-12">
+                        <div className="col-md-8">
                             <DateTimePicker inline sideBySide />
                         </div>
                     </div>
 
                     <div className="row" style={ style }>
-                        <div className="col-md-12">
+                        <div className="col-md-8">
                             <DateTimePicker inline sideBySide locale="pl" format="LLL" />
                         </div>
                     </div>

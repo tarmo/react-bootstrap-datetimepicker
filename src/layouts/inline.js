@@ -4,32 +4,20 @@ class DateTimePickerLayoutInline extends Component {
 
     static propTypes = {
         datePicker : React.PropTypes.node,
-        sideBySide : React.PropTypes.bool,
         timePicker : React.PropTypes.node
     }
 
     render () {
         const {
             datePicker,
-            sideBySide,
             timePicker
         } = this.props
 
-        const style = {
-            display : "inline-block"
-        }
-
         return (
             <div className="bootstrap-datetimepicker-widget">
-                <div style={ sideBySide && style }>
-                    <div style={ style }>
-                        { datePicker }
-                    </div>
-                </div>
-                <div style={ sideBySide && style }>
-                    <div style={ style }>
-                        { timePicker }
-                    </div>
+                <div className="row">
+                    { datePicker }
+                    { timePicker }
                 </div>
             </div>
         )

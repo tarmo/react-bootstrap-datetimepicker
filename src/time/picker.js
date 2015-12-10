@@ -8,21 +8,27 @@ import TimePickerMinutes from "./minutes.js"
 import {
     VIEW_MODE_TIME,
     VIEW_MODE_HOURS,
-    VIEW_MODE_MINUTES,
-    VIEW_MODE_SECONDS
+    VIEW_MODE_MINUTES
 } from "../config.js"
 
 class TimePicker extends Component {
 
-    state = {
-        use24Hours : false,
-        viewMode   : VIEW_MODE_TIME
+    static propTypes = {
+        dateTime   : MomentPropTypes.momentObj,
+        locale     : React.PropTypes.string,
+        onChange   : React.PropTypes.func,
+        sideBySide : React.PropTypes.bool
     }
 
     constructor (...args) {
         super(...args)
 
         this.state = Object.assign({}, this.state, { use24Hours : this.get24HoursFlag() })
+    }
+
+    state = {
+        use24Hours : false,
+        viewMode   : VIEW_MODE_TIME
     }
 
     componentWillReceiveProps () {
@@ -74,13 +80,17 @@ class TimePicker extends Component {
 
         switch (viewMode) {
             case VIEW_MODE_HOURS :
-                return (<TimePickerHours use24Hours={ use24Hours }
-                                         onSelect={ this.onSelectTime }
-                                         { ...this.props } />)
+                return (
+                    <TimePickerHours { ...this.props }
+                                     use24Hours={ use24Hours }
+                                     onSelect={ this.onSelectTime } />
+                )
 
             case VIEW_MODE_MINUTES :
-                return (<TimePickerMinutes onSelect={ this.onSelectTime }
-                                           { ...this.props } />)
+                return (
+                    <TimePickerMinutes { ...this.props }
+                                       onSelect={ this.onSelectTime } />
+                )
 
             default :
                 return (
@@ -94,8 +104,10 @@ class TimePicker extends Component {
     }
 
     render () {
+        const { sideBySide } = this.props
+        const classes = classNames("timepicker", { "col-md-6" : sideBySide })
         return (
-            <div className="timepicker">
+            <div className={ classes }>
                 { this.renderViewMode() }
             </div>
         )
