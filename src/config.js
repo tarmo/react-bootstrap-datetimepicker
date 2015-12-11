@@ -47,6 +47,7 @@ export default new Config()
 
 export const BOOTSTRAP_SIZE_SM = "sm"
 export const BOOTSTRAP_SIZE_LG = "lg"
+export const DEFAULT_DAY_VIEW_HEADER = "MMMM YYYY"
 export const DEFAULT_FORMAT = "x"
 export const INPUT_FORMAT_DATE = "L"
 export const INPUT_FORMAT_TIME = "LT"

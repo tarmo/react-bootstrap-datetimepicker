@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { render } from "react-dom"
 import DateTimePicker from "../../src/index.js"
+import moment from "moment"
 
 const style = {
     marginBottom: 30
@@ -56,7 +57,7 @@ class Docs extends Component {
 
                     <div className="row" style={ style }>
                         <div className="col-md-8">
-                            <DateTimePicker inline sideBySide locale="pl" format="LLL" />
+                            <DateTimePicker minDate={ moment([1990, 4, 13]) } maxDate={ moment() }  inline sideBySide locale="pl" format="LLL" />
                         </div>
                     </div>
                 </div>

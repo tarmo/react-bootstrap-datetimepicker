@@ -4,6 +4,7 @@ import { Transition } from "react-overlays"
 
 const TRANSITION_DURATION = 200
 const TRANSITION_FRAME_DELAY = 5
+const TRANSITION_HALF = 0.5
 
 class DateTimePickerViewSlide extends Component {
 
@@ -14,7 +15,7 @@ class DateTimePickerViewSlide extends Component {
     }
 
     easeDelta (progress) {
-        return (progress < 0.5) ? (2 * progress / 2) : ((2 - 2 * (1 - progress)) / 2)
+        return (progress < TRANSITION_HALF) ? (2 * progress / 2) : ((2 - 2 * (1 - progress)) / 2)
     }
 
     transition = (slide, step) => {
@@ -28,7 +29,7 @@ class DateTimePickerViewSlide extends Component {
 
             step(delta)
 
-            if (progress == 1) {
+            if (progress === 1) {
                 clearInterval(timer)
                 slide.style.removeProperty("height")
                 slide.style.removeProperty("overflow")

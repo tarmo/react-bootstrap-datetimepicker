@@ -9,3 +9,29 @@ export function getMoment (value, format, locale) {
 
     return moment(value)
 }
+
+export function inRangeDates (date, unit, min = null, max = null) {
+    let inRange = true
+
+    if (min) {
+        inRange = moment(date).endOf(unit).isAfter(moment(min).startOf(unit))
+    }
+
+    if (max && inRange) {
+        inRange = moment(date).startOf(unit).isBefore(moment(max).endOf(unit))
+    }
+
+    return inRange
+}
+
+export function inRangeMonts () {
+
+}
+
+export function inRangeYears () {
+
+}
+
+export function inRangeDecades () {
+
+}

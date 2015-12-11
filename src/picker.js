@@ -10,6 +10,7 @@ import DateTimePickerLayoutInput from "./layouts/input.js"
 import {
     BOOTSTRAP_SIZE_SM,
     BOOTSTRAP_SIZE_LG,
+    DEFAULT_DAY_VIEW_HEADER,
     DEFAULT_FORMAT,
     INPUT_FORMAT_DATE,
     INPUT_FORMAT_DATETIME,
@@ -71,10 +72,11 @@ const defaultTooltips = {
 class DateTimePicker extends Component {
 
     static propTypes = {
-        bsSize      : React.PropTypes.oneOf([BOOTSTRAP_SIZE_SM, BOOTSTRAP_SIZE_LG]),
-        collapse    : React.PropTypes.bool,
-        dateTime    : deprecated(React.PropTypes.string, "Use \"value\" instead"),
-        defaultDate : React.PropTypes.oneOfType([
+        bsSize              : React.PropTypes.oneOf([BOOTSTRAP_SIZE_SM, BOOTSTRAP_SIZE_LG]),
+        collapse            : React.PropTypes.bool,
+        dateTime            : deprecated(React.PropTypes.string, "Use \"value\" instead"),
+        dayViewHeaderFormat : React.PropTypes.string,
+        defaultDate         : React.PropTypes.oneOfType([
             React.PropTypes.number,
             React.PropTypes.string,
             React.PropTypes.instanceOf(Date),
@@ -126,17 +128,14 @@ class DateTimePicker extends Component {
         widgetParent      : mountable,
         widgetPositioning : React.PropTypes.oneOf([PLACEMENT_TOP, PLACEMENT_BOTTOM])
 
-        // TODO: Properties to implement
+        // TODO: Properties to implement from original plugin
+        // http://eonasdan.github.io/bootstrap-datetimepicker/Options/
         /*
-        dayViewHeaderFormat   : React.PropTypes.any,
         extraFormats          : React.PropTypes.any,
-
-        defaultDate           : React.PropTypes.any,
         disabledDates         : React.PropTypes.any,
         enabledDates          : React.PropTypes.any,
         useStrict             : React.PropTypes.any,
         calendarWeeks         : React.PropTypes.any,
-        direction             : React.PropTypes.any,
         keepOpen              : React.PropTypes.any,
         keepInvalid           : React.PropTypes.any,
         debug                 : React.PropTypes.any,
@@ -149,20 +148,21 @@ class DateTimePicker extends Component {
     }
 
     static defaultProps = {
-        collapse         : true,
-        format           : DEFAULT_FORMAT,
-        icon             : true,
-        icons            : {},
-        locale           : moment.locale(),
-        mode             : MODE_DATETIME,
-        onChange         : () => {},
-        placement        : PLACEMENT_BOTTOM,
-        showToday        : true,
-        stepping         : 1,
-        toolbarPlacement : PLACEMENT_DEFAULT,
-        tooltips         : {},
-        useCurrent       : true,
-        viewMode         : VIEW_MODE_DAYS
+        collapse            : true,
+        dayViewHeaderFormat : DEFAULT_DAY_VIEW_HEADER,
+        format              : DEFAULT_FORMAT,
+        icon                : true,
+        icons               : {},
+        locale              : moment.locale(),
+        mode                : MODE_DATETIME,
+        onChange            : () => {},
+        placement           : PLACEMENT_BOTTOM,
+        showToday           : true,
+        stepping            : 1,
+        toolbarPlacement    : PLACEMENT_DEFAULT,
+        tooltips            : {},
+        useCurrent          : true,
+        viewMode            : VIEW_MODE_DAYS
     }
 
     constructor (...args) {

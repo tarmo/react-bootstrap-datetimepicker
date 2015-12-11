@@ -124,6 +124,7 @@ class DatePicker extends Component {
                 return (
                     <DatePickerDecades { ...this.props }
                                        onSelect={ this.onSelectDecade }
+                                       updateDecade={ this.updateDecade }
                                        decade={ decade } />
                 )
 

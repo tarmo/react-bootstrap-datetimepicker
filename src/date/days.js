@@ -3,18 +3,22 @@ import MomentPropTypes from "react-moment-proptypes"
 import moment from "moment"
 import "moment-range"
 import classNames from "classnames"
+import { inRangeDates } from "../utils.js"
 
 class DatePickerDays extends Component {
 
     static propTypes = {
-        date          : MomentPropTypes.momentObj,
-        icons         : React.PropTypes.object,
-        locale        : React.PropTypes.string,
-        onClickMonths : React.PropTypes.func,
-        onSelect      : React.PropTypes.func,
-        selected      : React.PropTypes.bool,
-        showToday     : React.PropTypes.bool,
-        tooltips      : React.PropTypes.object
+        date                : MomentPropTypes.momentObj,
+        dayViewHeaderFormat : React.PropTypes.string,
+        icons               : React.PropTypes.object,
+        locale              : React.PropTypes.string,
+        maxDate             : MomentPropTypes.momentObj,
+        minDate             : MomentPropTypes.momentObj,
+        onClickMonths       : React.PropTypes.func,
+        onSelect            : React.PropTypes.func,
+        selected            : React.PropTypes.bool,
+        showToday           : React.PropTypes.bool,
+        tooltips            : React.PropTypes.object
     }
 
     constructor (...args) {
@@ -68,8 +72,50 @@ class DatePickerDays extends Component {
         return calendarDays
     }
 
+    renderPrevButton () {
+        const {
+            icons,
+            minDate,
+            tooltips
+        } = this.props
+        const { date } = this.state
+        const inRange = inRangeDates(moment(date).subtract(1, "month"), "months", minDate)
+
+        const classes = classNames("prev", {
+            disabled : !inRange
+        })
+
+        return (
+            <th className={ classes } onClick={ inRange && this.onClickPreviousMonth }>
+                <span className={ icons.previous } title={ tooltips.prevMonth } />
+            </th>
+        )
+    }
+
+    renderNextButton () {
+        const {
+            icons,
+            maxDate,
+            tooltips
+        } = this.props
+        const { date } = this.state
+        const inRange = inRangeDates(moment(date).add(1, "month"), "months", null, maxDate)
+
+        const classes = classNames("next", {
+            disabled : !inRange
+        })
+
+        return (
+            <th className={ classes } onClick={ inRange && this.onClickNextMonth }>
+                <span className={ icons.next } title={ tooltips.nextMonth } />
+            </th>
+        )
+    }
+
     renderDays () {
         const {
+            maxDate,
+            minDate,
             selected,
             showToday
         } = this.props
@@ -81,21 +127,23 @@ class DatePickerDays extends Component {
                 { weeks.map((week, i) => {
                     const days = []
                     week.by("days", (d) => {
+                        const inRange = inRangeDates(d, "days", minDate, maxDate)
                         const classes = classNames(
                             "day",
                             {
-                                active  : selected && d.diff(moment(this.props.date).startOf("day"), "days") === 0,
-                                today   : showToday && d.diff(moment().startOf("day"), "days") === 0,
-                                old     : d.month() < date.month(),
-                                weekend : [0, 6].indexOf(d.day()) !== -1,
-                                new     : d.month() > date.month()
+                                active   : selected && d.diff(moment(this.props.date).startOf("day"), "days") === 0,
+                                today    : showToday && d.diff(moment().startOf("day"), "days") === 0,
+                                old      : d.month() < date.month(),
+                                weekend  : [0, 6].indexOf(d.day()) !== -1,
+                                new      : d.month() > date.month(),
+                                disabled : !inRange
                             }
                         )
 
                         days.push(
                             <td key={ d.format("x") }
                                 className={ classes }
-                                onClick={ this.onClickDay(d) }>
+                                onClick={ inRange && this.onClickDay(d) }>
                                 { d.format("DD") }
                             </td>
                         )
@@ -115,19 +163,17 @@ class DatePickerDays extends Component {
 
     onClickPreviousMonth = () => {
         const { date } = this.state
-
         this.setState({ date : moment(date).subtract(1, "month") })
     }
 
     onClickNextMonth = () => {
         const { date } = this.state
-
         this.setState({ date : moment(date).add(1, "month") })
     }
 
     render () {
         const {
-            icons,
+            dayViewHeaderFormat,
             locale,
             onClickMonths,
             tooltips
@@ -141,18 +187,14 @@ class DatePickerDays extends Component {
                 <table className="table-condensed">
                     <thead>
                         <tr>
-                            <th className="prev" onClick={ this.onClickPreviousMonth }>
-                                <span className={ icons.previous } title={ tooltips.prevMonth } />
-                            </th>
+                            { this.renderPrevButton() }
                             <th className="picker-switch"
                                 colSpan="5"
                                 title={ tooltips.selectMonth }
                                 onClick={ onClickMonths }>
-                                { dateLocale.format("MMMM YYYY") }
+                                { dateLocale.format(dayViewHeaderFormat) }
                             </th>
-                            <th className="next" onClick={ this.onClickNextMonth }>
-                                <span className={ icons.next } title={ tooltips.nextMonth } />
-                            </th>
+                            { this.renderNextButton() }
                         </tr>
                         <tr>
                             { [0, 1, 2, 3, 4, 5, 6].map((d) => (

@@ -1,21 +1,22 @@
 {
   "name": "react-bootstrap-datetimepicker",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A bootstrap datetime picker component for React.js",
   "homepage": "http://dev.quri.com/react-bootstrap-datetimepicker/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/LKay/react-bootstrap-datetimefield.git"
+    "url": "https://github.com/quri/react-bootstrap-datetimepicker"
   },
   "bugs": {
-    "url": "https://github.com/LKay/react-bootstrap-datetimefield/issues"
+    "url": "https://github.com/quri/react-bootstrap-datetimepicker/issues"
   },
   "main": "./lib/index.js",
   "scripts": {
     "clean" : "rm -rf gh-pages lib",
     "start" : "webpack-dev-server",
     "build" : "babel src --out-dir lib --source-maps",
-    "build-docs" : "cp node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css gh-pages/"
+    "build-docs" : "cp node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css gh-pages/",
+    "lint" : "eslint src"
   },
   "keywords": [
     "react",
@@ -24,7 +25,10 @@
     "datetimepicker",
     "datetime"
   ],
-  "author": "Karol Janyst <lapkom@gmail.com>",
+  "author": "Loïc CHOLLIER <loic@chollier.com>",
+  "contributors": [
+    "Karol Janyst <lapkom@gmail.com>"
+  ],
   "license": "MIT",
   "peerDependencies": {
     "react": ">=0.14"

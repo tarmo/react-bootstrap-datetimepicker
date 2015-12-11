@@ -1,7 +1,8 @@
 import React, { Component } from "react"
 import { findDOMNode } from "react-dom"
-import { Overlay, Transition } from "react-overlays"
+import { Overlay } from "react-overlays"
 import { mountable } from "react-prop-types"
+import Fade from "../components/fade.js"
 import DateTimePickerInput from "../components/input.js"
 import DateTimePickerContainer from "../components/container.js"
 import DateTimePickerLayoutHorizontal from "./horizontal.js"
@@ -49,11 +50,7 @@ class DateTimePickerLayoutInput extends Component {
             container,
             sideBySide
         } = this.props
-
-        const {
-            show
-        } = this.state
-
+        const { show } = this.state
         let picker
 
         if (sideBySide) {
@@ -67,6 +64,8 @@ class DateTimePickerLayoutInput extends Component {
             )
         }
 
+        const target = () => findDOMNode(this.refs.input)
+
         return (
             <div style={ { position : "relative" } }>
                 <DateTimePickerInput { ...this.props }
@@ -75,10 +74,13 @@ class DateTimePickerLayoutInput extends Component {
                 <Overlay placement="bottom"
                          show={ show }
                          rootClose
+                         transition={ Fade }
                          onHide={ this.onHidePopup }
                          container={ container }
-                         target={ () => findDOMNode(this.refs.input) }>
-                    <DateTimePickerContainer { ...this.props } >
+                         unmountOnExit
+                         target={ target }>
+                    <DateTimePickerContainer { ...this.props }
+                                             target={ target }>
                         { picker }
                     </DateTimePickerContainer>
                 </Overlay>

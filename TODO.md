@@ -1,9 +1,9 @@
-- Add moment.js to the project dependencies
-- Improve positioning
+- Add moment.js to the project dependencies (done)
+- Improve positioning (partially done)
 - Let edit the input field by typing
 - Write tests
-- Support minDate and maxDate
-- build a doc with examples
-- use bootstrap accordions for picker switching
-- support locales
-- build DateTimePickerHours and Minutes in the same manner than Years
+- Support minDate and maxDate (done)
+- build a doc with examples (in progress)
+- use bootstrap accordions for picker switching (done)
+- support locales (done)
+- build DateTimePickerHours and Minutes in the same manner than Years (refactored)

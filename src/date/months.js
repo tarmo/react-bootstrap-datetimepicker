@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import MomentPropTypes from "react-moment-proptypes"
 import moment from "moment"
 import classNames from "classnames"
+import { inRangeDates } from "../utils.js"
 
 class DatePickerMonths extends Component {
 
@@ -10,6 +11,8 @@ class DatePickerMonths extends Component {
         dateTime     : MomentPropTypes.momentObj,
         icons        : React.PropTypes.object,
         locale       : React.PropTypes.string,
+        maxDate      : MomentPropTypes.momentObj,
+        minDate      : MomentPropTypes.momentObj,
         onClickYears : React.PropTypes.func,
         onSelect     : React.PropTypes.func,
         selected     : React.PropTypes.bool,
@@ -37,6 +40,46 @@ class DatePickerMonths extends Component {
         8, 9, 10, 11
     ]
 
+    renderPrevButton () {
+        const {
+            icons,
+            minDate,
+            tooltips
+            } = this.props
+        const { date } = this.state
+        const inRange = inRangeDates(moment(date).subtract(1, "year"), "years", minDate)
+
+        const classes = classNames("prev", {
+            disabled : !inRange
+        })
+
+        return (
+            <th className={ classes } onClick={ inRange && this.onClickPreviousYear }>
+                <span className={ icons.previous } title={ tooltips.prevYear } />
+            </th>
+        )
+    }
+
+    renderNextButton () {
+        const {
+            icons,
+            maxDate,
+            tooltips
+            } = this.props
+        const { date } = this.state
+        const inRange = inRangeDates(moment(date).add(1, "year"), "years", null, maxDate)
+
+        const classes = classNames("next", {
+            disabled : !inRange
+        })
+
+        return (
+            <th className={ classes } onClick={ inRange && this.onClickNextYear }>
+                <span className={ icons.next } title={ tooltips.nextYear } />
+            </th>
+        )
+    }
+
     onClickMonth (date) {
         return () => {
             const {
@@ -63,8 +106,9 @@ class DatePickerMonths extends Component {
     render () {
         const {
             dateTime,
-            icons,
             locale,
+            maxDate,
+            minDate,
             onClickYears,
             selected,
             tooltips
@@ -76,18 +120,14 @@ class DatePickerMonths extends Component {
                 <table className="table-condensed">
                     <thead>
                         <tr>
-                            <th className="prev" onClick={ this.onClickPreviousYear }>
-                                <span className={ icons.previous } title={ tooltips.prevYear } />
-                            </th>
+                            { this.renderPrevButton() }
                             <th className="picker-switch"
                                 colSpan="5"
                                 title={ tooltips.selectYear }
                                 onClick={ onClickYears }>
                                 { date.format("YYYY") }
                             </th>
-                            <th className="next" onClick={ this.onClickNextYear }>
-                                <span className={ icons.next } title={ tooltips.nextYear } />
-                            </th>
+                            { this.renderNextButton() }
                         </tr>
                     </thead>
                     <tbody>
@@ -96,17 +136,19 @@ class DatePickerMonths extends Component {
                                 { this.months.map((m) => {
                                     const month = moment(date).locale(locale).month(m).startOf("month")
                                     const sameMonth = month.diff(moment(dateTime).startOf("month"), "months") === 0
+                                    const inRange = inRangeDates(month, "months", minDate, maxDate)
                                     const classes = classNames(
                                         "month",
                                         {
-                                            active : selected && sameMonth
+                                            active   : selected && sameMonth,
+                                            disabled : !inRange
                                         }
                                     )
 
                                     return (
                                         <span className={ classes }
                                             key={ m }
-                                            onClick={ this.onClickMonth(month) }>
+                                            onClick={ inRange && this.onClickMonth(month) }>
                                             { month.format("MMM") }
                                         </span>
                                     )
