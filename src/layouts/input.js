@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { findDOMNode } from "react-dom"
-import { Overlay } from "react-overlays"
+import { Overlay, Transition } from "react-overlays"
 import { mountable } from "react-prop-types"
 import DateTimePickerInput from "../components/input.js"
 import DateTimePickerContainer from "../components/container.js"
@@ -74,6 +74,7 @@ class DateTimePickerLayoutInput extends Component {
                                      onClick={ this.onClickInput } />
                 <Overlay placement="bottom"
                          show={ show }
+                         rootClose
                          onHide={ this.onHidePopup }
                          container={ container }
                          target={ () => findDOMNode(this.refs.input) }>

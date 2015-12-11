@@ -2,8 +2,8 @@ import React, { Component, cloneElement } from "react"
 import { findDOMNode } from "react-dom"
 import { Transition } from "react-overlays"
 
-const TRANSITION_DURATION = 350
-const TRANSITION_FRAME_DELAY = 10
+const TRANSITION_DURATION = 200
+const TRANSITION_FRAME_DELAY = 5
 
 class DateTimePickerViewSlide extends Component {
 
@@ -17,8 +17,9 @@ class DateTimePickerViewSlide extends Component {
         return (progress < 0.5) ? (2 * progress / 2) : ((2 - 2 * (1 - progress)) / 2)
     }
 
-    transition (step) {
+    transition = (slide, step) => {
         const start = new Date()
+        slide.style.overflow = "hidden"
         const timer = setInterval(() => {
             const timePassed = new Date() - start
             const progress = Math.min(1, timePassed / TRANSITION_DURATION)
@@ -29,6 +30,8 @@ class DateTimePickerViewSlide extends Component {
 
             if (progress == 1) {
                 clearInterval(timer)
+                slide.style.removeProperty("height")
+                slide.style.removeProperty("overflow")
             }
         }, TRANSITION_FRAME_DELAY)
     }
@@ -36,7 +39,7 @@ class DateTimePickerViewSlide extends Component {
     slideToggle (slide, from, to) {
         slide.style.height = `${from}px`
 
-        this.transition((delta) => {
+        this.transition(slide, (delta) => {
             let height
             if (from > to) {
                 height = from - from * delta
@@ -47,27 +50,21 @@ class DateTimePickerViewSlide extends Component {
         })
     }
 
-    onEnter = () => {
+    onEntering = () => {
         const slide = findDOMNode(this.refs.slide)
-        slide.style.overflow = "hidden"
-        this.slideToggle(slide, 0, 229)
+        const parent = slide.parentNode
+        const clone = slide.cloneNode(true)
+        clone.style.display = "block"
+        parent.appendChild(clone)
+        const height = clone.getBoundingClientRect().height
+        parent.removeChild(clone)
+        this.slideToggle(slide, 0, height)
     }
 
-    onEntered = () => {
+    onExiting = () => {
         const slide = findDOMNode(this.refs.slide)
-        slide.style.height = null
-        slide.style.overflow = null
-    }
-
-    onExit = () => {
-        const slide = findDOMNode(this.refs.slide)
-        this.slideToggle(slide, 240, 0)
-    }
-
-    onExited = () => {
-        const slide = findDOMNode(this.refs.slide)
-        slide.style.height = null
-        slide.style.overflow = null
+        const height = slide.getBoundingClientRect().height
+        this.slideToggle(slide, height, 0)
     }
 
     renderWithCollapse () {
@@ -77,10 +74,8 @@ class DateTimePickerViewSlide extends Component {
             <Transition ref="slide"
                         in={ this.props.in }
                         timeout={ TRANSITION_DURATION }
-                        onEnter={ this.onEnter }
-                        onEntered={ this.onEntered }
-                        onExit={ this.onExit }
-                        onExited={ this.onExited }
+                        onEntering={ this.onEntering }
+                        onExiting={ this.onExiting }
                         enteredClassName="collapse in"
                         exitedClassName="collapse">
                 { children }
