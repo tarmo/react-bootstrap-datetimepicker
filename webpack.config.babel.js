@@ -1,17 +1,8 @@
 import webpack from "webpack"
 import path from "path"
-import HtmlWebpackPlugin from "html-webpack-plugin"
 
 const minimize = (process.argv.indexOf("--min") !== -1)
-const plugins = [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new HtmlWebpackPlugin({
-        title    : "Docs",
-        template : path.join(__dirname, "/docs/docs.html"),
-        inject   : "body"
-    })
-]
+const plugins = []
 
 if (minimize) {
     plugins.push(
@@ -27,33 +18,25 @@ const outputFilename = `react.bootstrap.datetimepicker${ minimize ? ".min" : ""}
 
 const config = {
     plugins,
-    entry : {
-        docs : [
-            "webpack-dev-server/client?http://localhost:8080/",
-            "webpack/hot/only-dev-server",
-            path.join(__dirname, "/docs/js/docs.js")
-        ]
-    },
+    entry : path.join(__dirname, "/src/index.js"),
     resolve : {
         extensions : ["", ".js"]
     },
+    externals: {
+        "react"        : "React",
+        "moment"       : "moment",
+        "moment-range" : "moment-range"
+    },
     module: {
         loaders: [
-            { test: /\.js?$/, exclude: /node_modules/, loaders: ["react-hot", "babel-loader"] }
+            { test : /\.js?$/, exclude: /node_modules/, loaders: ["babel-loader"] }
         ]
     },
     output : {
-        path          : path.join(__dirname, "/gh-pages/"),
-        publicPath    : "http://localhost:8080/",
-        filename      : "[name].js"
-    },
-
-    devtool   : "eval-source-map",
-    devServer : {
-        contentBase : path.join(__dirname, "/gh-pages/"),
-        port        : 8080,
-        hot         : true,
-        historyApiFallback: true
+        path          : path.join(__dirname, "/dist/"),
+        filename      : outputFilename,
+        library       : "ReactBootstrapDatetimepicker",
+        libraryTarget : "umd"
     }
 }
 
