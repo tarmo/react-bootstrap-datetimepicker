@@ -83,24 +83,28 @@ class DateTimePicker extends Component {
             React.PropTypes.instanceOf(Date),
             MomentPropTypes.momentObj
         ]),
-        disabledDates : React.PropTypes.oneOfType(
+        disabledDates : React.PropTypes.oneOfType([
             React.PropTypes.bool,
-            React.PropTypes.arrayOf(React.PropTypes.oneOfType([
-                React.PropTypes.number,
-                React.PropTypes.string,
-                React.PropTypes.instanceOf(Date),
-                MomentPropTypes.momentObj
-            ]))
-        ),
-        enabledDates : React.PropTypes.oneOfType(
+            React.PropTypes.arrayOf(
+                React.PropTypes.oneOfType([
+                    React.PropTypes.number,
+                    React.PropTypes.string,
+                    React.PropTypes.instanceOf(Date),
+                    MomentPropTypes.momentObj
+                ])
+            )
+        ]),
+        enabledDates : React.PropTypes.oneOfType([
             React.PropTypes.bool,
-            React.PropTypes.arrayOf(React.PropTypes.oneOfType([
-                React.PropTypes.number,
-                React.PropTypes.string,
-                React.PropTypes.instanceOf(Date),
-                MomentPropTypes.momentObj
-            ]))
-        ),
+            React.PropTypes.arrayOf(
+                React.PropTypes.oneOfType([
+                    React.PropTypes.number,
+                    React.PropTypes.string,
+                    React.PropTypes.instanceOf(Date),
+                    MomentPropTypes.momentObj
+                ])
+            )
+        ]),
         format      : React.PropTypes.string,
         icon        : React.PropTypes.bool,
         icons       : React.PropTypes.objectOf(React.PropTypes.string),
