@@ -187,7 +187,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var useCurrent = _this$props.useCurrent;
 	        var viewMode = _this$props.viewMode;
 
-	        _this.icons = Object.assign({}, icons, defaultIcons);
+	        _this.icons = Object.assign({}, defaultIcons, icons);
 	        _this.tooltips = Object.assign({}, tooltips, defaultTooltips);
 
 	        _this.state = Object.assign({}, _this.state, {
@@ -202,9 +202,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // http://eonasdan.github.io/bootstrap-datetimepicker/Options/
 	    /*
 	    extraFormats          : React.PropTypes.any,
-	    disabledDates         : React.PropTypes.any,
-	    enabledDates          : React.PropTypes.any,
-	    useStrict             : React.PropTypes.any,
 	    calendarWeeks         : React.PropTypes.any,
 	    keepOpen              : React.PropTypes.any,
 	    keepInvalid           : React.PropTypes.any,
@@ -327,7 +324,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    collapse: _react2.default.PropTypes.bool,
 	    dateTime: (0, _reactPropTypes.deprecated)(_react2.default.PropTypes.string, "Use \"value\" instead"),
 	    dayViewHeaderFormat: _react2.default.PropTypes.string,
+	    daysOfWeekDisabled: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.number),
 	    defaultDate: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]),
+	    disabledDates: _react2.default.PropTypes.oneOfType(_react2.default.PropTypes.bool, _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]))),
+	    enabledDates: _react2.default.PropTypes.oneOfType(_react2.default.PropTypes.bool, _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]))),
 	    format: _react2.default.PropTypes.string,
 	    icon: _react2.default.PropTypes.bool,
 	    icons: _react2.default.PropTypes.objectOf(_react2.default.PropTypes.string),
@@ -349,6 +349,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    toolbarPlacement: _react2.default.PropTypes.oneOf([_config.PLACEMENT_DEFAULT, _config.PLACEMENT_TOP, _config.PLACEMENT_BOTTOM]),
 	    tooltips: _react2.default.PropTypes.object,
 	    useCurrent: _react2.default.PropTypes.bool,
+	    useStrict: _react2.default.PropTypes.bool,
 	    value: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]),
 	    viewMode: _react2.default.PropTypes.oneOf([_config.VIEW_MODE_DAYS, _config.VIEW_MODE_MONTHS, _config.VIEW_MODE_YEARS, _config.VIEW_MODE_DECADES]),
 	    widgetParent: _reactPropTypes.mountable,
@@ -356,6 +357,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	DateTimePicker.defaultProps = {
 	    collapse: true,
 	    dayViewHeaderFormat: _config.DEFAULT_DAY_VIEW_HEADER,
+	    disabledDates: false,
+	    enabledDates: false,
 	    format: _config.DEFAULT_FORMAT,
 	    icon: true,
 	    icons: {},
@@ -1673,6 +1676,55 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return calendarDays;
 	        }
 	    }, {
+	        key: "enabled",
+	        value: function enabled(date) {
+	            var enabledDates = this.props.enabledDates;
+
+	            var d = (0, _moment2.default)(date).startOf("day");
+
+	            if (!enabledDates) {
+	                return true;
+	            }
+
+	            for (var i = 0, l = enabledDates.length; i < l; i++) {
+	                if (d.diff((0, _moment2.default)(enabledDates[i]).startOf("day")) === 0) {
+	                    return true;
+	                }
+	            }
+
+	            return false;
+	        }
+	    }, {
+	        key: "disabled",
+	        value: function disabled(date) {
+	            var disabledDates = this.props.disabledDates;
+
+	            var d = (0, _moment2.default)(date).startOf("day");
+
+	            if (!disabledDates) {
+	                return false;
+	            }
+
+	            for (var i = 0, l = disabledDates.length; i < l; i++) {
+	                if (d.diff((0, _moment2.default)(disabledDates[i]).startOf("day")) === 0) {
+	                    return true;
+	                }
+	            }
+
+	            return false;
+	        }
+	    }, {
+	        key: "disabledWeekday",
+	        value: function disabledWeekday(date) {
+	            var daysOfWeekDisabled = this.props.daysOfWeekDisabled;
+
+	            if (!daysOfWeekDisabled || daysOfWeekDisabled.length === 0) {
+	                return false;
+	            }
+
+	            return daysOfWeekDisabled.indexOf(date.day()) !== -1;
+	        }
+	    }, {
 	        key: "renderPrevButton",
 	        value: function renderPrevButton() {
 	            var _props = this.props;
@@ -1741,7 +1793,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            old: d.month() < date.month(),
 	                            weekend: [0, 6].indexOf(d.day()) !== -1,
 	                            new: d.month() > date.month(),
-	                            disabled: !inRange
+	                            disabled: !inRange || _this2.disabledWeekday(d) || _this2.disabled(d) || !_this2.enabled(d)
 	                        });
 
 	                        days.push(_react2.default.createElement(
@@ -1830,6 +1882,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	DatePickerDays.propTypes = {
 	    date: _reactMomentProptypes2.default.momentObj,
 	    dayViewHeaderFormat: _react2.default.PropTypes.string,
+	    daysOfWeekDisabled: _react2.default.PropTypes.array,
+	    disabledDates: _react2.default.PropTypes.any,
+	    enabledDates: _react2.default.PropTypes.any,
 	    icons: _react2.default.PropTypes.object,
 	    locale: _react2.default.PropTypes.string,
 	    maxDate: _reactMomentProptypes2.default.momentObj,
@@ -1880,9 +1935,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	exports.getMoment = getMoment;
 	exports.inRangeDates = inRangeDates;
-	exports.inRangeMonts = inRangeMonts;
-	exports.inRangeYears = inRangeYears;
-	exports.inRangeDecades = inRangeDecades;
 
 	var _moment = __webpack_require__(23);
 
@@ -1891,10 +1943,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function getMoment(value, format, locale) {
+	    var useStrict = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
+
 	    if (typeof value === "number") {
 	        return (0, _moment2.default)(new Date(value));
 	    } else if (typeof value === "string") {
-	        return (0, _moment2.default)(value, format, locale || _moment2.default.locale(), true);
+	        return (0, _moment2.default)(value, format, locale || _moment2.default.locale(), useStrict);
 	    }
 
 	    return (0, _moment2.default)(value);
@@ -1916,12 +1970,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return inRange;
 	}
-
-	function inRangeMonts() {}
-
-	function inRangeYears() {}
-
-	function inRangeDecades() {}
 
 /***/ },
 /* 40 */

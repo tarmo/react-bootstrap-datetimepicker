@@ -10,6 +10,9 @@ class DatePickerDays extends Component {
     static propTypes = {
         date                : MomentPropTypes.momentObj,
         dayViewHeaderFormat : React.PropTypes.string,
+        daysOfWeekDisabled  : React.PropTypes.array,
+        disabledDates       : React.PropTypes.any,
+        enabledDates        : React.PropTypes.any,
         icons               : React.PropTypes.object,
         locale              : React.PropTypes.string,
         maxDate             : MomentPropTypes.momentObj,
@@ -70,6 +73,50 @@ class DatePickerDays extends Component {
         })
 
         return calendarDays
+    }
+
+    enabled (date) {
+        const { enabledDates } = this.props
+        const d = moment(date).startOf("day")
+
+        if (!enabledDates) {
+            return true
+        }
+
+        for (let i = 0, l = enabledDates.length; i < l; i++) {
+            if (d.diff(moment(enabledDates[i]).startOf("day")) === 0) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    disabled (date) {
+        const { disabledDates } = this.props
+        const d = moment(date).startOf("day")
+
+        if (!disabledDates) {
+            return false
+        }
+
+        for (let i = 0, l = disabledDates.length; i < l; i++) {
+            if (d.diff(moment(disabledDates[i]).startOf("day")) === 0) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    disabledWeekday (date) {
+        const { daysOfWeekDisabled } = this.props
+
+        if (!daysOfWeekDisabled || daysOfWeekDisabled.length === 0) {
+            return false
+        }
+
+        return daysOfWeekDisabled.indexOf(date.day()) !== -1
     }
 
     renderPrevButton () {
@@ -136,7 +183,7 @@ class DatePickerDays extends Component {
                                 old      : d.month() < date.month(),
                                 weekend  : [0, 6].indexOf(d.day()) !== -1,
                                 new      : d.month() > date.month(),
-                                disabled : !inRange
+                                disabled : !inRange || this.disabledWeekday(d) || this.disabled(d) || !this.enabled(d)
                             }
                         )
 

@@ -76,12 +76,31 @@ class DateTimePicker extends Component {
         collapse            : React.PropTypes.bool,
         dateTime            : deprecated(React.PropTypes.string, "Use \"value\" instead"),
         dayViewHeaderFormat : React.PropTypes.string,
+        daysOfWeekDisabled  : React.PropTypes.arrayOf(React.PropTypes.number),
         defaultDate         : React.PropTypes.oneOfType([
             React.PropTypes.number,
             React.PropTypes.string,
             React.PropTypes.instanceOf(Date),
             MomentPropTypes.momentObj
         ]),
+        disabledDates : React.PropTypes.oneOfType(
+            React.PropTypes.bool,
+            React.PropTypes.arrayOf(React.PropTypes.oneOfType([
+                React.PropTypes.number,
+                React.PropTypes.string,
+                React.PropTypes.instanceOf(Date),
+                MomentPropTypes.momentObj
+            ]))
+        ),
+        enabledDates : React.PropTypes.oneOfType(
+            React.PropTypes.bool,
+            React.PropTypes.arrayOf(React.PropTypes.oneOfType([
+                React.PropTypes.number,
+                React.PropTypes.string,
+                React.PropTypes.instanceOf(Date),
+                MomentPropTypes.momentObj
+            ]))
+        ),
         format      : React.PropTypes.string,
         icon        : React.PropTypes.bool,
         icons       : React.PropTypes.objectOf(React.PropTypes.string),
@@ -113,6 +132,7 @@ class DateTimePicker extends Component {
         toolbarPlacement : React.PropTypes.oneOf([PLACEMENT_DEFAULT, PLACEMENT_TOP, PLACEMENT_BOTTOM]),
         tooltips         : React.PropTypes.object,
         useCurrent       : React.PropTypes.bool,
+        useStrict        : React.PropTypes.bool,
         value            : React.PropTypes.oneOfType([
             React.PropTypes.number,
             React.PropTypes.string,
@@ -132,9 +152,6 @@ class DateTimePicker extends Component {
         // http://eonasdan.github.io/bootstrap-datetimepicker/Options/
         /*
         extraFormats          : React.PropTypes.any,
-        disabledDates         : React.PropTypes.any,
-        enabledDates          : React.PropTypes.any,
-        useStrict             : React.PropTypes.any,
         calendarWeeks         : React.PropTypes.any,
         keepOpen              : React.PropTypes.any,
         keepInvalid           : React.PropTypes.any,
@@ -150,6 +167,8 @@ class DateTimePicker extends Component {
     static defaultProps = {
         collapse            : true,
         dayViewHeaderFormat : DEFAULT_DAY_VIEW_HEADER,
+        disabledDates       : false,
+        enabledDates        : false,
         format              : DEFAULT_FORMAT,
         icon                : true,
         icons               : {},
@@ -176,7 +195,7 @@ class DateTimePicker extends Component {
             viewMode
         } = this.props
 
-        this.icons = Object.assign({}, icons, defaultIcons)
+        this.icons = Object.assign({}, defaultIcons, icons)
         this.tooltips = Object.assign({}, tooltips, defaultTooltips)
 
         this.state = Object.assign({}, this.state, {

@@ -19,6 +19,18 @@ class Example extends Component {
     }
 }
 
+const icons = {
+    time     : "fa fa-clock-o",
+    date     : "fa fa-calendar",
+    up       : "fa fa-chevron-up",
+    down     : "fa fa-chevron-down",
+    previous : "fa fa-chevron-left",
+    next     : "fa fa-chevron-right",
+    today    : "fa fa-crosshairs",
+    clear    : "fa fa-trash-o",
+    close    : "fa fa-times"
+}
+
 class Docs extends Component {
     render () {
         return (
@@ -28,6 +40,12 @@ class Docs extends Component {
                     <div className="row" style={ style }>
                         <div className="col-md-4">
                             <DateTimePicker useCurrent={false} showClose showClear showTodayButton toolbarPlacement="bottom" />
+                        </div>
+                    </div>
+
+                    <div className="row" style={ style }>
+                        <div className="col-md-4">
+                            <DateTimePicker useCurrent={false} showClose showClear showTodayButton toolbarPlacement="bottom" icons={ icons } />
                         </div>
                     </div>
 

@@ -1,10 +1,10 @@
 import moment from "moment"
 
-export function getMoment (value, format, locale) {
+export function getMoment (value, format, locale, useStrict = false) {
     if (typeof value === "number") {
         return moment(new Date(value))
     } else if (typeof value === "string") {
-        return moment(value, format, locale || moment.locale(), true)
+        return moment(value, format, locale || moment.locale(), useStrict)
     }
 
     return moment(value)
@@ -22,16 +22,4 @@ export function inRangeDates (date, unit, min = null, max = null) {
     }
 
     return inRange
-}
-
-export function inRangeMonts () {
-
-}
-
-export function inRangeYears () {
-
-}
-
-export function inRangeDecades () {
-
 }
