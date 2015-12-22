@@ -214,6 +214,20 @@ class DateTimePicker extends Component {
         view : VIEW_DATE
     }
 
+    componentWillReceiveProps (props) {
+        let state = {}
+        if (props.value) {
+            const dateTime = moment(props.value)
+            if (dateTime.isValid()) {
+                state = Object.assign({}, state, {
+                    selected : true,
+                    dateTime
+                })
+            }
+        }
+        this.setState(Object.assign({}, this.state, state))
+    }
+
     icons = {}
     tooltips = {}
 
@@ -262,6 +276,13 @@ class DateTimePicker extends Component {
                             show={ view === VIEW_TIME } />
             )
         }
+    }
+
+    onChangeInput = (dateTime) => {
+        this.setState({
+            selected : true,
+            dateTime
+        })
     }
 
     onChangeDateTime = (date, clear = false) => {
@@ -345,6 +366,7 @@ class DateTimePicker extends Component {
                                            bsSize={ bsSize || size }
                                            value={ inputValue }
                                            container={ widgetParent }
+                                           onChange={ this.onChangeInput }
                                            onClickToday={ this.onClickToday }
                                            onClickClear={ this.onClickClear }
                                            datePicker={ this.renderDatePicker() }

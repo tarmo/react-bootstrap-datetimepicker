@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import classNames from "classnames"
+import moment from "moment"
 import Config from "../config.js"
 
 class DateTimePickerInput extends Component {
@@ -10,12 +11,20 @@ class DateTimePickerInput extends Component {
         icons      : React.PropTypes.object,
         inputProps : React.PropTypes.object,
         mode       : React.PropTypes.string,
+        onChange   : React.PropTypes.func,
         onClick    : React.PropTypes.func,
         value      : React.PropTypes.string
     }
 
     onChangeInput = (e) => {
         e.preventDefault()
+
+        const { onChange } = this.props
+        const value = e.target.value
+        const dateTime = moment(value)
+        if (dateTime.isValid()) {
+            onChange(dateTime)
+        }
     }
 
     render () {
