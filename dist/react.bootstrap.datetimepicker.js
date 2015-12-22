@@ -214,6 +214,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    */
 
 	    _createClass(DateTimePicker, [{
+	        key: "componentWillReceiveProps",
+	        value: function componentWillReceiveProps(props) {
+	            var state = {};
+	            if (props.value) {
+	                var dateTime = (0, _moment2.default)(props.value);
+	                if (dateTime.isValid()) {
+	                    state = Object.assign({}, state, {
+	                        selected: true,
+	                        dateTime: dateTime
+	                    });
+	                }
+	            }
+	            this.setState(Object.assign({}, this.state, state));
+	        }
+	    }, {
 	        key: "renderDatePicker",
 	        value: function renderDatePicker() {
 	            var mode = this.props.mode;
@@ -302,6 +317,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    bsSize: bsSize || size,
 	                    value: inputValue,
 	                    container: widgetParent,
+	                    onChange: this.onChangeInput,
 	                    onClickToday: this.onClickToday,
 	                    onClickClear: this.onClickClear,
 	                    datePicker: this.renderDatePicker(),
@@ -383,6 +399,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    this.icons = {};
 	    this.tooltips = {};
+
+	    this.onChangeInput = function (dateTime) {
+	        _this2.setState({
+	            selected: true,
+	            dateTime: dateTime
+	        });
+	    };
 
 	    this.onChangeDateTime = function (date) {
 	        var clear = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -25810,6 +25833,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
+	var _moment = __webpack_require__(23);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
 	var _config = __webpack_require__(43);
 
 	var _config2 = _interopRequireDefault(_config);
@@ -25840,6 +25867,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DateTimePickerInput)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.onChangeInput = function (e) {
 	            e.preventDefault();
+
+	            var onChange = _this.props.onChange;
+
+	            var value = e.target.value;
+	            var dateTime = (0, _moment2.default)(value);
+	            if (dateTime.isValid()) {
+	                onChange(dateTime);
+	            }
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
@@ -25886,6 +25921,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    icons: _react2.default.PropTypes.object,
 	    inputProps: _react2.default.PropTypes.object,
 	    mode: _react2.default.PropTypes.string,
+	    onChange: _react2.default.PropTypes.func,
 	    onClick: _react2.default.PropTypes.func,
 	    value: _react2.default.PropTypes.string
 	};
