@@ -14,7 +14,7 @@ class DateTimePickerInput extends Component {
         onChange   : React.PropTypes.func,
         onClick    : React.PropTypes.func,
         value      : React.PropTypes.string
-    }
+    };
 
     onChangeInput = (e) => {
         e.preventDefault()
@@ -25,7 +25,7 @@ class DateTimePickerInput extends Component {
         if (dateTime.isValid()) {
             onChange(dateTime)
         }
-    }
+    };
 
     render () {
         const {

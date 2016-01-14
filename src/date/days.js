@@ -22,7 +22,7 @@ class DatePickerDays extends Component {
         selected            : React.PropTypes.bool,
         showToday           : React.PropTypes.bool,
         tooltips            : React.PropTypes.object
-    }
+    };
 
     constructor (...args) {
         super(...args)
@@ -33,7 +33,7 @@ class DatePickerDays extends Component {
 
     state = {
         date : null
-    }
+    };
 
     componentWillReceiveProps (props) {
         this.setState({ date : moment(props.date) })
@@ -211,12 +211,12 @@ class DatePickerDays extends Component {
     onClickPreviousMonth = () => {
         const { date } = this.state
         this.setState({ date : moment(date).subtract(1, "month") })
-    }
+    };
 
     onClickNextMonth = () => {
         const { date } = this.state
         this.setState({ date : moment(date).add(1, "month") })
-    }
+    };
 
     render () {
         const {

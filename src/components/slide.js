@@ -12,7 +12,7 @@ class DateTimePickerViewSlide extends Component {
         children : React.PropTypes.element.isRequired,
         collapse : React.PropTypes.bool,
         in       : React.PropTypes.bool
-    }
+    };
 
     easeDelta (progress) {
         return (progress < TRANSITION_HALF) ? (2 * progress / 2) : ((2 - 2 * (1 - progress)) / 2)
@@ -35,7 +35,7 @@ class DateTimePickerViewSlide extends Component {
                 slide.style.removeProperty("overflow")
             }
         }, TRANSITION_FRAME_DELAY)
-    }
+    };
 
     slideToggle (slide, from, to) {
         slide.style.height = `${from}px`
@@ -60,13 +60,13 @@ class DateTimePickerViewSlide extends Component {
         const height = clone.getBoundingClientRect().height
         parent.removeChild(clone)
         this.slideToggle(slide, 0, height)
-    }
+    };
 
     onExiting = () => {
         const slide = findDOMNode(this.refs.slide)
         const height = slide.getBoundingClientRect().height
         this.slideToggle(slide, height, 0)
-    }
+    };
 
     renderWithCollapse () {
         const { children } = this.props

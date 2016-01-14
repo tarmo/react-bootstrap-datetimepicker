@@ -19,15 +19,15 @@ class DateTimePickerLayoutInput extends Component {
         sideBySide : React.PropTypes.bool,
         timePicker : React.PropTypes.node,
         value      : React.PropTypes.string
-    }
+    };
 
     static defaultProps = {
         container : global.document.querySelector("body")
-    }
+    };
 
     state = {
         show : false
-    }
+    };
 
     onClickInput = (e) => {
         e.preventDefault()
@@ -35,15 +35,15 @@ class DateTimePickerLayoutInput extends Component {
         this.setState({
             show : !this.state.show
         })
-    }
+    };
 
     onHidePopup = () => {
         this.setState({ show : false })
-    }
+    };
 
     onClickClose = () => {
         this.setState({ show : false })
-    }
+    };
 
     render () {
         const {

@@ -5,7 +5,7 @@ class DateTimePickerLayoutHorizontal extends Component {
     static propTypes = {
         datePicker : React.PropTypes.node,
         timePicker : React.PropTypes.node
-    }
+    };
 
     render () {
         const {

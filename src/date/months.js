@@ -17,7 +17,7 @@ class DatePickerMonths extends Component {
         onSelect     : React.PropTypes.func,
         selected     : React.PropTypes.bool,
         tooltips     : React.PropTypes.object
-    }
+    };
 
     constructor (...args) {
         super(...args)
@@ -28,7 +28,7 @@ class DatePickerMonths extends Component {
 
     state = {
         date : null
-    }
+    };
 
     componentWillReceiveProps (props) {
         this.setState({ date : moment(props.date) })
@@ -38,7 +38,7 @@ class DatePickerMonths extends Component {
         0, 1, 2, 3,
         4, 5, 6, 7,
         8, 9, 10, 11
-    ]
+    ];
 
     renderPrevButton () {
         const {
@@ -95,13 +95,13 @@ class DatePickerMonths extends Component {
         const { date } = this.state
 
         this.setState({ date : moment(date).subtract(1, "year") })
-    }
+    };
 
     onClickNextYear = () => {
         const { date } = this.state
 
         this.setState({ date : moment(date).add(1, "year") })
-    }
+    };
 
     render () {
         const {

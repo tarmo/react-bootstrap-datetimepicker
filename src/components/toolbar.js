@@ -21,7 +21,7 @@ class DateTimeToolbar extends Component {
         showTodayButton : React.PropTypes.bool,
         tooltips        : React.PropTypes.object,
         view            : React.PropTypes.oneOf([VIEW_DATE, VIEW_TIME])
-    }
+    };
 
     renderToday () {
         const {

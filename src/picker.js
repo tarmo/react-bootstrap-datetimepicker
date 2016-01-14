@@ -163,10 +163,9 @@ class DateTimePicker extends Component {
         disabledTimeIntervals : React.PropTypes.any,
         focusOnShow           : React.PropTypes.any,
         enabledHours          : React.PropTypes.any,
-        disabledHours         : React.PropTypes.any,
-        daysOfWeekDisabled    : React.PropTypes.arrayOf(React.PropTypes.number)
+        disabledHours         : React.PropTypes.any
         */
-    }
+    };
 
     static defaultProps = {
         collapse            : true,
@@ -186,7 +185,7 @@ class DateTimePicker extends Component {
         tooltips            : {},
         useCurrent          : true,
         viewMode            : VIEW_MODE_DAYS
-    }
+    };
 
     constructor (...args) {
         super(...args)
@@ -212,7 +211,7 @@ class DateTimePicker extends Component {
     state = {
         show : false,
         view : VIEW_DATE
-    }
+    };
 
     componentWillReceiveProps (props) {
         let state = {}
@@ -228,8 +227,8 @@ class DateTimePicker extends Component {
         this.setState(Object.assign({}, this.state, state))
     }
 
-    icons = {}
-    tooltips = {}
+    icons = {};
+    tooltips = {};
 
     renderDatePicker () {
         const { mode } = this.props
@@ -283,7 +282,7 @@ class DateTimePicker extends Component {
             selected : true,
             dateTime
         })
-    }
+    };
 
     onChangeDateTime = (date, clear = false) => {
         this.setState({
@@ -299,7 +298,7 @@ class DateTimePicker extends Component {
 
             onChange(moment(dateTime).locale(locale).format(format))
         })
-    }
+    };
 
     onClickToday = () => {
         const { dateTime } = this.state
@@ -307,15 +306,15 @@ class DateTimePicker extends Component {
 
         this.onChangeDateTime(moment(dateTime).year(date.year()).month(date.month()).date(date.date()))
 
-    }
+    };
 
     onClickClear = () => {
         this.onChangeDateTime(moment().startOf("day"), true)
-    }
+    };
 
     updateViewMode = (viewMode) => {
         this.setState({ viewMode })
-    }
+    };
 
     render () {
         const {
