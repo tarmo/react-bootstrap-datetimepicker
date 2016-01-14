@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import classNames from "classnames"
 import moment from "moment"
-import Config from "../config.js"
+import { MODE_TIME } from "../config.js"
 
 class DateTimePickerInput extends Component {
 
@@ -45,7 +45,7 @@ class DateTimePickerInput extends Component {
             }
         )
 
-        const iconClasses = mode === Config.MODE_TIME ? icons.time : icons.date
+        const iconClasses = mode === MODE_TIME ? icons.time : icons.date
 
         return (
             <div className={ classes }>

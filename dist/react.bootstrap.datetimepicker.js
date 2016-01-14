@@ -39981,8 +39981,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _config = __webpack_require__(296);
 
-	var _config2 = _interopRequireDefault(_config);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -40033,7 +40031,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            var classes = (0, _classnames2.default)("input-group", "date", _defineProperty({}, "input-group-" + bsSize, bsSize));
 
-	            var iconClasses = mode === _config2.default.MODE_TIME ? icons.time : icons.date;
+	            var iconClasses = mode === _config.MODE_TIME ? icons.time : icons.date;
 
 	            return _react2.default.createElement(
 	                "div",
