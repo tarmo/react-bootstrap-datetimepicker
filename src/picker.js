@@ -161,7 +161,6 @@ class DateTimePicker extends Component {
         /*
         extraFormats          : React.PropTypes.any,
         calendarWeeks         : React.PropTypes.any,
-        keepOpen              : React.PropTypes.any,
         keepInvalid           : React.PropTypes.any,
         disabledTimeIntervals : React.PropTypes.any,
         enabledHours          : React.PropTypes.any,
