@@ -183,6 +183,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var _this$props = _this.props;
 	        var defaultDate = _this$props.defaultDate;
 	        var icons = _this$props.icons;
+	        var mode = _this$props.mode;
 	        var tooltips = _this$props.tooltips;
 	        var useCurrent = _this$props.useCurrent;
 	        var viewMode = _this$props.viewMode;
@@ -190,8 +191,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _this.icons = Object.assign({}, defaultIcons, icons);
 	        _this.tooltips = Object.assign({}, tooltips, defaultTooltips);
 
+	        var dateTime = (0, _moment2.default)();
+
+	        if (defaultDate) {
+	            if (mode === _config.MODE_DATE) {
+	                dateTime = (0, _moment2.default)(defaultDate).startOf("day");
+	            } else {
+	                dateTime = (0, _moment2.default)(defaultDate);
+	            }
+	        } else if (mode === _config.MODE_DATE) {
+	            dateTime = (0, _moment2.default)().startOf("day");
+	        }
+
 	        _this.state = Object.assign({}, _this.state, {
-	            dateTime: defaultDate ? (0, _moment2.default)(defaultDate) : (0, _moment2.default)(),
+	            dateTime: dateTime,
 	            selected: defaultDate || useCurrent,
 	            viewMode: _this.state.viewMode || viewMode
 	        });
@@ -203,11 +216,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /*
 	    extraFormats          : React.PropTypes.any,
 	    calendarWeeks         : React.PropTypes.any,
-	    keepOpen              : React.PropTypes.any,
 	    keepInvalid           : React.PropTypes.any,
-	    debug                 : React.PropTypes.any,
 	    disabledTimeIntervals : React.PropTypes.any,
-	    focusOnShow           : React.PropTypes.any,
 	    enabledHours          : React.PropTypes.any,
 	    disabledHours         : React.PropTypes.any
 	    */
@@ -276,9 +286,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var inline = _props.inline;
 	            var inputFormat = _props.inputFormat;
 	            var mode = _props.mode;
+	            var placeholder = _props.placeholder;
 	            var size = _props.size;
 	            var widgetParent = _props.widgetParent;
-	            var selected = this.state.selected;
+	            var _state3 = this.state;
+	            var dateTime = _state3.dateTime;
+	            var selected = _state3.selected;
 
 	            var displayFormat = inputFormat;
 
@@ -297,7 +310,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 
-	            var inputValue = selected ? (0, _moment2.default)(this.state.dateTime).format(displayFormat) : null;
+	            var inputValue = selected ? (0, _moment2.default)(this.state.dateTime).format(displayFormat) : placeholder;
 
 	            var picker = undefined;
 
@@ -315,6 +328,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    icons: this.icons,
 	                    bsSize: bsSize || size,
 	                    value: inputValue,
+	                    selected: selected,
+	                    dateTime: dateTime,
 	                    container: widgetParent,
 	                    onChange: this.onChangeInput,
 	                    onClickToday: this.onClickToday,
@@ -340,20 +355,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    dateTime: (0, _reactPropTypes.deprecated)(_react2.default.PropTypes.string, "Use \"value\" instead"),
 	    dayViewHeaderFormat: _react2.default.PropTypes.string,
 	    daysOfWeekDisabled: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.number),
+	    debug: _react2.default.PropTypes.bool,
 	    defaultDate: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]),
 	    disabledDates: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.bool, _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]))]),
 	    enabledDates: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.bool, _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]))]),
+	    focusOnShow: _react2.default.PropTypes.bool,
 	    format: _react2.default.PropTypes.string,
 	    icon: _react2.default.PropTypes.bool,
 	    icons: _react2.default.PropTypes.objectOf(_react2.default.PropTypes.string),
 	    inline: _react2.default.PropTypes.bool,
 	    inputFormat: _react2.default.PropTypes.string,
 	    inputProps: _react2.default.PropTypes.object,
+	    keepOpen: _react2.default.PropTypes.bool,
 	    locale: _react2.default.PropTypes.string,
 	    maxDate: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]),
 	    minDate: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]),
 	    mode: _react2.default.PropTypes.oneOf([_config.MODE_DATE, _config.MODE_TIME, _config.MODE_DATETIME]),
 	    onChange: _react2.default.PropTypes.func,
+	    placeholder: _react2.default.PropTypes.string,
 	    showClear: _react2.default.PropTypes.bool,
 	    showClose: _react2.default.PropTypes.bool,
 	    showToday: _react2.default.PropTypes.bool,
@@ -374,6 +393,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    dayViewHeaderFormat: _config.DEFAULT_DAY_VIEW_HEADER,
 	    disabledDates: false,
 	    enabledDates: false,
+	    focusOnShow: true,
 	    format: _config.DEFAULT_FORMAT,
 	    icon: true,
 	    icons: {},
@@ -393,7 +413,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _this2 = this;
 
 	    this.state = {
-	        show: false,
 	        view: _config.VIEW_DATE
 	    };
 	    this.icons = {};
@@ -36249,6 +36268,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _reactPropTypes = __webpack_require__(278);
 
+	var _reactMomentProptypes = __webpack_require__(178);
+
+	var _reactMomentProptypes2 = _interopRequireDefault(_reactMomentProptypes);
+
 	var _fade = __webpack_require__(356);
 
 	var _fade2 = _interopRequireDefault(_fade);
@@ -36268,6 +36291,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _vertical = __webpack_require__(360);
 
 	var _vertical2 = _interopRequireDefault(_vertical);
+
+	var _config = __webpack_require__(296);
+
+	var _moment = __webpack_require__(179);
+
+	var _moment2 = _interopRequireDefault(_moment);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36307,12 +36336,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    _createClass(DateTimePickerLayoutInput, [{
+	        key: "componentWillReceiveProps",
+	        value: function componentWillReceiveProps(props) {
+	            var show = this.state.show;
+	            var mode = props.mode;
+	            var keepOpen = props.keepOpen;
+	            var dateTime = props.dateTime;
+	            var selected = props.selected;
+
+	            var dayChanged = (0, _moment2.default)(this.props.dateTime).date() !== (0, _moment2.default)(dateTime).date();
+
+	            if (show && selected && dayChanged && !keepOpen && mode === _config.MODE_DATE) {
+	                this.setState({ show: false });
+	            }
+	        }
+	    }, {
 	        key: "render",
 	        value: function render() {
 	            var _this2 = this;
 
 	            var _props = this.props;
 	            var container = _props.container;
+	            var debug = _props.debug;
 	            var sideBySide = _props.sideBySide;
 	            var show = this.state.show;
 
@@ -36333,13 +36378,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	                "div",
 	                { style: { position: "relative" } },
 	                _react2.default.createElement(_input2.default, _extends({}, this.props, {
+	                    show: show,
 	                    ref: "input",
 	                    onClick: this.onClickInput })),
 	                _react2.default.createElement(
 	                    _reactOverlays.Overlay,
 	                    { placement: "bottom",
 	                        show: show,
-	                        rootClose: true,
+	                        rootClose: !debug,
 	                        transition: _fade2.default,
 	                        onHide: this.onHidePopup,
 	                        container: container,
@@ -36363,6 +36409,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    bsSize: _react2.default.PropTypes.string,
 	    container: _reactPropTypes.mountable,
 	    datePicker: _react2.default.PropTypes.node,
+	    dateTime: _reactMomentProptypes2.default.momentObj,
+	    debug: _react2.default.PropTypes.bool,
 	    icon: _react2.default.PropTypes.bool,
 	    icons: _react2.default.PropTypes.object,
 	    sideBySide: _react2.default.PropTypes.bool,
@@ -39971,6 +40019,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactDom = __webpack_require__(303);
+
 	var _classnames = __webpack_require__(289);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
@@ -40019,15 +40069,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    _createClass(DateTimePickerInput, [{
+	        key: "componentDidUpdate",
+	        value: function componentDidUpdate() {
+	            var _props = this.props;
+	            var focusOnShow = _props.focusOnShow;
+	            var show = _props.show;
+
+	            var input = (0, _reactDom.findDOMNode)(this.refs.input);
+
+	            if (show && focusOnShow && input) {
+	                input.focus();
+	            }
+	        }
+	    }, {
 	        key: "render",
 	        value: function render() {
-	            var _props = this.props;
-	            var bsSize = _props.bsSize;
-	            var icons = _props.icons;
-	            var inputProps = _props.inputProps;
-	            var mode = _props.mode;
-	            var onClick = _props.onClick;
-	            var value = _props.value;
+	            var _props2 = this.props;
+	            var bsSize = _props2.bsSize;
+	            var icons = _props2.icons;
+	            var inputProps = _props2.inputProps;
+	            var mode = _props2.mode;
+	            var onClick = _props2.onClick;
+	            var value = _props2.value;
 
 	            var classes = (0, _classnames2.default)("input-group", "date", _defineProperty({}, "input-group-" + bsSize, bsSize));
 
@@ -40057,12 +40120,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	DateTimePickerInput.propTypes = {
 	    bsSize: _react2.default.PropTypes.string,
+	    focusOnShow: _react2.default.PropTypes.bool,
 	    icon: _react2.default.PropTypes.bool,
 	    icons: _react2.default.PropTypes.object,
 	    inputProps: _react2.default.PropTypes.object,
 	    mode: _react2.default.PropTypes.string,
 	    onChange: _react2.default.PropTypes.func,
 	    onClick: _react2.default.PropTypes.func,
+	    show: _react2.default.PropTypes.bool,
 	    value: _react2.default.PropTypes.string
 	};
 	exports.default = DateTimePickerInput;
