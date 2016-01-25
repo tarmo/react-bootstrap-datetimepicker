@@ -7,14 +7,16 @@ import { MODE_TIME } from "../config.js"
 class DateTimePickerInput extends Component {
 
     static propTypes = {
-        bsSize     : React.PropTypes.string,
-        icon       : React.PropTypes.bool,
-        icons      : React.PropTypes.object,
-        inputProps : React.PropTypes.object,
-        mode       : React.PropTypes.string,
-        onChange   : React.PropTypes.func,
-        onClick    : React.PropTypes.func,
-        value      : React.PropTypes.string
+        bsSize      : React.PropTypes.string,
+        focusOnShow : React.PropTypes.bool,
+        icon        : React.PropTypes.bool,
+        icons       : React.PropTypes.object,
+        inputProps  : React.PropTypes.object,
+        mode        : React.PropTypes.string,
+        onChange    : React.PropTypes.func,
+        onClick     : React.PropTypes.func,
+        show        : React.PropTypes.bool,
+        value       : React.PropTypes.string
     };
 
     componentDidUpdate () {

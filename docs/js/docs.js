@@ -58,7 +58,7 @@ class Docs extends Component {
 
                     <div className="row" style={ style }>
                         <div className="col-md-4">
-                            <DateTimePicker useCurrent={false} showClose showClear showTodayButton toolbarPlacement="bottom" icons={ icons } />
+                            <DateTimePicker useCurrent={false} debug showClose showClear showTodayButton toolbarPlacement="bottom" icons={ icons } mode="date" />
                         </div>
                     </div>
 

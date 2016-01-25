@@ -77,6 +77,7 @@ class DateTimePicker extends Component {
         dateTime            : deprecated(React.PropTypes.string, "Use \"value\" instead"),
         dayViewHeaderFormat : React.PropTypes.string,
         daysOfWeekDisabled  : React.PropTypes.arrayOf(React.PropTypes.number),
+        debug               : React.PropTypes.bool,
         defaultDate         : React.PropTypes.oneOfType([
             React.PropTypes.number,
             React.PropTypes.string,
@@ -112,6 +113,7 @@ class DateTimePicker extends Component {
         inline      : React.PropTypes.bool,
         inputFormat : React.PropTypes.string,
         inputProps  : React.PropTypes.object,
+        keepOpen    : React.PropTypes.bool,
         locale      : React.PropTypes.string,
         maxDate     : React.PropTypes.oneOfType([
             React.PropTypes.number,
@@ -161,7 +163,6 @@ class DateTimePicker extends Component {
         calendarWeeks         : React.PropTypes.any,
         keepOpen              : React.PropTypes.any,
         keepInvalid           : React.PropTypes.any,
-        debug                 : React.PropTypes.any,
         disabledTimeIntervals : React.PropTypes.any,
         enabledHours          : React.PropTypes.any,
         disabledHours         : React.PropTypes.any
@@ -195,6 +196,7 @@ class DateTimePicker extends Component {
         const {
             defaultDate,
             icons,
+            mode,
             tooltips,
             useCurrent,
             viewMode
@@ -203,8 +205,20 @@ class DateTimePicker extends Component {
         this.icons = Object.assign({}, defaultIcons, icons)
         this.tooltips = Object.assign({}, tooltips, defaultTooltips)
 
+        let dateTime = moment()
+
+        if (defaultDate) {
+            if (mode === MODE_DATE) {
+                dateTime = moment(defaultDate).startOf("day")
+            } else {
+                dateTime = moment(defaultDate)
+            }
+        } else if (mode === MODE_DATE) {
+            dateTime = moment().startOf("day")
+        }
+
         this.state = Object.assign({}, this.state, {
-            dateTime : defaultDate ? moment(defaultDate) : moment(),
+            dateTime,
             selected : defaultDate || useCurrent,
             viewMode : this.state.viewMode || viewMode
         })
@@ -327,7 +341,10 @@ class DateTimePicker extends Component {
             size,
             widgetParent
         } = this.props
-        const { selected } = this.state
+        const {
+            dateTime,
+            selected
+        } = this.state
         let displayFormat = inputFormat
 
         if (!inputFormat) {
@@ -366,6 +383,8 @@ class DateTimePicker extends Component {
                                            icons={ this.icons }
                                            bsSize={ bsSize || size }
                                            value={ inputValue }
+                                           selected={ selected }
+                                           dateTime={ dateTime }
                                            container={ widgetParent }
                                            onChange={ this.onChangeInput }
                                            onClickToday={ this.onClickToday }
