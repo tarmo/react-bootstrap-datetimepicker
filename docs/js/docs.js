@@ -35,13 +35,13 @@ class Docs extends Component {
 
     state = {
         date : null
-    }
+    };
 
     onClickChangeDate = () => {
         this.setState({
             date : moment().add(2, "days").toISOString()
         })
-    }
+    };
 
     render () {
         return (
