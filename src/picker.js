@@ -126,6 +126,7 @@ class DateTimePicker extends Component {
         ]),
         mode             : React.PropTypes.oneOf([MODE_DATE, MODE_TIME, MODE_DATETIME]),
         onChange         : React.PropTypes.func,
+        placeholder      : React.PropTypes.string,
         showClear        : React.PropTypes.bool,
         showClose        : React.PropTypes.bool,
         showToday        : React.PropTypes.bool,
@@ -322,6 +323,7 @@ class DateTimePicker extends Component {
             inline,
             inputFormat,
             mode,
+            placeholder,
             size,
             widgetParent
         } = this.props
@@ -343,7 +345,7 @@ class DateTimePicker extends Component {
             }
         }
 
-        const inputValue = selected ? moment(this.state.dateTime).format(displayFormat) : null
+        const inputValue = selected ? moment(this.state.dateTime).format(displayFormat) : placeholder
 
         let picker
 
