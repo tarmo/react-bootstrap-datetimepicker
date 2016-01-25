@@ -105,6 +105,7 @@ class DateTimePicker extends Component {
                 ])
             )
         ]),
+        focusOnShow : React.PropTypes.bool,
         format      : React.PropTypes.string,
         icon        : React.PropTypes.bool,
         icons       : React.PropTypes.objectOf(React.PropTypes.string),
@@ -162,7 +163,6 @@ class DateTimePicker extends Component {
         keepInvalid           : React.PropTypes.any,
         debug                 : React.PropTypes.any,
         disabledTimeIntervals : React.PropTypes.any,
-        focusOnShow           : React.PropTypes.any,
         enabledHours          : React.PropTypes.any,
         disabledHours         : React.PropTypes.any
         */
@@ -173,6 +173,7 @@ class DateTimePicker extends Component {
         dayViewHeaderFormat : DEFAULT_DAY_VIEW_HEADER,
         disabledDates       : false,
         enabledDates        : false,
+        focusOnShow         : true,
         format              : DEFAULT_FORMAT,
         icon                : true,
         icons               : {},
@@ -210,7 +211,6 @@ class DateTimePicker extends Component {
     }
 
     state = {
-        show : false,
         view : VIEW_DATE
     };
 

@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { findDOMNode } from "react-dom"
 import classNames from "classnames"
 import moment from "moment"
 import { MODE_TIME } from "../config.js"
@@ -15,6 +16,18 @@ class DateTimePickerInput extends Component {
         onClick    : React.PropTypes.func,
         value      : React.PropTypes.string
     };
+
+    componentDidUpdate () {
+        const {
+            focusOnShow,
+            show
+        } = this.props
+        const input = findDOMNode(this.refs.input)
+
+        if (show && focusOnShow && input) {
+            input.focus()
+        }
+    }
 
     onChangeInput = (e) => {
         e.preventDefault()
