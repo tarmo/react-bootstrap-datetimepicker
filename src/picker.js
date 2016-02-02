@@ -310,7 +310,7 @@ class DateTimePicker extends Component {
             } = this.props
             const { dateTime } = this.state
 
-            onChange(moment(dateTime).locale(locale).format(format))
+            onChange(clear ? null : moment(dateTime).locale(locale).format(format))
         })
     };
 
@@ -323,7 +323,7 @@ class DateTimePicker extends Component {
     };
 
     onClickClear = () => {
-        this.onChangeDateTime(moment().startOf("day"), true)
+        this.onChangeDateTime(moment(), true)
     };
 
     updateViewMode = (viewMode) => {

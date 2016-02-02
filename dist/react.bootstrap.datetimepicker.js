@@ -438,7 +438,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var onChange = _props2.onChange;
 	            var dateTime = _this2.state.dateTime;
 
-	            onChange((0, _moment2.default)(dateTime).locale(locale).format(format));
+	            onChange(clear ? null : (0, _moment2.default)(dateTime).locale(locale).format(format));
 	        });
 	    };
 
@@ -451,7 +451,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    this.onClickClear = function () {
-	        _this2.onChangeDateTime((0, _moment2.default)().startOf("day"), true);
+	        _this2.onChangeDateTime((0, _moment2.default)(), true);
 	    };
 
 	    this.updateViewMode = function (viewMode) {
