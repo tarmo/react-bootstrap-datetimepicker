@@ -237,6 +237,10 @@ class DateTimePicker extends Component {
                     dateTime
                 })
             }
+        } else {
+            state = Object.assign({}, state, {
+                selected : false
+            })
         }
         this.setState(Object.assign({}, this.state, state))
     }

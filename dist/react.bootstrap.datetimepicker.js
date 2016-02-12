@@ -234,6 +234,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        dateTime: dateTime
 	                    });
 	                }
+	            } else {
+	                state = Object.assign({}, state, {
+	                    selected: false
+	                });
 	            }
 	            this.setState(Object.assign({}, this.state, state));
 	        }
