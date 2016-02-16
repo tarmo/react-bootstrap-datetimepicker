@@ -110,7 +110,7 @@ class DatePickerYears extends Component {
     onClickDecade (date) {
         return () => {
             const { onSelect } = this.props
-            onSelect(date)
+            onSelect(date, false, true)
         }
     }
 

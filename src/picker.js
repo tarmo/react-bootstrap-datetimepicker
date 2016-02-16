@@ -302,7 +302,7 @@ class DateTimePicker extends Component {
         })
     };
 
-    onChangeDateTime = (date, clear = false) => {
+    onChangeDateTime = (date, clear = false, ignore = false) => {
         this.setState({
             dateTime : moment(date),
             selected : !clear
@@ -314,7 +314,9 @@ class DateTimePicker extends Component {
             } = this.props
             const { dateTime } = this.state
 
-            onChange(clear ? null : moment(dateTime).locale(locale).format(format))
+            if (!ignore) {
+                onChange(clear ? null : moment(dateTime).locale(locale).format(format))
+            }
         })
     };
 

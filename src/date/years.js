@@ -115,7 +115,7 @@ class DatePickerYears extends Component {
                 onSelect
             } = this.props
 
-            onSelect(moment(dateTime).year(date.year()))
+            onSelect(moment(dateTime).year(date.year()), false, true)
         }
     }
 
@@ -131,7 +131,7 @@ class DatePickerYears extends Component {
         const {
             decade,
             updateDecade
-            } = this.props
+        } = this.props
         updateDecade(decade + 10)
     };
 

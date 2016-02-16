@@ -431,6 +431,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    this.onChangeDateTime = function (date) {
 	        var clear = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	        var ignore = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 	        _this2.setState({
 	            dateTime: (0, _moment2.default)(date),
@@ -442,7 +443,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var onChange = _props2.onChange;
 	            var dateTime = _this2.state.dateTime;
 
-	            onChange(clear ? null : (0, _moment2.default)(dateTime).locale(locale).format(format));
+	            if (!ignore) {
+	                onChange(clear ? null : (0, _moment2.default)(dateTime).locale(locale).format(format));
+	            }
 	        });
 	    };
 
@@ -34814,7 +34817,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var dateTime = _props3.dateTime;
 	                var onSelect = _props3.onSelect;
 
-	                onSelect((0, _moment2.default)(dateTime).year(date.year()).month(date.month()));
+	                onSelect((0, _moment2.default)(dateTime).year(date.year()).month(date.month()), false, true);
 	            };
 	        }
 	    }, {
@@ -35100,7 +35103,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var dateTime = _props3.dateTime;
 	                var onSelect = _props3.onSelect;
 
-	                onSelect((0, _moment2.default)(dateTime).year(date.year()));
+	                onSelect((0, _moment2.default)(dateTime).year(date.year()), false, true);
 	            };
 	        }
 	    }, {
@@ -35372,7 +35375,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return function () {
 	                var onSelect = _this2.props.onSelect;
 
-	                onSelect(date);
+	                onSelect(date, false, true);
 	            };
 	        }
 	    }, {

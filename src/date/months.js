@@ -87,7 +87,7 @@ class DatePickerMonths extends Component {
                 onSelect
             } = this.props
 
-            onSelect(moment(dateTime).year(date.year()).month(date.month()))
+            onSelect(moment(dateTime).year(date.year()).month(date.month()), false, true)
         }
     }
 
