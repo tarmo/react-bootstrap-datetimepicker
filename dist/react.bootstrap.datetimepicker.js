@@ -234,7 +234,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        dateTime: dateTime
 	                    });
 	                }
-	            } else {
+	            } else if (this.props.value && props.value) {
 	                state = Object.assign({}, state, {
 	                    selected: false
 	                });
@@ -314,7 +314,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 
-	            var inputValue = selected ? (0, _moment2.default)(this.state.dateTime).format(displayFormat) : placeholder;
+	            var inputValue = selected ? (0, _moment2.default)(dateTime).format(displayFormat) : placeholder;
 
 	            var picker = undefined;
 

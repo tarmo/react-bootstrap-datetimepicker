@@ -237,7 +237,7 @@ class DateTimePicker extends Component {
                     dateTime
                 })
             }
-        } else {
+        } else if (this.props.value && props.value) {
             state = Object.assign({}, state, {
                 selected : false
             })
@@ -365,7 +365,7 @@ class DateTimePicker extends Component {
             }
         }
 
-        const inputValue = selected ? moment(this.state.dateTime).format(displayFormat) : placeholder
+        const inputValue = selected ? moment(dateTime).format(displayFormat) : placeholder
 
         let picker
 
