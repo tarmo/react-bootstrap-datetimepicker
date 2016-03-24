@@ -75,7 +75,7 @@ class Docs extends Component {
 
                     <div className="row" style={ style }>
                         <div className="col-md-8">
-                            <DateTimePicker minDate={ moment([1990, 4, 13]) } maxDate={ moment() }  inline sideBySide locale="pl" format="LLL" />
+                            <DateTimePicker minDate={ moment([1990, 4, 13]) } maxDate={ moment() }  inline sideBySide locale="ja" format="LLL" />
                         </div>
                     </div>
                 </div>
