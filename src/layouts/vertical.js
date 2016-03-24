@@ -16,11 +16,11 @@ class DateTimePickerLayoutVertical extends Component {
         icons            : React.PropTypes.object,
         timePicker       : React.PropTypes.node,
         toolbarPlacement : React.PropTypes.string
-    }
+    };
 
     state = {
         view : VIEW_DATE
-    }
+    };
 
     renderDateTimeToolbar () {
         const { view } = this.state
@@ -58,7 +58,7 @@ class DateTimePickerLayoutVertical extends Component {
         this.setState({
             view : view === VIEW_DATE ? VIEW_TIME : VIEW_DATE
         })
-    }
+    };
 
     render () {
         const { toolbarPlacement } = this.props

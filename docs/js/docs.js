@@ -32,6 +32,17 @@ const icons = {
 }
 
 class Docs extends Component {
+
+    state = {
+        date : null
+    };
+
+    onClickChangeDate = () => {
+        this.setState({
+            date : moment().add(2, "days").toISOString()
+        })
+    };
+
     render () {
         return (
             <div className="container-fluid">
@@ -39,13 +50,15 @@ class Docs extends Component {
                 <h1>Works</h1>
                     <div className="row" style={ style }>
                         <div className="col-md-4">
-                            <DateTimePicker useCurrent={false} showClose showClear showTodayButton toolbarPlacement="bottom" />
+                            <DateTimePicker useCurrent={false} showClose showClear showTodayButton toolbarPlacement="bottom" value={ this.state.date } />
                         </div>
+
+                        <a onClick={ this.onClickChangeDate }>CHANGE</a>
                     </div>
 
                     <div className="row" style={ style }>
                         <div className="col-md-4">
-                            <DateTimePicker useCurrent={false} showClose showClear showTodayButton toolbarPlacement="bottom" icons={ icons } />
+                            <DateTimePicker useCurrent={false} debug showClose showClear showTodayButton toolbarPlacement="bottom" icons={ icons } mode="date" />
                         </div>
                     </div>
 

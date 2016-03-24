@@ -15,11 +15,11 @@ class DateTimePickerContainer extends Component {
         sideBySide : React.PropTypes.bool,
         style      : React.PropTypes.object,
         target     : React.PropTypes.func
-    }
+    };
 
     state = {
         offset : 0
-    }
+    };
 
     componentDidMount () {
         this.setPositionOffset()

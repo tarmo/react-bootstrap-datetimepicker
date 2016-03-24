@@ -9,13 +9,13 @@ class TimePickerHours extends Component {
         onSelect     : React.PropTypes.func,
         onSelectHour : React.PropTypes.func,
         use24Hours   : React.PropTypes.bool
-    }
+    };
 
     hours12 = [
         ["12", "01", "02", "03"],
         ["04", "05", "06", "07"],
         ["08", "09", "10", "11"]
-    ]
+    ];
 
     hours24 = [
         ["00", "01", "02", "03"],
@@ -24,7 +24,7 @@ class TimePickerHours extends Component {
         ["12", "13", "14", "15"],
         ["16", "17", "18", "19"],
         ["20", "21", "22", "23"]
-    ]
+    ];
 
     onClickSetHour (value) {
         return () => {

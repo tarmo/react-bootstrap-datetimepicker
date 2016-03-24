@@ -21,7 +21,7 @@ class DatePicker extends Component {
         sideBySide     : React.PropTypes.bool,
         updateViewMode : React.PropTypes.func,
         viewMode       : React.PropTypes.string
-    }
+    };
 
     constructor (...args) {
         super(...args)
@@ -48,21 +48,21 @@ class DatePicker extends Component {
 
         const { updateViewMode } = this.props
         updateViewMode(VIEW_MODE_MONTHS)
-    }
+    };
 
     onClickYears = (e) => {
         e.preventDefault()
 
         const { updateViewMode } = this.props
         updateViewMode(VIEW_MODE_YEARS)
-    }
+    };
 
     onClickDecades = (e) => {
         e.preventDefault()
 
         const { updateViewMode } = this.props
         updateViewMode(VIEW_MODE_DECADES)
-    }
+    };
 
     onSelectDate = (date) => {
         const {
@@ -82,18 +82,18 @@ class DatePicker extends Component {
             default :
                 return this.setState({ decade }, () => updateViewMode(VIEW_MODE_DAYS))
         }
-    }
+    };
 
     onSelectDecade = (date) => {
         const { updateViewMode } = this.props
         const decade = this.getDecade(date.year())
 
         return this.setState({ decade }, () => updateViewMode(VIEW_MODE_YEARS))
-    }
+    };
 
     updateDecade = (year) => {
         this.setState({ decade : this.getDecade(year) })
-    }
+    };
 
     renderViewMode () {
         const { viewMode } = this.props

@@ -18,7 +18,7 @@ class TimePicker extends Component {
         locale     : React.PropTypes.string,
         onChange   : React.PropTypes.func,
         sideBySide : React.PropTypes.bool
-    }
+    };
 
     constructor (...args) {
         super(...args)
@@ -29,7 +29,7 @@ class TimePicker extends Component {
     state = {
         use24Hours : false,
         viewMode   : VIEW_MODE_TIME
-    }
+    };
 
     componentWillReceiveProps () {
         this.setState({ use24Hours : this.get24HoursFlag() })
@@ -50,14 +50,14 @@ class TimePicker extends Component {
         this.setState({
             viewMode : VIEW_MODE_HOURS
         })
-    }
+    };
 
     onClickMinutes = (e) => {
         e.preventDefault()
         this.setState({
             viewMode : VIEW_MODE_MINUTES
         })
-    }
+    };
 
     onSelectTime = (date) => {
         const {
@@ -70,7 +70,7 @@ class TimePicker extends Component {
         this.setState({
             viewMode : VIEW_MODE_TIME
         })
-    }
+    };
 
     renderViewMode () {
         const {

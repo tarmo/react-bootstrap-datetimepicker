@@ -1,3 +1,7 @@
+[![npm](https://img.shields.io/npm/v/react-bootstrap-datetimepicker.svg)](https://www.npmjs.com/package/react-bootstrap-datetimepicker)
+[![CircleCI](https://img.shields.io/circleci/project/LKay/react-bootstrap-datetimepicker.svg)](https://circleci.com/gh/LKay/react-bootstrap-datetimepicker)
+[![Codecov](https://img.shields.io/codecov/c/github/LKay/react-bootstrap-datetimepicker.svg)](https://codecov.io/github/LKay/react-bootstrap-datetimepicker)
+
 react-bootstrap-datetimepicker
 ===============================
 

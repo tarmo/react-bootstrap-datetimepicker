@@ -17,7 +17,7 @@ class DatePickerYears extends Component {
         selected     : React.PropTypes.bool,
         tooltips     : React.PropTypes.object,
         updateDecade : React.PropTypes.func
-    }
+    };
 
     startOfCentury (date) {
         return moment(date).year(Math.floor(date.year() / 100) * 100).startOf("year")
@@ -110,7 +110,7 @@ class DatePickerYears extends Component {
     onClickDecade (date) {
         return () => {
             const { onSelect } = this.props
-            onSelect(date)
+            onSelect(date, false, true)
         }
     }
 
@@ -120,7 +120,7 @@ class DatePickerYears extends Component {
             updateDecade
         } = this.props
         updateDecade(decade - 100)
-    }
+    };
 
     onClickNextCentury = () => {
         const {
@@ -128,7 +128,7 @@ class DatePickerYears extends Component {
             updateDecade
         } = this.props
         updateDecade(decade + 100)
-    }
+    };
 
     render () {
         const {

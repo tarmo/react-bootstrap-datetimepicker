@@ -15,7 +15,7 @@ class TimePickerTime extends Component {
         stepping       : React.PropTypes.number,
         tooltips       : React.PropTypes.object,
         use24Hours     : React.PropTypes.bool
-    }
+    };
 
     renderAmPmSwitch () {
         const {
@@ -50,7 +50,7 @@ class TimePickerTime extends Component {
         const date = moment(dateTime)
 
         onSelect(dateTime.hour() >= 12 ? date.subtract(12, "hours") : date.add(12, "hours"))
-    }
+    };
 
     onClickAddHour = (e) => {
         e.preventDefault()
@@ -74,7 +74,7 @@ class TimePickerTime extends Component {
         }
 
         onSelect(date.minutes(dateTime.minutes()))
-    }
+    };
 
     onClickSubtractHour = (e) => {
         e.preventDefault()
@@ -98,7 +98,7 @@ class TimePickerTime extends Component {
         }
 
         onSelect(date.minutes(dateTime.minutes()))
-    }
+    };
 
     onClickAddMinute = (e) => {
         e.preventDefault()
@@ -110,7 +110,7 @@ class TimePickerTime extends Component {
         } = this.props
 
         onSelect(moment(dateTime).add(stepping, "minute").hours(dateTime.hours()))
-    }
+    };
 
     onClickSubtractMinute = (e) => {
         e.preventDefault()
@@ -122,7 +122,7 @@ class TimePickerTime extends Component {
         } = this.props
 
         onSelect(moment(dateTime).subtract(stepping, "minute").hours(dateTime.hours()))
-    }
+    };
 
     render () {
         const {

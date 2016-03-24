@@ -77,6 +77,7 @@ class DateTimePicker extends Component {
         dateTime            : deprecated(React.PropTypes.string, "Use \"value\" instead"),
         dayViewHeaderFormat : React.PropTypes.string,
         daysOfWeekDisabled  : React.PropTypes.arrayOf(React.PropTypes.number),
+        debug               : React.PropTypes.bool,
         defaultDate         : React.PropTypes.oneOfType([
             React.PropTypes.number,
             React.PropTypes.string,
@@ -105,12 +106,14 @@ class DateTimePicker extends Component {
                 ])
             )
         ]),
+        focusOnShow : React.PropTypes.bool,
         format      : React.PropTypes.string,
         icon        : React.PropTypes.bool,
         icons       : React.PropTypes.objectOf(React.PropTypes.string),
         inline      : React.PropTypes.bool,
         inputFormat : React.PropTypes.string,
         inputProps  : React.PropTypes.object,
+        keepOpen    : React.PropTypes.bool,
         locale      : React.PropTypes.string,
         maxDate     : React.PropTypes.oneOfType([
             React.PropTypes.number,
@@ -126,6 +129,7 @@ class DateTimePicker extends Component {
         ]),
         mode             : React.PropTypes.oneOf([MODE_DATE, MODE_TIME, MODE_DATETIME]),
         onChange         : React.PropTypes.func,
+        placeholder      : React.PropTypes.string,
         showClear        : React.PropTypes.bool,
         showClose        : React.PropTypes.bool,
         showToday        : React.PropTypes.bool,
@@ -157,22 +161,19 @@ class DateTimePicker extends Component {
         /*
         extraFormats          : React.PropTypes.any,
         calendarWeeks         : React.PropTypes.any,
-        keepOpen              : React.PropTypes.any,
         keepInvalid           : React.PropTypes.any,
-        debug                 : React.PropTypes.any,
         disabledTimeIntervals : React.PropTypes.any,
-        focusOnShow           : React.PropTypes.any,
         enabledHours          : React.PropTypes.any,
-        disabledHours         : React.PropTypes.any,
-        daysOfWeekDisabled    : React.PropTypes.arrayOf(React.PropTypes.number)
+        disabledHours         : React.PropTypes.any
         */
-    }
+    };
 
     static defaultProps = {
         collapse            : true,
         dayViewHeaderFormat : DEFAULT_DAY_VIEW_HEADER,
         disabledDates       : false,
         enabledDates        : false,
+        focusOnShow         : true,
         format              : DEFAULT_FORMAT,
         icon                : true,
         icons               : {},
@@ -186,7 +187,7 @@ class DateTimePicker extends Component {
         tooltips            : {},
         useCurrent          : true,
         viewMode            : VIEW_MODE_DAYS
-    }
+    };
 
     constructor (...args) {
         super(...args)
@@ -194,6 +195,7 @@ class DateTimePicker extends Component {
         const {
             defaultDate,
             icons,
+            mode,
             tooltips,
             useCurrent,
             viewMode
@@ -202,20 +204,49 @@ class DateTimePicker extends Component {
         this.icons = Object.assign({}, defaultIcons, icons)
         this.tooltips = Object.assign({}, tooltips, defaultTooltips)
 
+        let dateTime = moment()
+
+        if (defaultDate) {
+            if (mode === MODE_DATE) {
+                dateTime = moment(defaultDate).startOf("day")
+            } else {
+                dateTime = moment(defaultDate)
+            }
+        } else if (mode === MODE_DATE) {
+            dateTime = moment().startOf("day")
+        }
+
         this.state = Object.assign({}, this.state, {
-            dateTime : defaultDate ? moment(defaultDate) : moment(),
+            dateTime,
             selected : defaultDate || useCurrent,
             viewMode : this.state.viewMode || viewMode
         })
     }
 
     state = {
-        show : false,
         view : VIEW_DATE
+    };
+
+    componentWillReceiveProps (props) {
+        let state = {}
+        if (props.value) {
+            const dateTime = moment(props.value)
+            if (dateTime.isValid()) {
+                state = Object.assign({}, state, {
+                    selected : true,
+                    dateTime
+                })
+            }
+        } else if (this.props.value && props.value) {
+            state = Object.assign({}, state, {
+                selected : false
+            })
+        }
+        this.setState(Object.assign({}, this.state, state))
     }
 
-    icons = {}
-    tooltips = {}
+    icons = {};
+    tooltips = {};
 
     renderDatePicker () {
         const { mode } = this.props
@@ -264,7 +295,14 @@ class DateTimePicker extends Component {
         }
     }
 
-    onChangeDateTime = (date, clear = false) => {
+    onChangeInput = (dateTime) => {
+        this.setState({
+            selected : true,
+            dateTime
+        })
+    };
+
+    onChangeDateTime = (date, clear = false, ignore = false) => {
         this.setState({
             dateTime : moment(date),
             selected : !clear
@@ -276,9 +314,11 @@ class DateTimePicker extends Component {
             } = this.props
             const { dateTime } = this.state
 
-            onChange(moment(dateTime).locale(locale).format(format))
+            if (!ignore) {
+                onChange(clear ? null : moment(dateTime).locale(locale).format(format))
+            }
         })
-    }
+    };
 
     onClickToday = () => {
         const { dateTime } = this.state
@@ -286,15 +326,15 @@ class DateTimePicker extends Component {
 
         this.onChangeDateTime(moment(dateTime).year(date.year()).month(date.month()).date(date.date()))
 
-    }
+    };
 
     onClickClear = () => {
-        this.onChangeDateTime(moment().startOf("day"), true)
-    }
+        this.onChangeDateTime(moment(), true)
+    };
 
     updateViewMode = (viewMode) => {
         this.setState({ viewMode })
-    }
+    };
 
     render () {
         const {
@@ -302,10 +342,14 @@ class DateTimePicker extends Component {
             inline,
             inputFormat,
             mode,
+            placeholder,
             size,
             widgetParent
         } = this.props
-        const { selected } = this.state
+        const {
+            dateTime,
+            selected
+        } = this.state
         let displayFormat = inputFormat
 
         if (!inputFormat) {
@@ -323,7 +367,7 @@ class DateTimePicker extends Component {
             }
         }
 
-        const inputValue = selected ? moment(this.state.dateTime).format(displayFormat) : null
+        const inputValue = selected ? moment(dateTime).format(displayFormat) : placeholder
 
         let picker
 
@@ -344,7 +388,10 @@ class DateTimePicker extends Component {
                                            icons={ this.icons }
                                            bsSize={ bsSize || size }
                                            value={ inputValue }
+                                           selected={ selected }
+                                           dateTime={ dateTime }
                                            container={ widgetParent }
+                                           onChange={ this.onChangeInput }
                                            onClickToday={ this.onClickToday }
                                            onClickClear={ this.onClickClear }
                                            datePicker={ this.renderDatePicker() }

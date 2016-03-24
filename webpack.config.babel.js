@@ -22,11 +22,13 @@ const config = {
     resolve : {
         extensions : ["", ".js"]
     },
+    /*
     externals: {
         "react"        : "React",
         "moment"       : "moment",
         "moment-range" : "moment-range"
     },
+    */
     module: {
         loaders: [
             { test : /\.js?$/, exclude: /node_modules/, loaders: ["babel-loader"] }

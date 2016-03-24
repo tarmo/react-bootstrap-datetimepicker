@@ -7,7 +7,7 @@ class Fade extends Component {
 
     static propTypes = {
         children : React.PropTypes.element
-    }
+    };
 
     render () {
         const { children } = this.props
