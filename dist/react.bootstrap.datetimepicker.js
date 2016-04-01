@@ -236,7 +236,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        dateTime: dateTime
 	                    });
 	                }
-	            } else if (this.props.value && props.value) {
+	            } else if (!props.value) {
 	                state = Object.assign({}, state, {
 	                    selected: false
 	                });
@@ -324,6 +324,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (inline) {
 	                picker = _react2.default.createElement(_inline2.default, _extends({}, this.props, {
+	                    displayFormat: displayFormat,
 	                    tooltips: this.tooltips,
 	                    icons: this.icons,
 	                    onClickToday: this.onClickToday,
@@ -332,6 +333,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    timePicker: this.renderTimePicker() }));
 	            } else {
 	                picker = _react2.default.createElement(_input2.default, _extends({}, this.props, {
+	                    displayFormat: displayFormat,
 	                    tooltips: this.tooltips,
 	                    icons: this.icons,
 	                    bsSize: bsSize || size,
@@ -427,10 +429,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.tooltips = {};
 
 	    this.onChangeInput = function (dateTime) {
-	        _this2.setState({
-	            selected: true,
-	            dateTime: dateTime
-	        });
+	        _this2.onChangeDateTime(dateTime);
 	    };
 
 	    this.onChangeDateTime = function (date) {
@@ -438,18 +437,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var ignore = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 	        _this2.setState({
-	            dateTime: (0, _moment2.default)(date),
-	            selected: !clear
+	            dateTime: date ? (0, _moment2.default)(date) : (0, _moment2.default)(),
+	            selected: date && !clear
 	        }, function () {
 	            var _props2 = _this2.props;
 	            var format = _props2.format;
 	            var locale = _props2.locale;
 	            var onChange = _props2.onChange;
-	            var dateTime = _this2.state.dateTime;
+	            var _state4 = _this2.state;
+	            var dateTime = _state4.dateTime;
+	            var selected = _state4.selected;
 
 
 	            if (!ignore) {
-	                onChange(clear ? null : (0, _moment2.default)(dateTime).locale(locale).format(format));
+	                onChange(clear || !selected ? null : (0, _moment2.default)(dateTime).locale(locale).format(format));
 	            }
 	        });
 	    };
@@ -8890,6 +8891,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
+	function registerNullComponentID() {
+	  ReactEmptyComponentRegistry.registerNullComponentID(this._rootNodeID);
+	}
+
 	var ReactEmptyComponent = function (instantiate) {
 	  this._currentElement = null;
 	  this._rootNodeID = null;
@@ -8898,7 +8903,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	assign(ReactEmptyComponent.prototype, {
 	  construct: function (element) {},
 	  mountComponent: function (rootID, transaction, context) {
-	    ReactEmptyComponentRegistry.registerNullComponentID(rootID);
+	    transaction.getReactMountReady().enqueue(registerNullComponentID, this);
 	    this._rootNodeID = rootID;
 	    return ReactReconciler.mountComponent(this._renderedComponent, rootID, transaction, context);
 	  },
@@ -19621,7 +19626,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	module.exports = '0.14.7';
+	module.exports = '0.14.8';
 
 /***/ },
 /* 185 */
@@ -37308,22 +37313,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Pixels to offset from top of screen when calculating position
 	   */
 	  offsetTop: _react2['default'].PropTypes.number,
+
 	  /**
 	   * When affixed, pixels to offset from top of viewport
 	   */
 	  viewportOffsetTop: _react2['default'].PropTypes.number,
+
 	  /**
 	   * Pixels to offset from bottom of screen when calculating position
 	   */
 	  offsetBottom: _react2['default'].PropTypes.number,
+
 	  /**
 	   * CSS class or classes to apply when at top
 	   */
 	  topClassName: _react2['default'].PropTypes.string,
+
 	  /**
 	   * Style to apply when at top
 	   */
 	  topStyle: _react2['default'].PropTypes.object,
+
 	  /**
 	   * CSS class or classes to apply when affixed
 	   */
@@ -37332,20 +37342,44 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Style to apply when affixed
 	   */
 	  affixStyle: _react2['default'].PropTypes.object,
+
 	  /**
 	   * CSS class or classes to apply when at bottom
 	   */
 	  bottomClassName: _react2['default'].PropTypes.string,
+
 	  /**
 	   * Style to apply when at bottom
 	   */
 	  bottomStyle: _react2['default'].PropTypes.object,
 
+	  /**
+	   * Callback fired when the right before the `affixStyle` and `affixStyle` props are rendered
+	   */
 	  onAffix: _react2['default'].PropTypes.func,
+	  /**
+	   * Callback fired after the component `affixStyle` and `affixClassName` props have been rendered.
+	   */
 	  onAffixed: _react2['default'].PropTypes.func,
+
+	  /**
+	   * Callback fired when the right before the `topStyle` and `topClassName` props are rendered
+	   */
 	  onAffixTop: _react2['default'].PropTypes.func,
+
+	  /**
+	   * Callback fired after the component `topStyle` and `topClassName` props have been rendered.
+	   */
 	  onAffixedTop: _react2['default'].PropTypes.func,
+
+	  /**
+	   * Callback fired when the right before the `bottomStyle` and `bottomClassName` props are rendered
+	   */
 	  onAffixBottom: _react2['default'].PropTypes.func,
+
+	  /**
+	   * Callback fired after the component `bottomStyle` and `bottomClassName` props have been rendered.
+	   */
 	  onAffixedBottom: _react2['default'].PropTypes.func
 	};
 
@@ -38342,11 +38376,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * - Adds the appropriate ARIA roles are automatically.
 	 * - Easily pluggable animations via a `<Transition/>` component.
 	 *
+	 * Note that, in the same way the backdrop element prevents users from clicking or interacting
+	 * with the page content underneath the Modal, Screen readers also need to be signaled to not to
+	 * interact with page content while the Modal is open. To do this, we use a common technique of applying
+	 * the `aria-hidden='true'` attribute to the non-Modal elements in the Modal `container`. This means that for
+	 * a Modal to be truly modal, it should have a `container` that is _outside_ your app's
+	 * React hierarchy (such as the default: document.body).
 	 */
 	var Modal = _react2['default'].createClass({
 	  displayName: 'Modal',
 
 	  propTypes: _extends({}, _Portal2['default'].propTypes, {
+
+	    /**
+	     * Set the visibility of the Modal
+	     */
+	    show: _react2['default'].PropTypes.bool,
 
 	    /**
 	     * A Node, Component instance, or function that returns either. The Modal is appended to it's container element.
@@ -38428,18 +38473,51 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * When `true` The modal will automatically shift focus to itself when it opens, and
-	     * replace it to the last focused element when it closes.
-	     * Generally this should never be set to false as it makes the Modal less
+	     * replace it to the last focused element when it closes. This also
+	     * works correctly with any Modal children that have the `autoFocus` prop.
+	     *
+	     * Generally this should never be set to `false` as it makes the Modal less
 	     * accessible to assistive technologies, like screen readers.
 	     */
 	    autoFocus: _react2['default'].PropTypes.bool,
 
 	    /**
 	     * When `true` The modal will prevent focus from leaving the Modal while open.
-	     * Generally this should never be set to false as it makes the Modal less
+	     *
+	     * Generally this should never be set to `false` as it makes the Modal less
 	     * accessible to assistive technologies, like screen readers.
 	     */
-	    enforceFocus: _react2['default'].PropTypes.bool
+	    enforceFocus: _react2['default'].PropTypes.bool,
+
+	    /**
+	     * Callback fired before the Modal transitions in
+	     */
+	    onEnter: _react2['default'].PropTypes.func,
+
+	    /**
+	     * Callback fired as the Modal begins to transition in
+	     */
+	    onEntering: _react2['default'].PropTypes.func,
+
+	    /**
+	     * Callback fired after the Modal finishes transitioning in
+	     */
+	    onEntered: _react2['default'].PropTypes.func,
+
+	    /**
+	     * Callback fired right before the Modal transitions out
+	     */
+	    onExit: _react2['default'].PropTypes.func,
+
+	    /**
+	     * Callback fired as the Modal begins to transition out
+	     */
+	    onExiting: _react2['default'].PropTypes.func,
+
+	    /**
+	     * Callback fired after the Modal finishes transitioning out
+	     */
+	    onExited: _react2['default'].PropTypes.func
 
 	  }),
 
@@ -38831,6 +38909,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._renderOverlay();
 	  },
 
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    if (this._overlayTarget && nextProps.container !== this.props.container) {
+	      this.getContainerDOMNode().removeChild(this._overlayTarget);
+	      this.getContainerDOMNode(nextProps).appendChild(this._overlayTarget);
+	    }
+	  },
+
 	  componentWillUnmount: function componentWillUnmount() {
 	    this._unrenderOverlay();
 	    this._unmountOverlayTarget();
@@ -38896,8 +38981,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return null;
 	  },
 
-	  getContainerDOMNode: function getContainerDOMNode() {
-	    return _utilsGetContainer2['default'](this.props.container, _utilsOwnerDocument2['default'](this).body);
+	  getContainerDOMNode: function getContainerDOMNode(props) {
+	    props = props || this.props;
+	    return _utilsGetContainer2['default'](props.container, _utilsOwnerDocument2['default'](this).body);
 	  }
 	});
 
@@ -39447,18 +39533,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(_react2['default'].Component);
 
 	Overlay.propTypes = _extends({}, _Portal2['default'].propTypes, _Position2['default'].propTypes, {
+
 	  /**
 	   * Set the visibility of the Overlay
 	   */
 	  show: _react2['default'].PropTypes.bool,
+
 	  /**
-	   * Specify whether the overlay should trigger onHide when the user clicks outside the overlay
+	   * Specify whether the overlay should trigger `onHide` when the user clicks outside the overlay
 	   */
 	  rootClose: _react2['default'].PropTypes.bool,
+
 	  /**
 	   * A Callback fired by the Overlay when it wishes to be hidden.
+	   *
+	   * __required__ when `rootClose` is `true`.
+	   *
+	   * @type func
 	   */
-	  onHide: _react2['default'].PropTypes.func,
+	  onHide: function onHide(props, name, cname) {
+	    var pt = _react2['default'].PropTypes.func;
+
+	    if (props.rootClose) pt = pt.isRequired;
+	    return pt(props, name, cname);
+	  },
 
 	  /**
 	   * A `<Transition/>` component used to animate the overlay changes visibility.
@@ -39544,7 +39642,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _reactPropTypesLibMountable2 = _interopRequireDefault(_reactPropTypesLibMountable);
 
 	/**
-	 * The Position component calulates the corrdinates for its child, to
+	 * The Position component calculates the coordinates for its child, to
 	 * position it relative to a `target` component or node. Useful for creating callouts and tooltips,
 	 * the Position component injects a `style` props with `left` and `top` values for positioning your component.
 	 *
@@ -39957,6 +40055,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var counter = 0;
 
+	function isLeftClickEvent(event) {
+	  return event.button === 0;
+	}
+
+	function isModifiedEvent(event) {
+	  return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
+	}
+
 	function getSuppressRootClose() {
 	  var id = CLICK_WAS_INSIDE + '_' + counter++;
 	  return {
@@ -40002,6 +40108,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  RootCloseWrapper.prototype.handleDocumentClick = function handleDocumentClick(e) {
 	    // This is now the native event.
 	    if (e[this._suppressRootId]) {
+	      return;
+	    }
+
+	    if (isModifiedEvent(e) || !isLeftClickEvent(e)) {
 	      return;
 	    }
 
@@ -40216,31 +40326,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  Transition.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-	    var status = this.state.status;
-	    if (nextProps['in']) {
-	      if (status === EXITING) {
-	        this.performEnter(nextProps);
-	      } else if (this.props.unmountOnExit) {
-	        if (status === UNMOUNTED) {
-	          // Start enter transition in componentDidUpdate.
-	          this.setState({ status: EXITED });
-	        }
-	      } else if (status === EXITED) {
-	        this.performEnter(nextProps);
+	    if (nextProps['in'] && this.props.unmountOnExit) {
+	      if (this.state.status === UNMOUNTED) {
+	        // Start enter transition in componentDidUpdate.
+	        this.setState({ status: EXITED });
 	      }
-
-	      // Otherwise we're already entering or entered.
 	    } else {
-	        if (status === ENTERING || status === ENTERED) {
-	          this.performExit(nextProps);
-	        }
-
-	        // Otherwise we're already exited or exiting.
-	      }
+	      this._needsUpdate = true;
+	    }
 	  };
 
 	  Transition.prototype.componentDidUpdate = function componentDidUpdate() {
-	    if (this.props.unmountOnExit && this.state.status === EXITED) {
+	    var status = this.state.status;
+
+	    if (this.props.unmountOnExit && status === EXITED) {
 	      // EXITED is always a transitional state to either ENTERING or UNMOUNTED
 	      // when using unmountOnExit.
 	      if (this.props['in']) {
@@ -40248,6 +40347,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      } else {
 	        this.setState({ status: UNMOUNTED });
 	      }
+
+	      return;
+	    }
+
+	    // guard ensures we are only responding to prop changes
+	    if (this._needsUpdate) {
+	      this._needsUpdate = false;
+
+	      if (this.props['in']) {
+	        if (status === EXITING) {
+	          this.performEnter(this.props);
+	        } else if (status === EXITED) {
+	          this.performEnter(this.props);
+	        }
+	        // Otherwise we're already entering or entered.
+	      } else {
+	          if (status === ENTERING || status === ENTERED) {
+	            this.performExit(this.props);
+	          }
+	          // Otherwise we're already exited or exiting.
+	        }
 	    }
 	  };
 
@@ -40649,15 +40769,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            args[_key] = arguments[_key];
 	        }
 
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DateTimePickerInput)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.onChangeInput = function (e) {
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DateTimePickerInput)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	            value: _this.props.value
+	        }, _this.onChangeInput = function (e) {
 	            e.preventDefault();
 
-	            var onChange = _this.props.onChange;
-
-	            var value = e.target.value;
-	            var dateTime = (0, _moment2.default)(value);
-	            if (dateTime.isValid()) {
-	                onChange(dateTime);
+	            _this.setState({ value: e.target.value });
+	        }, _this.onBlur = function () {
+	            _this.commitChange();
+	        }, _this.onKeyPress = function (e) {
+	            if (e.charCode === 13) {
+	                _this.commitChange();
 	            }
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
@@ -40668,6 +40790,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var _props = this.props;
 	            var focusOnShow = _props.focusOnShow;
 	            var show = _props.show;
+	            var value = _props.value;
 
 	            var input = (0, _reactDom.findDOMNode)(this.refs.input);
 
@@ -40676,15 +40799,54 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	    }, {
+	        key: "componentWillReceiveProps",
+	        value: function componentWillReceiveProps(nextProps) {
+	            if (this.props.value !== nextProps.value) {
+	                this.setState({ value: nextProps.value });
+	            }
+	        }
+	    }, {
+	        key: "commitChange",
+	        value: function commitChange() {
+	            var _props2 = this.props;
+	            var onChange = _props2.onChange;
+	            var displayFormat = _props2.displayFormat;
+	            var propsValue = _props2.value;
+	            var value = this.state.value;
+
+
+	            if (!value) {
+	                onChange(null);
+	                return;
+	            }
+
+	            if (propsValue === value) {
+	                // No change to commit
+	                return;
+	            }
+
+	            var dateTime = (0, _moment2.default)(value, displayFormat);
+
+	            if (dateTime.isValid()) {
+	                onChange(dateTime);
+	            } else {
+	                var dateTimeIso = (0, _moment2.default)(this.state.value);
+
+	                if (dateTimeIso.isValid()) {
+	                    onChange(dateTimeIso);
+	                }
+	            }
+	        }
+	    }, {
 	        key: "render",
 	        value: function render() {
-	            var _props2 = this.props;
-	            var bsSize = _props2.bsSize;
-	            var icons = _props2.icons;
-	            var inputProps = _props2.inputProps;
-	            var mode = _props2.mode;
-	            var onClick = _props2.onClick;
-	            var value = _props2.value;
+	            var _props3 = this.props;
+	            var bsSize = _props3.bsSize;
+	            var icons = _props3.icons;
+	            var inputProps = _props3.inputProps;
+	            var mode = _props3.mode;
+	            var onClick = _props3.onClick;
+	            var value = this.state.value;
 
 
 	            var classes = (0, _classnames2.default)("input-group", "date", _defineProperty({}, "input-group-" + bsSize, bsSize));
@@ -40698,7 +40860,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    type: "text",
 	                    ref: "input",
 	                    value: value,
-	                    onChange: this.onChangeInput
+	                    onChange: this.onChangeInput,
+	                    onBlur: this.onBlur,
+	                    onKeyPress: this.onKeyPress
 	                }, inputProps)),
 	                _react2.default.createElement(
 	                    "span",
