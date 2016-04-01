@@ -19,10 +19,15 @@ class DateTimePickerInput extends Component {
         value       : React.PropTypes.string
     };
 
+    state = {
+        value: this.props.value
+    };
+
     componentDidUpdate () {
         const {
             focusOnShow,
-            show
+            show,
+            value
         } = this.props
         const input = findDOMNode(this.refs.input)
 
@@ -31,14 +36,59 @@ class DateTimePickerInput extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.value !== nextProps.value) {
+            this.setState({ value: nextProps.value })
+        }
+    }
+
     onChangeInput = (e) => {
         e.preventDefault()
 
-        const { onChange } = this.props
-        const value = e.target.value
-        const dateTime = moment(value)
+        this.setState({ value: e.target.value })
+    };
+
+    commitChange () {
+        const {
+            onChange,
+            displayFormat,
+            value: propsValue
+        } = this.props
+
+        const {
+            value
+        } = this.state;
+
+        if (!value) {
+            onChange(null);
+            return;
+        }
+
+        if (propsValue === value) {
+            // No change to commit
+            return;
+        }
+
+        const dateTime = moment(value, displayFormat)
+
         if (dateTime.isValid()) {
             onChange(dateTime)
+        } else {
+            const dateTimeIso = moment(this.state.value)
+
+            if (dateTimeIso.isValid()) {
+                onChange(dateTimeIso)
+            }
+        }
+    }
+
+    onBlur = () => {
+        this.commitChange()
+    };
+
+    onKeyPress = (e) => {
+        if (e.charCode === 13) {
+            this.commitChange()
         }
     };
 
@@ -49,8 +99,11 @@ class DateTimePickerInput extends Component {
             inputProps,
             mode,
             onClick,
-            value
         } = this.props
+
+        const {
+            value
+        } = this.state
 
         const classes = classNames(
             "input-group",
@@ -69,6 +122,8 @@ class DateTimePickerInput extends Component {
                        ref="input"
                        value={ value }
                        onChange={ this.onChangeInput }
+                       onBlur={ this.onBlur }
+                       onKeyPress={ this.onKeyPress }
                        { ...inputProps } />
 
                 <span className="input-group-addon"

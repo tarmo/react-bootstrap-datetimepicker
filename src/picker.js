@@ -237,7 +237,7 @@ class DateTimePicker extends Component {
                     dateTime
                 })
             }
-        } else if (this.props.value && props.value) {
+        } else if (!props.value) {
             state = Object.assign({}, state, {
                 selected : false
             })
@@ -296,26 +296,27 @@ class DateTimePicker extends Component {
     }
 
     onChangeInput = (dateTime) => {
-        this.setState({
-            selected : true,
-            dateTime
-        })
+        this.onChangeDateTime(dateTime);
     };
 
     onChangeDateTime = (date, clear = false, ignore = false) => {
         this.setState({
-            dateTime : moment(date),
-            selected : !clear
+            dateTime : date ? moment(date) : moment(),
+            selected : date && !clear
         }, () => {
             const {
                 format,
                 locale,
                 onChange
             } = this.props
-            const { dateTime } = this.state
+
+            const {
+                dateTime,
+                selected
+            } = this.state
 
             if (!ignore) {
-                onChange(clear ? null : moment(dateTime).locale(locale).format(format))
+                onChange((clear || !selected) ? null : moment(dateTime).locale(locale).format(format))
             }
         })
     };
@@ -374,6 +375,7 @@ class DateTimePicker extends Component {
         if (inline) {
             picker = (
                 <DateTimePickerLayoutInline { ...this.props }
+                                            displayFormat={ displayFormat }
                                             tooltips={ this.tooltips }
                                             icons={ this.icons }
                                             onClickToday={ this.onClickToday }
@@ -384,6 +386,7 @@ class DateTimePicker extends Component {
         } else {
             picker = (
                 <DateTimePickerLayoutInput { ...this.props }
+                                           displayFormat={ displayFormat }
                                            tooltips={ this.tooltips }
                                            icons={ this.icons }
                                            bsSize={ bsSize || size }
