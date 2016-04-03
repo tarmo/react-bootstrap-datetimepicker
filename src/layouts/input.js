@@ -23,11 +23,14 @@ class DateTimePickerLayoutInput extends Component {
         icons      : React.PropTypes.object,
         sideBySide : React.PropTypes.bool,
         timePicker : React.PropTypes.node,
-        value      : React.PropTypes.string
+        value      : React.PropTypes.string,
+
+        inputComponent: React.PropTypes.func
     };
 
     static defaultProps = {
-        container : global.document.querySelector("body")
+        container : global.document.querySelector("body"),
+        inputComponent: DateTimePickerInput
     };
 
     state = {
@@ -70,7 +73,8 @@ class DateTimePickerLayoutInput extends Component {
         const {
             container,
             debug,
-            sideBySide
+            sideBySide,
+            inputComponent: InputComponent
         } = this.props
         const { show } = this.state
         let picker
@@ -90,7 +94,7 @@ class DateTimePickerLayoutInput extends Component {
 
         return (
             <div style={ { position : "relative" } }>
-                <DateTimePickerInput { ...this.props }
+                <InputComponent { ...this.props }
                                      show={ show }
                                      ref="input"
                                      onClick={ this.onClickInput } />
