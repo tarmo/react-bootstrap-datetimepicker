@@ -175,6 +175,7 @@ class DatePickerDays extends Component {
                     const days = []
                     week.by("days", (d) => {
                         const inRange = inRangeDates(d, "days", minDate, maxDate)
+                        const disabled = !inRange || this.disabledWeekday(d) || this.disabled(d) || !this.enabled(d);
                         const classes = classNames(
                             "day",
                             {
@@ -183,14 +184,14 @@ class DatePickerDays extends Component {
                                 old      : d.month() < date.month(),
                                 weekend  : [0, 6].indexOf(d.day()) !== -1,
                                 new      : d.month() > date.month(),
-                                disabled : !inRange || this.disabledWeekday(d) || this.disabled(d) || !this.enabled(d)
+                                disabled
                             }
                         )
 
                         days.push(
                             <td key={ d.format("x") }
                                 className={ classes }
-                                onClick={ inRange && this.onClickDay(d) }>
+                                onClick={ !disabled && inRange && this.onClickDay(d) }>
                                 { d.format("DD") }
                             </td>
                         )
