@@ -218,7 +218,7 @@ class DateTimePicker extends Component {
 
         this.state = Object.assign({}, this.state, {
             dateTime,
-            selected : defaultDate || useCurrent,
+            selected : !!defaultDate || useCurrent,
             viewMode : this.state.viewMode || viewMode
         })
     }
