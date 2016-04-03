@@ -206,7 +206,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        _this.state = Object.assign({}, _this.state, {
 	            dateTime: dateTime,
-	            selected: defaultDate || useCurrent,
+	            selected: !!defaultDate || useCurrent,
 	            viewMode: _this.state.viewMode || viewMode
 	        });
 	        return _this;
@@ -34672,20 +34672,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    var days = [];
 	                    week.by("days", function (d) {
 	                        var inRange = (0, _utils.inRangeDates)(d, "days", minDate, maxDate);
+	                        var disabled = !inRange || _this2.disabledWeekday(d) || _this2.disabled(d) || !_this2.enabled(d);
 	                        var classes = (0, _classnames2.default)("day", {
 	                            active: selected && d.diff((0, _moment2.default)(_this2.props.date).startOf("day"), "days") === 0,
 	                            today: showToday && d.diff((0, _moment2.default)().startOf("day"), "days") === 0,
 	                            old: d.month() < date.month(),
 	                            weekend: [0, 6].indexOf(d.day()) !== -1,
 	                            new: d.month() > date.month(),
-	                            disabled: !inRange || _this2.disabledWeekday(d) || _this2.disabled(d) || !_this2.enabled(d)
+	                            disabled: disabled
 	                        });
 
 	                        days.push(_react2.default.createElement(
 	                            "td",
 	                            { key: d.format("x"),
 	                                className: classes,
-	                                onClick: inRange && _this2.onClickDay(d) },
+	                                onClick: !disabled && inRange && _this2.onClickDay(d) },
 	                            d.format("DD")
 	                        ));
 	                    });
@@ -36935,6 +36936,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var container = _props.container;
 	            var debug = _props.debug;
 	            var sideBySide = _props.sideBySide;
+	            var InputComponent = _props.inputComponent;
 	            var show = this.state.show;
 
 	            var picker = void 0;
@@ -36953,7 +36955,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return _react2.default.createElement(
 	                "div",
 	                { style: { position: "relative" } },
-	                _react2.default.createElement(_input2.default, _extends({}, this.props, {
+	                _react2.default.createElement(InputComponent, _extends({}, this.props, {
 	                    show: show,
 	                    ref: "input",
 	                    onClick: this.onClickInput })),
@@ -36991,10 +36993,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    icons: _react2.default.PropTypes.object,
 	    sideBySide: _react2.default.PropTypes.bool,
 	    timePicker: _react2.default.PropTypes.node,
-	    value: _react2.default.PropTypes.string
+	    value: _react2.default.PropTypes.string,
+
+	    inputComponent: _react2.default.PropTypes.func
 	};
 	DateTimePickerLayoutInput.defaultProps = {
-	    container: global.document.querySelector("body")
+	    container: global.document.querySelector("body"),
+	    inputComponent: _input2.default
 	};
 	exports.default = DateTimePickerLayoutInput;
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
