@@ -367,8 +367,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    daysOfWeekDisabled: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.number),
 	    debug: _react2.default.PropTypes.bool,
 	    defaultDate: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]),
-	    disabledDates: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.bool, _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]))]),
-	    enabledDates: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.bool, _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]))]),
+	    disabledDates: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.bool, _react2.default.PropTypes.func, _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]))]),
+	    enabledDates: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.bool, _react2.default.PropTypes.func, _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.string, _react2.default.PropTypes.instanceOf(Date), _reactMomentProptypes2.default.momentObj]))]),
 	    focusOnShow: _react2.default.PropTypes.bool,
 	    format: _react2.default.PropTypes.string,
 	    icon: _react2.default.PropTypes.bool,
@@ -34570,6 +34570,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return true;
 	            }
 
+	            if (typeof enabledDates === "function") {
+	                return enabledDates(date);
+	            }
+
 	            for (var i = 0, l = enabledDates.length; i < l; i++) {
 	                if (d.diff((0, _moment2.default)(enabledDates[i]).startOf("day")) === 0) {
 	                    return true;
@@ -34587,6 +34591,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (!disabledDates) {
 	                return false;
+	            }
+
+	            if (typeof disabledDates === "function") {
+	                return disabledDates(date);
 	            }
 
 	            for (var i = 0, l = disabledDates.length; i < l; i++) {
