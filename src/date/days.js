@@ -83,6 +83,10 @@ class DatePickerDays extends Component {
             return true
         }
 
+        if (typeof enabledDates === "function") {
+            return enabledDates(date);
+        }
+
         for (let i = 0, l = enabledDates.length; i < l; i++) {
             if (d.diff(moment(enabledDates[i]).startOf("day")) === 0) {
                 return true
@@ -98,6 +102,10 @@ class DatePickerDays extends Component {
 
         if (!disabledDates) {
             return false
+        }
+
+        if (typeof disabledDates === "function") {
+            return disabledDates(date);
         }
 
         for (let i = 0, l = disabledDates.length; i < l; i++) {

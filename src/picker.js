@@ -86,6 +86,7 @@ class DateTimePicker extends Component {
         ]),
         disabledDates : React.PropTypes.oneOfType([
             React.PropTypes.bool,
+            React.PropTypes.func,
             React.PropTypes.arrayOf(
                 React.PropTypes.oneOfType([
                     React.PropTypes.number,
@@ -97,6 +98,7 @@ class DateTimePicker extends Component {
         ]),
         enabledDates : React.PropTypes.oneOfType([
             React.PropTypes.bool,
+            React.PropTypes.func,
             React.PropTypes.arrayOf(
                 React.PropTypes.oneOfType([
                     React.PropTypes.number,
