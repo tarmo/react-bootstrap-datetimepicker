@@ -80,8 +80,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	__webpack_require__(2);
 
 	var _react = __webpack_require__(39);
@@ -118,11 +116,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var defaultIcons = {
 	    time: "glyphicon glyphicon-time",
@@ -168,15 +168,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _inherits(DateTimePicker, _Component);
 
 	    function DateTimePicker() {
-	        var _Object$getPrototypeO;
-
 	        _classCallCheck(this, DateTimePicker);
 
 	        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	            args[_key] = arguments[_key];
 	        }
 
-	        var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DateTimePicker)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+	        var _this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args)));
 
 	        _initialiseProps.call(_this);
 
@@ -224,137 +222,131 @@ return /******/ (function(modules) { // webpackBootstrap
 	    */
 
 
-	    _createClass(DateTimePicker, [{
-	        key: "componentWillReceiveProps",
-	        value: function componentWillReceiveProps(props) {
-	            var state = {};
-	            if (props.value) {
-	                var dateTime = (0, _moment2.default)(props.value);
-	                if (dateTime.isValid()) {
-	                    state = Object.assign({}, state, {
-	                        selected: true,
-	                        dateTime: dateTime
-	                    });
-	                }
-	            } else if (!props.value) {
+	    DateTimePicker.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
+	        var state = {};
+	        if (props.value) {
+	            var dateTime = (0, _moment2.default)(props.value);
+	            if (dateTime.isValid()) {
 	                state = Object.assign({}, state, {
-	                    selected: false
+	                    selected: true,
+	                    dateTime: dateTime
 	                });
 	            }
-	            this.setState(Object.assign({}, this.state, state));
+	        } else if (!props.value) {
+	            state = Object.assign({}, state, {
+	                selected: false
+	            });
 	        }
-	    }, {
-	        key: "renderDatePicker",
-	        value: function renderDatePicker() {
-	            var mode = this.props.mode;
-	            var _state = this.state;
-	            var dateTime = _state.dateTime;
-	            var selected = _state.selected;
-	            var view = _state.view;
-	            var viewMode = _state.viewMode;
+	        this.setState(Object.assign({}, this.state, state));
+	    };
+
+	    DateTimePicker.prototype.renderDatePicker = function renderDatePicker() {
+	        var mode = this.props.mode;
+	        var _state = this.state;
+	        var dateTime = _state.dateTime;
+	        var selected = _state.selected;
+	        var view = _state.view;
+	        var viewMode = _state.viewMode;
 
 
-	            if (mode === _config.MODE_DATETIME || mode === _config.MODE_DATE) {
-	                return _react2.default.createElement(_picker2.default, _extends({}, this.props, {
-	                    icons: this.icons,
-	                    tooltips: this.tooltips,
-	                    show: view === _config.VIEW_DATE,
-	                    onChange: this.onChangeDateTime,
-	                    viewMode: viewMode,
-	                    selected: selected,
-	                    updateViewMode: this.updateViewMode,
-	                    dateTime: dateTime }));
+	        if (mode === _config.MODE_DATETIME || mode === _config.MODE_DATE) {
+	            return _react2.default.createElement(_picker2.default, _extends({}, this.props, {
+	                icons: this.icons,
+	                tooltips: this.tooltips,
+	                show: view === _config.VIEW_DATE,
+	                onChange: this.onChangeDateTime,
+	                viewMode: viewMode,
+	                selected: selected,
+	                updateViewMode: this.updateViewMode,
+	                dateTime: dateTime }));
+	        }
+	    };
+
+	    DateTimePicker.prototype.renderTimePicker = function renderTimePicker() {
+	        var mode = this.props.mode;
+	        var _state2 = this.state;
+	        var dateTime = _state2.dateTime;
+	        var selected = _state2.selected;
+	        var view = _state2.view;
+
+
+	        if (mode === _config.MODE_DATETIME || mode === _config.MODE_TIME) {
+	            return _react2.default.createElement(_picker4.default, _extends({}, this.props, {
+	                icons: this.icons,
+	                tooltips: this.tooltips,
+	                onChange: this.onChangeDateTime,
+	                dateTime: dateTime,
+	                selected: selected,
+	                show: view === _config.VIEW_TIME }));
+	        }
+	    };
+
+	    DateTimePicker.prototype.render = function render() {
+	        var _props = this.props;
+	        var bsSize = _props.bsSize;
+	        var inline = _props.inline;
+	        var inputFormat = _props.inputFormat;
+	        var mode = _props.mode;
+	        var placeholder = _props.placeholder;
+	        var size = _props.size;
+	        var widgetParent = _props.widgetParent;
+	        var _state3 = this.state;
+	        var dateTime = _state3.dateTime;
+	        var selected = _state3.selected;
+
+	        var displayFormat = inputFormat;
+
+	        if (!inputFormat) {
+	            switch (mode) {
+	                case _config.MODE_DATE:
+	                    displayFormat = _config.INPUT_FORMAT_DATE;
+	                    break;
+
+	                case _config.MODE_TIME:
+	                    displayFormat = _config.INPUT_FORMAT_TIME;
+	                    break;
+
+	                default:
+	                    displayFormat = _config.INPUT_FORMAT_DATETIME;
 	            }
 	        }
-	    }, {
-	        key: "renderTimePicker",
-	        value: function renderTimePicker() {
-	            var mode = this.props.mode;
-	            var _state2 = this.state;
-	            var dateTime = _state2.dateTime;
-	            var selected = _state2.selected;
-	            var view = _state2.view;
 
+	        var inputValue = selected ? (0, _moment2.default)(dateTime).format(displayFormat) : placeholder;
 
-	            if (mode === _config.MODE_DATETIME || mode === _config.MODE_TIME) {
-	                return _react2.default.createElement(_picker4.default, _extends({}, this.props, {
-	                    icons: this.icons,
-	                    tooltips: this.tooltips,
-	                    onChange: this.onChangeDateTime,
-	                    dateTime: dateTime,
-	                    selected: selected,
-	                    show: view === _config.VIEW_TIME }));
-	            }
+	        var picker = void 0;
+
+	        if (inline) {
+	            picker = _react2.default.createElement(_inline2.default, _extends({}, this.props, {
+	                displayFormat: displayFormat,
+	                tooltips: this.tooltips,
+	                icons: this.icons,
+	                onClickToday: this.onClickToday,
+	                onClickClear: this.onClickClear,
+	                datePicker: this.renderDatePicker(),
+	                timePicker: this.renderTimePicker() }));
+	        } else {
+	            picker = _react2.default.createElement(_input2.default, _extends({}, this.props, {
+	                displayFormat: displayFormat,
+	                tooltips: this.tooltips,
+	                icons: this.icons,
+	                bsSize: bsSize || size,
+	                value: inputValue,
+	                selected: selected,
+	                dateTime: dateTime,
+	                container: widgetParent,
+	                onChange: this.onChangeInput,
+	                onClickToday: this.onClickToday,
+	                onClickClear: this.onClickClear,
+	                datePicker: this.renderDatePicker(),
+	                timePicker: this.renderTimePicker() }));
 	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var _props = this.props;
-	            var bsSize = _props.bsSize;
-	            var inline = _props.inline;
-	            var inputFormat = _props.inputFormat;
-	            var mode = _props.mode;
-	            var placeholder = _props.placeholder;
-	            var size = _props.size;
-	            var widgetParent = _props.widgetParent;
-	            var _state3 = this.state;
-	            var dateTime = _state3.dateTime;
-	            var selected = _state3.selected;
 
-	            var displayFormat = inputFormat;
-
-	            if (!inputFormat) {
-	                switch (mode) {
-	                    case _config.MODE_DATE:
-	                        displayFormat = _config.INPUT_FORMAT_DATE;
-	                        break;
-
-	                    case _config.MODE_TIME:
-	                        displayFormat = _config.INPUT_FORMAT_TIME;
-	                        break;
-
-	                    default:
-	                        displayFormat = _config.INPUT_FORMAT_DATETIME;
-	                }
-	            }
-
-	            var inputValue = selected ? (0, _moment2.default)(dateTime).format(displayFormat) : placeholder;
-
-	            var picker = void 0;
-
-	            if (inline) {
-	                picker = _react2.default.createElement(_inline2.default, _extends({}, this.props, {
-	                    displayFormat: displayFormat,
-	                    tooltips: this.tooltips,
-	                    icons: this.icons,
-	                    onClickToday: this.onClickToday,
-	                    onClickClear: this.onClickClear,
-	                    datePicker: this.renderDatePicker(),
-	                    timePicker: this.renderTimePicker() }));
-	            } else {
-	                picker = _react2.default.createElement(_input2.default, _extends({}, this.props, {
-	                    displayFormat: displayFormat,
-	                    tooltips: this.tooltips,
-	                    icons: this.icons,
-	                    bsSize: bsSize || size,
-	                    value: inputValue,
-	                    selected: selected,
-	                    dateTime: dateTime,
-	                    container: widgetParent,
-	                    onChange: this.onChangeInput,
-	                    onClickToday: this.onClickToday,
-	                    onClickClear: this.onClickClear,
-	                    datePicker: this.renderDatePicker(),
-	                    timePicker: this.renderTimePicker() }));
-	            }
-
-	            return _react2.default.createElement(
-	                "div",
-	                { ref: "component" },
-	                picker
-	            );
-	        }
-	    }]);
+	        return _react2.default.createElement(
+	            "div",
+	            { ref: "component" },
+	            picker
+	        );
+	    };
 
 	    return DateTimePicker;
 	}(_react.Component);
@@ -18869,8 +18861,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -18907,25 +18897,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var DatePicker = function (_Component) {
 	    _inherits(DatePicker, _Component);
 
 	    function DatePicker() {
-	        var _Object$getPrototypeO;
-
 	        _classCallCheck(this, DatePicker);
 
 	        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	            args[_key] = arguments[_key];
 	        }
 
-	        var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DatePicker)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+	        var _this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args)));
 
 	        _initialiseProps.call(_this);
 
@@ -18934,72 +18924,65 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return _this;
 	    }
 
-	    _createClass(DatePicker, [{
-	        key: "componentWillReceiveProps",
-	        value: function componentWillReceiveProps(props) {
-	            this.setState({ date: this.getDate(props) });
+	    DatePicker.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
+	        this.setState({ date: this.getDate(props) });
+	    };
+
+	    DatePicker.prototype.getDate = function getDate(props) {
+	        var dateTime = props.dateTime;
+
+	        return (0, _moment2.default)(dateTime).startOf("day");
+	    };
+
+	    DatePicker.prototype.getDecade = function getDecade(year) {
+	        return Math.floor(year / 10) * 10;
+	    };
+
+	    DatePicker.prototype.renderViewMode = function renderViewMode() {
+	        var viewMode = this.props.viewMode;
+	        var _state = this.state;
+	        var date = _state.date;
+	        var decade = _state.decade;
+
+
+	        switch (viewMode) {
+	            case _config.VIEW_MODE_MONTHS:
+	                return _react2.default.createElement(_months2.default, _extends({}, this.props, {
+	                    onClickYears: this.onClickYears,
+	                    onSelect: this.onSelectDate,
+	                    date: date }));
+
+	            case _config.VIEW_MODE_YEARS:
+	                return _react2.default.createElement(_years2.default, _extends({}, this.props, {
+	                    onClickDecades: this.onClickDecades,
+	                    onSelect: this.onSelectDate,
+	                    updateDecade: this.updateDecade,
+	                    decade: decade }));
+
+	            case _config.VIEW_MODE_DECADES:
+	                return _react2.default.createElement(_decades2.default, _extends({}, this.props, {
+	                    onSelect: this.onSelectDecade,
+	                    updateDecade: this.updateDecade,
+	                    decade: decade }));
+
+	            default:
+	                return _react2.default.createElement(_days2.default, _extends({}, this.props, {
+	                    onClickMonths: this.onClickMonths,
+	                    onSelect: this.onSelectDate,
+	                    date: date }));
 	        }
-	    }, {
-	        key: "getDate",
-	        value: function getDate(props) {
-	            var dateTime = props.dateTime;
+	    };
 
-	            return (0, _moment2.default)(dateTime).startOf("day");
-	        }
-	    }, {
-	        key: "getDecade",
-	        value: function getDecade(year) {
-	            return Math.floor(year / 10) * 10;
-	        }
-	    }, {
-	        key: "renderViewMode",
-	        value: function renderViewMode() {
-	            var viewMode = this.props.viewMode;
-	            var _state = this.state;
-	            var date = _state.date;
-	            var decade = _state.decade;
+	    DatePicker.prototype.render = function render() {
+	        var sideBySide = this.props.sideBySide;
 
-
-	            switch (viewMode) {
-	                case _config.VIEW_MODE_MONTHS:
-	                    return _react2.default.createElement(_months2.default, _extends({}, this.props, {
-	                        onClickYears: this.onClickYears,
-	                        onSelect: this.onSelectDate,
-	                        date: date }));
-
-	                case _config.VIEW_MODE_YEARS:
-	                    return _react2.default.createElement(_years2.default, _extends({}, this.props, {
-	                        onClickDecades: this.onClickDecades,
-	                        onSelect: this.onSelectDate,
-	                        updateDecade: this.updateDecade,
-	                        decade: decade }));
-
-	                case _config.VIEW_MODE_DECADES:
-	                    return _react2.default.createElement(_decades2.default, _extends({}, this.props, {
-	                        onSelect: this.onSelectDecade,
-	                        updateDecade: this.updateDecade,
-	                        decade: decade }));
-
-	                default:
-	                    return _react2.default.createElement(_days2.default, _extends({}, this.props, {
-	                        onClickMonths: this.onClickMonths,
-	                        onSelect: this.onSelectDate,
-	                        date: date }));
-	            }
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var sideBySide = this.props.sideBySide;
-
-	            var classes = (0, _classnames2.default)("datepicker", { "col-md-6": sideBySide });
-	            return _react2.default.createElement(
-	                "div",
-	                { className: classes },
-	                this.renderViewMode()
-	            );
-	        }
-	    }]);
+	        var classes = (0, _classnames2.default)("datepicker", { "col-md-6": sideBySide });
+	        return _react2.default.createElement(
+	            "div",
+	            { className: classes },
+	            this.renderViewMode()
+	        );
+	    };
 
 	    return DatePicker;
 	}(_react.Component);
@@ -19144,8 +19127,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -19168,25 +19149,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var DatePickerDays = function (_Component) {
 	    _inherits(DatePickerDays, _Component);
 
 	    function DatePickerDays() {
-	        var _Object$getPrototypeO;
-
 	        _classCallCheck(this, DatePickerDays);
 
 	        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	            args[_key] = arguments[_key];
 	        }
 
-	        var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DatePickerDays)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+	        var _this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args)));
 
 	        _initialiseProps.call(_this);
 
@@ -19196,260 +19177,248 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return _this;
 	    }
 
-	    _createClass(DatePickerDays, [{
-	        key: "componentWillReceiveProps",
-	        value: function componentWillReceiveProps(props) {
-	            this.setState({ date: (0, _moment2.default)(props.date) });
+	    DatePickerDays.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
+	        this.setState({ date: (0, _moment2.default)(props.date) });
+	    };
+
+	    DatePickerDays.prototype.getCalendarDays = function getCalendarDays() {
+	        var locale = this.props.locale;
+	        var date = this.state.date;
+
+	        var startDate = (0, _moment2.default)(date).locale(locale).startOf("month").startOf("day");
+	        var firstDay = (0, _moment2.default)(startDate).startOf("month");
+	        var lastDay = (0, _moment2.default)(startDate).endOf("month");
+	        var monthRange = _moment2.default.range(firstDay, lastDay);
+	        var weeks = [];
+	        var calendarDays = [];
+
+	        monthRange.by("days", function (d) {
+	            var week = d.week();
+	            if (weeks.indexOf(week) === -1) {
+	                return weeks.push(week);
+	            }
+	        });
+
+	        weeks.forEach(function (w, i) {
+	            var firstWeekDay = void 0;
+	            var lastWeekDay = void 0;
+
+	            if (i > 0 && w < weeks[i - 1]) {
+	                // Next year case
+	                firstWeekDay = (0, _moment2.default)(startDate).add(1, "year").week(w).startOf("week");
+	                lastWeekDay = (0, _moment2.default)(startDate).add(1, "year").week(w).endOf("week");
+	            } else {
+	                firstWeekDay = (0, _moment2.default)(startDate).week(w).startOf("week");
+	                lastWeekDay = (0, _moment2.default)(startDate).week(w).endOf("week");
+	            }
+
+	            calendarDays.push(_moment2.default.range(firstWeekDay, lastWeekDay));
+	        });
+
+	        return calendarDays;
+	    };
+
+	    DatePickerDays.prototype.enabled = function enabled(date) {
+	        var enabledDates = this.props.enabledDates;
+
+	        var d = (0, _moment2.default)(date).startOf("day");
+
+	        if (!enabledDates) {
+	            return true;
 	        }
-	    }, {
-	        key: "getCalendarDays",
-	        value: function getCalendarDays() {
-	            var locale = this.props.locale;
-	            var date = this.state.date;
 
-	            var startDate = (0, _moment2.default)(date).locale(locale).startOf("month").startOf("day");
-	            var firstDay = (0, _moment2.default)(startDate).startOf("month");
-	            var lastDay = (0, _moment2.default)(startDate).endOf("month");
-	            var monthRange = _moment2.default.range(firstDay, lastDay);
-	            var weeks = [];
-	            var calendarDays = [];
-
-	            monthRange.by("days", function (d) {
-	                var week = d.week();
-	                if (weeks.indexOf(week) === -1) {
-	                    return weeks.push(week);
-	                }
-	            });
-
-	            weeks.forEach(function (w, i) {
-	                var firstWeekDay = void 0;
-	                var lastWeekDay = void 0;
-
-	                if (i > 0 && w < weeks[i - 1]) {
-	                    // Next year case
-	                    firstWeekDay = (0, _moment2.default)(startDate).add(1, "year").week(w).startOf("week");
-	                    lastWeekDay = (0, _moment2.default)(startDate).add(1, "year").week(w).endOf("week");
-	                } else {
-	                    firstWeekDay = (0, _moment2.default)(startDate).week(w).startOf("week");
-	                    lastWeekDay = (0, _moment2.default)(startDate).week(w).endOf("week");
-	                }
-
-	                calendarDays.push(_moment2.default.range(firstWeekDay, lastWeekDay));
-	            });
-
-	            return calendarDays;
+	        if (typeof enabledDates === "function") {
+	            return enabledDates(date);
 	        }
-	    }, {
-	        key: "enabled",
-	        value: function enabled(date) {
-	            var enabledDates = this.props.enabledDates;
 
-	            var d = (0, _moment2.default)(date).startOf("day");
-
-	            if (!enabledDates) {
+	        for (var i = 0, l = enabledDates.length; i < l; i++) {
+	            if (d.diff((0, _moment2.default)(enabledDates[i]).startOf("day")) === 0) {
 	                return true;
 	            }
+	        }
 
-	            if (typeof enabledDates === "function") {
-	                return enabledDates(date);
-	            }
+	        return false;
+	    };
 
-	            for (var i = 0, l = enabledDates.length; i < l; i++) {
-	                if (d.diff((0, _moment2.default)(enabledDates[i]).startOf("day")) === 0) {
-	                    return true;
-	                }
-	            }
+	    DatePickerDays.prototype.disabled = function disabled(date) {
+	        var disabledDates = this.props.disabledDates;
 
+	        var d = (0, _moment2.default)(date).startOf("day");
+
+	        if (!disabledDates) {
 	            return false;
 	        }
-	    }, {
-	        key: "disabled",
-	        value: function disabled(date) {
-	            var disabledDates = this.props.disabledDates;
 
-	            var d = (0, _moment2.default)(date).startOf("day");
+	        if (typeof disabledDates === "function") {
+	            return disabledDates(date);
+	        }
 
-	            if (!disabledDates) {
-	                return false;
+	        for (var i = 0, l = disabledDates.length; i < l; i++) {
+	            if (d.diff((0, _moment2.default)(disabledDates[i]).startOf("day")) === 0) {
+	                return true;
 	            }
+	        }
 
-	            if (typeof disabledDates === "function") {
-	                return disabledDates(date);
-	            }
+	        return false;
+	    };
 
-	            for (var i = 0, l = disabledDates.length; i < l; i++) {
-	                if (d.diff((0, _moment2.default)(disabledDates[i]).startOf("day")) === 0) {
-	                    return true;
-	                }
-	            }
+	    DatePickerDays.prototype.disabledWeekday = function disabledWeekday(date) {
+	        var daysOfWeekDisabled = this.props.daysOfWeekDisabled;
 
+
+	        if (!daysOfWeekDisabled || daysOfWeekDisabled.length === 0) {
 	            return false;
 	        }
-	    }, {
-	        key: "disabledWeekday",
-	        value: function disabledWeekday(date) {
-	            var daysOfWeekDisabled = this.props.daysOfWeekDisabled;
 
+	        return daysOfWeekDisabled.indexOf(date.day()) !== -1;
+	    };
 
-	            if (!daysOfWeekDisabled || daysOfWeekDisabled.length === 0) {
-	                return false;
-	            }
+	    DatePickerDays.prototype.renderPrevButton = function renderPrevButton() {
+	        var _props = this.props;
+	        var icons = _props.icons;
+	        var minDate = _props.minDate;
+	        var tooltips = _props.tooltips;
+	        var date = this.state.date;
 
-	            return daysOfWeekDisabled.indexOf(date.day()) !== -1;
-	        }
-	    }, {
-	        key: "renderPrevButton",
-	        value: function renderPrevButton() {
-	            var _props = this.props;
-	            var icons = _props.icons;
-	            var minDate = _props.minDate;
-	            var tooltips = _props.tooltips;
-	            var date = this.state.date;
+	        var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(date).subtract(1, "month"), "months", minDate);
 
-	            var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(date).subtract(1, "month"), "months", minDate);
+	        var classes = (0, _classnames2.default)("prev", {
+	            disabled: !inRange
+	        });
 
-	            var classes = (0, _classnames2.default)("prev", {
-	                disabled: !inRange
-	            });
+	        return _react2.default.createElement(
+	            "th",
+	            { className: classes, onClick: inRange && this.onClickPreviousMonth },
+	            _react2.default.createElement("span", { className: icons.previous, title: tooltips.prevMonth })
+	        );
+	    };
 
-	            return _react2.default.createElement(
-	                "th",
-	                { className: classes, onClick: inRange && this.onClickPreviousMonth },
-	                _react2.default.createElement("span", { className: icons.previous, title: tooltips.prevMonth })
-	            );
-	        }
-	    }, {
-	        key: "renderNextButton",
-	        value: function renderNextButton() {
-	            var _props2 = this.props;
-	            var icons = _props2.icons;
-	            var maxDate = _props2.maxDate;
-	            var tooltips = _props2.tooltips;
-	            var date = this.state.date;
+	    DatePickerDays.prototype.renderNextButton = function renderNextButton() {
+	        var _props2 = this.props;
+	        var icons = _props2.icons;
+	        var maxDate = _props2.maxDate;
+	        var tooltips = _props2.tooltips;
+	        var date = this.state.date;
 
-	            var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(date).add(1, "month"), "months", null, maxDate);
+	        var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(date).add(1, "month"), "months", null, maxDate);
 
-	            var classes = (0, _classnames2.default)("next", {
-	                disabled: !inRange
-	            });
+	        var classes = (0, _classnames2.default)("next", {
+	            disabled: !inRange
+	        });
 
-	            return _react2.default.createElement(
-	                "th",
-	                { className: classes, onClick: inRange && this.onClickNextMonth },
-	                _react2.default.createElement("span", { className: icons.next, title: tooltips.nextMonth })
-	            );
-	        }
-	    }, {
-	        key: "renderDays",
-	        value: function renderDays() {
-	            var _this2 = this;
+	        return _react2.default.createElement(
+	            "th",
+	            { className: classes, onClick: inRange && this.onClickNextMonth },
+	            _react2.default.createElement("span", { className: icons.next, title: tooltips.nextMonth })
+	        );
+	    };
 
-	            var _props3 = this.props;
-	            var maxDate = _props3.maxDate;
-	            var minDate = _props3.minDate;
-	            var selected = _props3.selected;
-	            var showToday = _props3.showToday;
-	            var date = this.state.date;
+	    DatePickerDays.prototype.renderDays = function renderDays() {
+	        var _this2 = this;
 
-	            var weeks = this.getCalendarDays();
+	        var _props3 = this.props;
+	        var maxDate = _props3.maxDate;
+	        var minDate = _props3.minDate;
+	        var selected = _props3.selected;
+	        var showToday = _props3.showToday;
+	        var date = this.state.date;
 
-	            return _react2.default.createElement(
-	                "tbody",
-	                null,
-	                weeks.map(function (week, i) {
-	                    var days = [];
-	                    week.by("days", function (d) {
-	                        var inRange = (0, _utils.inRangeDates)(d, "days", minDate, maxDate);
-	                        var disabled = !inRange || _this2.disabledWeekday(d) || _this2.disabled(d) || !_this2.enabled(d);
-	                        var classes = (0, _classnames2.default)("day", {
-	                            active: selected && d.diff((0, _moment2.default)(_this2.props.date).startOf("day"), "days") === 0,
-	                            today: showToday && d.diff((0, _moment2.default)().startOf("day"), "days") === 0,
-	                            old: d.month() < date.month(),
-	                            weekend: [0, 6].indexOf(d.day()) !== -1,
-	                            new: d.month() > date.month(),
-	                            disabled: disabled
-	                        });
+	        var weeks = this.getCalendarDays();
 
-	                        days.push(_react2.default.createElement(
-	                            "td",
-	                            { key: d.format("x"),
-	                                className: classes,
-	                                onClick: !disabled && inRange && _this2.onClickDay(d) },
-	                            d.format("DD")
-	                        ));
+	        return _react2.default.createElement(
+	            "tbody",
+	            null,
+	            weeks.map(function (week, i) {
+	                var days = [];
+	                week.by("days", function (d) {
+	                    var inRange = (0, _utils.inRangeDates)(d, "days", minDate, maxDate);
+	                    var disabled = !inRange || _this2.disabledWeekday(d) || _this2.disabled(d) || !_this2.enabled(d);
+	                    var classes = (0, _classnames2.default)("day", {
+	                        active: selected && d.diff((0, _moment2.default)(_this2.props.date).startOf("day"), "days") === 0,
+	                        today: showToday && d.diff((0, _moment2.default)().startOf("day"), "days") === 0,
+	                        old: d.month() < date.month(),
+	                        weekend: [0, 6].indexOf(d.day()) !== -1,
+	                        new: d.month() > date.month(),
+	                        disabled: disabled
 	                    });
-	                    return _react2.default.createElement(
-	                        "tr",
-	                        { key: i },
-	                        days
-	                    );
-	                })
-	            );
-	        }
-	    }, {
-	        key: "onClickDay",
-	        value: function onClickDay(date) {
-	            var _this3 = this;
 
-	            return function () {
-	                var onSelect = _this3.props.onSelect;
+	                    days.push(_react2.default.createElement(
+	                        "td",
+	                        { key: d.format("x"),
+	                            className: classes,
+	                            onClick: !disabled && inRange && _this2.onClickDay(d) },
+	                        d.format("DD")
+	                    ));
+	                });
+	                return _react2.default.createElement(
+	                    "tr",
+	                    { key: i },
+	                    days
+	                );
+	            })
+	        );
+	    };
 
-	                onSelect(date);
-	            };
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var _props4 = this.props;
-	            var dayViewHeaderFormat = _props4.dayViewHeaderFormat;
-	            var locale = _props4.locale;
-	            var onClickMonths = _props4.onClickMonths;
-	            var tooltips = _props4.tooltips;
-	            var date = this.state.date;
+	    DatePickerDays.prototype.onClickDay = function onClickDay(date) {
+	        var _this3 = this;
+
+	        return function () {
+	            var onSelect = _this3.props.onSelect;
+
+	            onSelect(date);
+	        };
+	    };
+
+	    DatePickerDays.prototype.render = function render() {
+	        var _props4 = this.props;
+	        var dayViewHeaderFormat = _props4.dayViewHeaderFormat;
+	        var locale = _props4.locale;
+	        var onClickMonths = _props4.onClickMonths;
+	        var tooltips = _props4.tooltips;
+	        var date = this.state.date;
 
 
-	            var dateLocale = (0, _moment2.default)(date).locale(locale);
+	        var dateLocale = (0, _moment2.default)(date).locale(locale);
 
-	            return _react2.default.createElement(
-	                "div",
-	                { className: "datepicker-days" },
+	        return _react2.default.createElement(
+	            "div",
+	            { className: "datepicker-days" },
+	            _react2.default.createElement(
+	                "table",
+	                { className: "table-condensed" },
 	                _react2.default.createElement(
-	                    "table",
-	                    { className: "table-condensed" },
+	                    "thead",
+	                    null,
 	                    _react2.default.createElement(
-	                        "thead",
+	                        "tr",
 	                        null,
+	                        this.renderPrevButton(),
 	                        _react2.default.createElement(
-	                            "tr",
-	                            null,
-	                            this.renderPrevButton(),
-	                            _react2.default.createElement(
-	                                "th",
-	                                { className: "picker-switch",
-	                                    colSpan: "5",
-	                                    title: tooltips.selectMonth,
-	                                    onClick: onClickMonths },
-	                                dateLocale.format(dayViewHeaderFormat)
-	                            ),
-	                            this.renderNextButton()
+	                            "th",
+	                            { className: "picker-switch",
+	                                colSpan: "5",
+	                                title: tooltips.selectMonth,
+	                                onClick: onClickMonths },
+	                            dateLocale.format(dayViewHeaderFormat)
 	                        ),
-	                        _react2.default.createElement(
-	                            "tr",
-	                            null,
-	                            [0, 1, 2, 3, 4, 5, 6].map(function (d) {
-	                                return _react2.default.createElement(
-	                                    "th",
-	                                    { key: d, className: "dow" },
-	                                    dateLocale.weekday(d).format("dd")
-	                                );
-	                            })
-	                        )
+	                        this.renderNextButton()
 	                    ),
-	                    this.renderDays()
-	                )
-	            );
-	        }
-	    }]);
+	                    _react2.default.createElement(
+	                        "tr",
+	                        null,
+	                        [0, 1, 2, 3, 4, 5, 6].map(function (d) {
+	                            return _react2.default.createElement(
+	                                "th",
+	                                { key: d, className: "dow" },
+	                                dateLocale.weekday(d).format("dd")
+	                            );
+	                        })
+	                    )
+	                ),
+	                this.renderDays()
+	            )
+	        );
+	    };
 
 	    return DatePickerDays;
 	}(_react.Component);
@@ -19954,8 +19923,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -19976,25 +19943,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var DatePickerMonths = function (_Component) {
 	    _inherits(DatePickerMonths, _Component);
 
 	    function DatePickerMonths() {
-	        var _Object$getPrototypeO;
-
 	        _classCallCheck(this, DatePickerMonths);
 
 	        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	            args[_key] = arguments[_key];
 	        }
 
-	        var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DatePickerMonths)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+	        var _this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args)));
 
 	        _initialiseProps.call(_this);
 
@@ -20004,140 +19971,133 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return _this;
 	    }
 
-	    _createClass(DatePickerMonths, [{
-	        key: "componentWillReceiveProps",
-	        value: function componentWillReceiveProps(props) {
-	            this.setState({ date: (0, _moment2.default)(props.date) });
-	        }
-	    }, {
-	        key: "renderPrevButton",
-	        value: function renderPrevButton() {
-	            var _props = this.props;
-	            var icons = _props.icons;
-	            var minDate = _props.minDate;
-	            var tooltips = _props.tooltips;
-	            var date = this.state.date;
+	    DatePickerMonths.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
+	        this.setState({ date: (0, _moment2.default)(props.date) });
+	    };
 
-	            var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(date).subtract(1, "year"), "years", minDate);
+	    DatePickerMonths.prototype.renderPrevButton = function renderPrevButton() {
+	        var _props = this.props;
+	        var icons = _props.icons;
+	        var minDate = _props.minDate;
+	        var tooltips = _props.tooltips;
+	        var date = this.state.date;
 
-	            var classes = (0, _classnames2.default)("prev", {
-	                disabled: !inRange
-	            });
+	        var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(date).subtract(1, "year"), "years", minDate);
 
-	            return _react2.default.createElement(
-	                "th",
-	                { className: classes, onClick: inRange && this.onClickPreviousYear },
-	                _react2.default.createElement("span", { className: icons.previous, title: tooltips.prevYear })
-	            );
-	        }
-	    }, {
-	        key: "renderNextButton",
-	        value: function renderNextButton() {
-	            var _props2 = this.props;
-	            var icons = _props2.icons;
-	            var maxDate = _props2.maxDate;
-	            var tooltips = _props2.tooltips;
-	            var date = this.state.date;
+	        var classes = (0, _classnames2.default)("prev", {
+	            disabled: !inRange
+	        });
 
-	            var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(date).add(1, "year"), "years", null, maxDate);
+	        return _react2.default.createElement(
+	            "th",
+	            { className: classes, onClick: inRange && this.onClickPreviousYear },
+	            _react2.default.createElement("span", { className: icons.previous, title: tooltips.prevYear })
+	        );
+	    };
 
-	            var classes = (0, _classnames2.default)("next", {
-	                disabled: !inRange
-	            });
+	    DatePickerMonths.prototype.renderNextButton = function renderNextButton() {
+	        var _props2 = this.props;
+	        var icons = _props2.icons;
+	        var maxDate = _props2.maxDate;
+	        var tooltips = _props2.tooltips;
+	        var date = this.state.date;
 
-	            return _react2.default.createElement(
-	                "th",
-	                { className: classes, onClick: inRange && this.onClickNextYear },
-	                _react2.default.createElement("span", { className: icons.next, title: tooltips.nextYear })
-	            );
-	        }
-	    }, {
-	        key: "onClickMonth",
-	        value: function onClickMonth(date) {
-	            var _this2 = this;
+	        var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(date).add(1, "year"), "years", null, maxDate);
 
-	            return function () {
-	                var _props3 = _this2.props;
-	                var dateTime = _props3.dateTime;
-	                var onSelect = _props3.onSelect;
+	        var classes = (0, _classnames2.default)("next", {
+	            disabled: !inRange
+	        });
+
+	        return _react2.default.createElement(
+	            "th",
+	            { className: classes, onClick: inRange && this.onClickNextYear },
+	            _react2.default.createElement("span", { className: icons.next, title: tooltips.nextYear })
+	        );
+	    };
+
+	    DatePickerMonths.prototype.onClickMonth = function onClickMonth(date) {
+	        var _this2 = this;
+
+	        return function () {
+	            var _props3 = _this2.props;
+	            var dateTime = _props3.dateTime;
+	            var onSelect = _props3.onSelect;
 
 
-	                onSelect((0, _moment2.default)(dateTime).year(date.year()).month(date.month()), false, true);
-	            };
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var _this3 = this;
+	            onSelect((0, _moment2.default)(dateTime).year(date.year()).month(date.month()), false, true);
+	        };
+	    };
 
-	            var _props4 = this.props;
-	            var dateTime = _props4.dateTime;
-	            var locale = _props4.locale;
-	            var maxDate = _props4.maxDate;
-	            var minDate = _props4.minDate;
-	            var onClickYears = _props4.onClickYears;
-	            var selected = _props4.selected;
-	            var tooltips = _props4.tooltips;
-	            var date = this.state.date;
+	    DatePickerMonths.prototype.render = function render() {
+	        var _this3 = this;
+
+	        var _props4 = this.props;
+	        var dateTime = _props4.dateTime;
+	        var locale = _props4.locale;
+	        var maxDate = _props4.maxDate;
+	        var minDate = _props4.minDate;
+	        var onClickYears = _props4.onClickYears;
+	        var selected = _props4.selected;
+	        var tooltips = _props4.tooltips;
+	        var date = this.state.date;
 
 
-	            return _react2.default.createElement(
-	                "div",
-	                { className: "datepicker-months" },
+	        return _react2.default.createElement(
+	            "div",
+	            { className: "datepicker-months" },
+	            _react2.default.createElement(
+	                "table",
+	                { className: "table-condensed" },
 	                _react2.default.createElement(
-	                    "table",
-	                    { className: "table-condensed" },
+	                    "thead",
+	                    null,
 	                    _react2.default.createElement(
-	                        "thead",
+	                        "tr",
+	                        null,
+	                        this.renderPrevButton(),
+	                        _react2.default.createElement(
+	                            "th",
+	                            { className: "picker-switch",
+	                                colSpan: "5",
+	                                title: tooltips.selectYear,
+	                                onClick: onClickYears },
+	                            date.format("YYYY")
+	                        ),
+	                        this.renderNextButton()
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    "tbody",
+	                    null,
+	                    _react2.default.createElement(
+	                        "tr",
 	                        null,
 	                        _react2.default.createElement(
-	                            "tr",
-	                            null,
-	                            this.renderPrevButton(),
-	                            _react2.default.createElement(
-	                                "th",
-	                                { className: "picker-switch",
-	                                    colSpan: "5",
-	                                    title: tooltips.selectYear,
-	                                    onClick: onClickYears },
-	                                date.format("YYYY")
-	                            ),
-	                            this.renderNextButton()
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "tbody",
-	                        null,
-	                        _react2.default.createElement(
-	                            "tr",
-	                            null,
-	                            _react2.default.createElement(
-	                                "td",
-	                                { colSpan: "7" },
-	                                this.months.map(function (m) {
-	                                    var month = (0, _moment2.default)(date).locale(locale).month(m).startOf("month");
-	                                    var sameMonth = month.diff((0, _moment2.default)(dateTime).startOf("month"), "months") === 0;
-	                                    var inRange = (0, _utils.inRangeDates)(month, "months", minDate, maxDate);
-	                                    var classes = (0, _classnames2.default)("month", {
-	                                        active: selected && sameMonth,
-	                                        disabled: !inRange
-	                                    });
+	                            "td",
+	                            { colSpan: "7" },
+	                            this.months.map(function (m) {
+	                                var month = (0, _moment2.default)(date).locale(locale).month(m).startOf("month");
+	                                var sameMonth = month.diff((0, _moment2.default)(dateTime).startOf("month"), "months") === 0;
+	                                var inRange = (0, _utils.inRangeDates)(month, "months", minDate, maxDate);
+	                                var classes = (0, _classnames2.default)("month", {
+	                                    active: selected && sameMonth,
+	                                    disabled: !inRange
+	                                });
 
-	                                    return _react2.default.createElement(
-	                                        "span",
-	                                        { className: classes,
-	                                            key: m,
-	                                            onClick: inRange && _this3.onClickMonth(month) },
-	                                        month.format("MMM")
-	                                    );
-	                                })
-	                            )
+	                                return _react2.default.createElement(
+	                                    "span",
+	                                    { className: classes,
+	                                        key: m,
+	                                        onClick: inRange && _this3.onClickMonth(month) },
+	                                    month.format("MMM")
+	                                );
+	                            })
 	                        )
 	                    )
 	                )
-	            );
-	        }
-	    }]);
+	            )
+	        );
+	    };
 
 	    return DatePickerMonths;
 	}(_react.Component);
@@ -20190,8 +20150,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -20214,18 +20172,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var DatePickerYears = function (_Component) {
 	    _inherits(DatePickerYears, _Component);
 
 	    function DatePickerYears() {
-	        var _Object$getPrototypeO;
-
 	        var _temp, _this, _ret;
 
 	        _classCallCheck(this, DatePickerYears);
@@ -20234,7 +20192,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            args[_key] = arguments[_key];
 	        }
 
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DatePickerYears)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.onClickPreviousDecade = function () {
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.onClickPreviousDecade = function () {
 	            var _this$props = _this.props;
 	            var decade = _this$props.decade;
 	            var updateDecade = _this$props.updateDecade;
@@ -20249,194 +20207,184 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
-	    _createClass(DatePickerYears, [{
-	        key: "startOfDecade",
-	        value: function startOfDecade(date) {
-	            return (0, _moment2.default)(date).year(Math.floor(date.year() / 10) * 10).startOf("year");
-	        }
-	    }, {
-	        key: "endOfDecade",
-	        value: function endOfDecade(date) {
-	            return (0, _moment2.default)(date).year(Math.floor(date.year() / 10 + 1) * 10 - 1).endOf("year");
-	        }
-	    }, {
-	        key: "renderPrevButton",
-	        value: function renderPrevButton() {
-	            var _props = this.props;
-	            var decade = _props.decade;
-	            var icons = _props.icons;
-	            var minDate = _props.minDate;
-	            var tooltips = _props.tooltips;
+	    DatePickerYears.prototype.startOfDecade = function startOfDecade(date) {
+	        return (0, _moment2.default)(date).year(Math.floor(date.year() / 10) * 10).startOf("year");
+	    };
 
-	            var date = (0, _moment2.default)([decade]);
-	            var endDecade = this.endOfDecade((0, _moment2.default)(date).subtract(10, "years"));
-	            var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(endDecade).subtract(1, "year"), "years", minDate);
+	    DatePickerYears.prototype.endOfDecade = function endOfDecade(date) {
+	        return (0, _moment2.default)(date).year(Math.floor(date.year() / 10 + 1) * 10 - 1).endOf("year");
+	    };
 
-	            var classes = (0, _classnames2.default)("prev", {
-	                disabled: !inRange
-	            });
+	    DatePickerYears.prototype.renderPrevButton = function renderPrevButton() {
+	        var _props = this.props;
+	        var decade = _props.decade;
+	        var icons = _props.icons;
+	        var minDate = _props.minDate;
+	        var tooltips = _props.tooltips;
 
-	            return _react2.default.createElement(
-	                "th",
-	                { className: classes, onClick: inRange && this.onClickPreviousDecade },
-	                _react2.default.createElement("span", { className: icons.previous, title: tooltips.prevDecade })
-	            );
-	        }
-	    }, {
-	        key: "renderNextButton",
-	        value: function renderNextButton() {
-	            var _props2 = this.props;
-	            var decade = _props2.decade;
-	            var icons = _props2.icons;
-	            var maxDate = _props2.maxDate;
-	            var tooltips = _props2.tooltips;
+	        var date = (0, _moment2.default)([decade]);
+	        var endDecade = this.endOfDecade((0, _moment2.default)(date).subtract(10, "years"));
+	        var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(endDecade).subtract(1, "year"), "years", minDate);
 
-	            var date = (0, _moment2.default)([decade]);
-	            var startDecade = this.startOfDecade((0, _moment2.default)(date).add(10, "years"));
-	            var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(startDecade).add(1, "year"), "years", null, maxDate);
+	        var classes = (0, _classnames2.default)("prev", {
+	            disabled: !inRange
+	        });
 
-	            var classes = (0, _classnames2.default)("next", {
-	                disabled: !inRange
-	            });
+	        return _react2.default.createElement(
+	            "th",
+	            { className: classes, onClick: inRange && this.onClickPreviousDecade },
+	            _react2.default.createElement("span", { className: icons.previous, title: tooltips.prevDecade })
+	        );
+	    };
 
-	            return _react2.default.createElement(
-	                "th",
-	                { className: classes, onClick: inRange && this.onClickNextDecade },
-	                _react2.default.createElement("span", { className: icons.next, title: tooltips.nextDecade })
-	            );
-	        }
-	    }, {
-	        key: "renderLeftEdge",
-	        value: function renderLeftEdge(year) {
-	            var minDate = this.props.minDate;
+	    DatePickerYears.prototype.renderNextButton = function renderNextButton() {
+	        var _props2 = this.props;
+	        var decade = _props2.decade;
+	        var icons = _props2.icons;
+	        var maxDate = _props2.maxDate;
+	        var tooltips = _props2.tooltips;
 
-	            var date = (0, _moment2.default)(year).subtract(1, "year");
-	            var inRange = (0, _utils.inRangeDates)(date, "years", minDate);
+	        var date = (0, _moment2.default)([decade]);
+	        var startDecade = this.startOfDecade((0, _moment2.default)(date).add(10, "years"));
+	        var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(startDecade).add(1, "year"), "years", null, maxDate);
 
-	            var classes = (0, _classnames2.default)("year old", {
-	                disabled: !inRange
-	            });
+	        var classes = (0, _classnames2.default)("next", {
+	            disabled: !inRange
+	        });
 
-	            return _react2.default.createElement(
-	                "span",
-	                { className: classes, onClick: inRange && this.onClickPreviousDecade },
-	                "…" + date.year()
-	            );
-	        }
-	    }, {
-	        key: "renderRightEdge",
-	        value: function renderRightEdge(year) {
-	            var maxDate = this.props.maxDate;
+	        return _react2.default.createElement(
+	            "th",
+	            { className: classes, onClick: inRange && this.onClickNextDecade },
+	            _react2.default.createElement("span", { className: icons.next, title: tooltips.nextDecade })
+	        );
+	    };
 
-	            var date = (0, _moment2.default)(year).add(1, "year");
-	            var inRange = (0, _utils.inRangeDates)(date, "years", null, maxDate);
+	    DatePickerYears.prototype.renderLeftEdge = function renderLeftEdge(year) {
+	        var minDate = this.props.minDate;
 
-	            var classes = (0, _classnames2.default)("year old", {
-	                disabled: !inRange
-	            });
+	        var date = (0, _moment2.default)(year).subtract(1, "year");
+	        var inRange = (0, _utils.inRangeDates)(date, "years", minDate);
 
-	            return _react2.default.createElement(
-	                "span",
-	                { className: classes, onClick: inRange && this.onClickNextDecade },
-	                "…" + date.year()
-	            );
-	        }
-	    }, {
-	        key: "onClickYear",
-	        value: function onClickYear(date) {
-	            var _this2 = this;
+	        var classes = (0, _classnames2.default)("year old", {
+	            disabled: !inRange
+	        });
 
-	            return function () {
-	                var _props3 = _this2.props;
-	                var dateTime = _props3.dateTime;
-	                var onSelect = _props3.onSelect;
+	        return _react2.default.createElement(
+	            "span",
+	            { className: classes, onClick: inRange && this.onClickPreviousDecade },
+	            "…" + date.year()
+	        );
+	    };
+
+	    DatePickerYears.prototype.renderRightEdge = function renderRightEdge(year) {
+	        var maxDate = this.props.maxDate;
+
+	        var date = (0, _moment2.default)(year).add(1, "year");
+	        var inRange = (0, _utils.inRangeDates)(date, "years", null, maxDate);
+
+	        var classes = (0, _classnames2.default)("year old", {
+	            disabled: !inRange
+	        });
+
+	        return _react2.default.createElement(
+	            "span",
+	            { className: classes, onClick: inRange && this.onClickNextDecade },
+	            "…" + date.year()
+	        );
+	    };
+
+	    DatePickerYears.prototype.onClickYear = function onClickYear(date) {
+	        var _this2 = this;
+
+	        return function () {
+	            var _props3 = _this2.props;
+	            var dateTime = _props3.dateTime;
+	            var onSelect = _props3.onSelect;
 
 
-	                onSelect((0, _moment2.default)(dateTime).year(date.year()), false, true);
-	            };
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var _this3 = this;
+	            onSelect((0, _moment2.default)(dateTime).year(date.year()), false, true);
+	        };
+	    };
 
-	            var _props4 = this.props;
-	            var dateTime = _props4.dateTime;
-	            var decade = _props4.decade;
-	            var maxDate = _props4.maxDate;
-	            var minDate = _props4.minDate;
-	            var onClickDecades = _props4.onClickDecades;
-	            var selected = _props4.selected;
-	            var tooltips = _props4.tooltips;
+	    DatePickerYears.prototype.render = function render() {
+	        var _this3 = this;
 
-	            var date = (0, _moment2.default)([decade]);
-	            var firstYear = this.startOfDecade(date);
-	            var lastYear = this.endOfDecade(date);
-	            var decadeYears = _moment2.default.range(firstYear, lastYear);
-	            var years = [];
+	        var _props4 = this.props;
+	        var dateTime = _props4.dateTime;
+	        var decade = _props4.decade;
+	        var maxDate = _props4.maxDate;
+	        var minDate = _props4.minDate;
+	        var onClickDecades = _props4.onClickDecades;
+	        var selected = _props4.selected;
+	        var tooltips = _props4.tooltips;
 
-	            decadeYears.by("year", function (y) {
-	                return years.push(y);
-	            });
+	        var date = (0, _moment2.default)([decade]);
+	        var firstYear = this.startOfDecade(date);
+	        var lastYear = this.endOfDecade(date);
+	        var decadeYears = _moment2.default.range(firstYear, lastYear);
+	        var years = [];
 
-	            return _react2.default.createElement(
-	                "div",
-	                { className: "datepicker-years" },
+	        decadeYears.by("year", function (y) {
+	            return years.push(y);
+	        });
+
+	        return _react2.default.createElement(
+	            "div",
+	            { className: "datepicker-years" },
+	            _react2.default.createElement(
+	                "table",
+	                { className: "table-condensed" },
 	                _react2.default.createElement(
-	                    "table",
-	                    { className: "table-condensed" },
+	                    "thead",
+	                    null,
 	                    _react2.default.createElement(
-	                        "thead",
+	                        "tr",
+	                        null,
+	                        this.renderPrevButton(),
+	                        _react2.default.createElement(
+	                            "th",
+	                            { className: "picker-switch",
+	                                colSpan: "5",
+	                                title: tooltips.selectDecade,
+	                                onClick: onClickDecades },
+	                            firstYear.year() + "-" + lastYear.year()
+	                        ),
+	                        this.renderNextButton()
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    "tbody",
+	                    null,
+	                    _react2.default.createElement(
+	                        "tr",
 	                        null,
 	                        _react2.default.createElement(
-	                            "tr",
-	                            null,
-	                            this.renderPrevButton(),
-	                            _react2.default.createElement(
-	                                "th",
-	                                { className: "picker-switch",
-	                                    colSpan: "5",
-	                                    title: tooltips.selectDecade,
-	                                    onClick: onClickDecades },
-	                                firstYear.year() + "-" + lastYear.year()
-	                            ),
-	                            this.renderNextButton()
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "tbody",
-	                        null,
-	                        _react2.default.createElement(
-	                            "tr",
-	                            null,
-	                            _react2.default.createElement(
-	                                "td",
-	                                { colSpan: "7" },
-	                                this.renderLeftEdge(firstYear),
-	                                years.map(function (y) {
-	                                    var inRange = (0, _utils.inRangeDates)(y, "years", minDate, maxDate);
-	                                    var sameYear = y.diff((0, _moment2.default)(dateTime).startOf("year"), "years") === 0;
-	                                    var classes = (0, _classnames2.default)("year", {
-	                                        active: selected && sameYear,
-	                                        disabled: !inRange
-	                                    });
+	                            "td",
+	                            { colSpan: "7" },
+	                            this.renderLeftEdge(firstYear),
+	                            years.map(function (y) {
+	                                var inRange = (0, _utils.inRangeDates)(y, "years", minDate, maxDate);
+	                                var sameYear = y.diff((0, _moment2.default)(dateTime).startOf("year"), "years") === 0;
+	                                var classes = (0, _classnames2.default)("year", {
+	                                    active: selected && sameYear,
+	                                    disabled: !inRange
+	                                });
 
-	                                    return _react2.default.createElement(
-	                                        "span",
-	                                        { className: classes,
-	                                            key: y.year(),
-	                                            onClick: inRange && _this3.onClickYear(y) },
-	                                        y.year()
-	                                    );
-	                                }),
-	                                this.renderRightEdge(lastYear)
-	                            )
+	                                return _react2.default.createElement(
+	                                    "span",
+	                                    { className: classes,
+	                                        key: y.year(),
+	                                        onClick: inRange && _this3.onClickYear(y) },
+	                                    y.year()
+	                                );
+	                            }),
+	                            this.renderRightEdge(lastYear)
 	                        )
 	                    )
 	                )
-	            );
-	        }
-	    }]);
+	            )
+	        );
+	    };
 
 	    return DatePickerYears;
 	}(_react.Component);
@@ -20465,8 +20413,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -20489,18 +20435,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var DatePickerYears = function (_Component) {
 	    _inherits(DatePickerYears, _Component);
 
 	    function DatePickerYears() {
-	        var _Object$getPrototypeO;
-
 	        var _temp, _this, _ret;
 
 	        _classCallCheck(this, DatePickerYears);
@@ -20509,7 +20455,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            args[_key] = arguments[_key];
 	        }
 
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DatePickerYears)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.onClickPreviousCentury = function () {
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.onClickPreviousCentury = function () {
 	            var _this$props = _this.props;
 	            var decade = _this$props.decade;
 	            var updateDecade = _this$props.updateDecade;
@@ -20524,190 +20470,180 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
-	    _createClass(DatePickerYears, [{
-	        key: "startOfCentury",
-	        value: function startOfCentury(date) {
-	            return (0, _moment2.default)(date).year(Math.floor(date.year() / 100) * 100).startOf("year");
-	        }
-	    }, {
-	        key: "endOfCentury",
-	        value: function endOfCentury(date) {
-	            return (0, _moment2.default)(date).year(Math.floor(date.year() / 100 + 1) * 100 - 1).endOf("year");
-	        }
-	    }, {
-	        key: "renderPrevButton",
-	        value: function renderPrevButton() {
-	            var _props = this.props;
-	            var decade = _props.decade;
-	            var icons = _props.icons;
-	            var minDate = _props.minDate;
-	            var tooltips = _props.tooltips;
+	    DatePickerYears.prototype.startOfCentury = function startOfCentury(date) {
+	        return (0, _moment2.default)(date).year(Math.floor(date.year() / 100) * 100).startOf("year");
+	    };
 
-	            var date = (0, _moment2.default)([decade]);
-	            var endCentury = this.endOfCentury((0, _moment2.default)(date).subtract(100, "years"));
-	            var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(endCentury).subtract(1, "year"), "years", minDate);
+	    DatePickerYears.prototype.endOfCentury = function endOfCentury(date) {
+	        return (0, _moment2.default)(date).year(Math.floor(date.year() / 100 + 1) * 100 - 1).endOf("year");
+	    };
 
-	            var classes = (0, _classnames2.default)("prev", {
-	                disabled: !inRange
-	            });
+	    DatePickerYears.prototype.renderPrevButton = function renderPrevButton() {
+	        var _props = this.props;
+	        var decade = _props.decade;
+	        var icons = _props.icons;
+	        var minDate = _props.minDate;
+	        var tooltips = _props.tooltips;
 
-	            return _react2.default.createElement(
-	                "th",
-	                { className: classes, onClick: inRange && this.onClickPreviousCentury },
-	                _react2.default.createElement("span", { className: icons.previous, title: tooltips.prevCentury })
-	            );
-	        }
-	    }, {
-	        key: "renderNextButton",
-	        value: function renderNextButton() {
-	            var _props2 = this.props;
-	            var decade = _props2.decade;
-	            var icons = _props2.icons;
-	            var maxDate = _props2.maxDate;
-	            var tooltips = _props2.tooltips;
+	        var date = (0, _moment2.default)([decade]);
+	        var endCentury = this.endOfCentury((0, _moment2.default)(date).subtract(100, "years"));
+	        var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(endCentury).subtract(1, "year"), "years", minDate);
 
-	            var date = (0, _moment2.default)([decade]);
-	            var startCentury = this.startOfCentury((0, _moment2.default)(date).add(100, "years"));
-	            var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(startCentury).add(1, "year"), "years", null, maxDate);
+	        var classes = (0, _classnames2.default)("prev", {
+	            disabled: !inRange
+	        });
 
-	            var classes = (0, _classnames2.default)("next", {
-	                disabled: !inRange
-	            });
+	        return _react2.default.createElement(
+	            "th",
+	            { className: classes, onClick: inRange && this.onClickPreviousCentury },
+	            _react2.default.createElement("span", { className: icons.previous, title: tooltips.prevCentury })
+	        );
+	    };
 
-	            return _react2.default.createElement(
-	                "th",
-	                { className: classes, onClick: inRange && this.onClickNextCentury },
-	                _react2.default.createElement("span", { className: icons.next, title: tooltips.nextCentury })
-	            );
-	        }
-	    }, {
-	        key: "renderLeftEdge",
-	        value: function renderLeftEdge(year) {
-	            var minDate = this.props.minDate;
+	    DatePickerYears.prototype.renderNextButton = function renderNextButton() {
+	        var _props2 = this.props;
+	        var decade = _props2.decade;
+	        var icons = _props2.icons;
+	        var maxDate = _props2.maxDate;
+	        var tooltips = _props2.tooltips;
 
-	            var date = (0, _moment2.default)(year).subtract(1, "year");
-	            var inRange = (0, _utils.inRangeDates)(date, "years", minDate);
+	        var date = (0, _moment2.default)([decade]);
+	        var startCentury = this.startOfCentury((0, _moment2.default)(date).add(100, "years"));
+	        var inRange = (0, _utils.inRangeDates)((0, _moment2.default)(startCentury).add(1, "year"), "years", null, maxDate);
 
-	            var classes = (0, _classnames2.default)("year old", {
-	                disabled: !inRange
-	            });
+	        var classes = (0, _classnames2.default)("next", {
+	            disabled: !inRange
+	        });
 
-	            return _react2.default.createElement(
-	                "span",
-	                { className: classes, onClick: inRange && this.onClickPreviousCentury },
-	                "…" + date.year()
-	            );
-	        }
-	    }, {
-	        key: "renderRightEdge",
-	        value: function renderRightEdge(year) {
-	            var maxDate = this.props.maxDate;
+	        return _react2.default.createElement(
+	            "th",
+	            { className: classes, onClick: inRange && this.onClickNextCentury },
+	            _react2.default.createElement("span", { className: icons.next, title: tooltips.nextCentury })
+	        );
+	    };
 
-	            var date = (0, _moment2.default)(year).add(1, "year");
-	            var inRange = (0, _utils.inRangeDates)(date, "years", null, maxDate);
+	    DatePickerYears.prototype.renderLeftEdge = function renderLeftEdge(year) {
+	        var minDate = this.props.minDate;
 
-	            var classes = (0, _classnames2.default)("year old", {
-	                disabled: !inRange
-	            });
+	        var date = (0, _moment2.default)(year).subtract(1, "year");
+	        var inRange = (0, _utils.inRangeDates)(date, "years", minDate);
 
-	            return _react2.default.createElement(
-	                "span",
-	                { className: classes, onClick: inRange && this.onClickNextCentury },
-	                "…" + date.year()
-	            );
-	        }
-	    }, {
-	        key: "onClickDecade",
-	        value: function onClickDecade(date) {
-	            var _this2 = this;
+	        var classes = (0, _classnames2.default)("year old", {
+	            disabled: !inRange
+	        });
 
-	            return function () {
-	                var onSelect = _this2.props.onSelect;
+	        return _react2.default.createElement(
+	            "span",
+	            { className: classes, onClick: inRange && this.onClickPreviousCentury },
+	            "…" + date.year()
+	        );
+	    };
 
-	                onSelect(date, false, true);
-	            };
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var _this3 = this;
+	    DatePickerYears.prototype.renderRightEdge = function renderRightEdge(year) {
+	        var maxDate = this.props.maxDate;
 
-	            var _props3 = this.props;
-	            var dateTime = _props3.dateTime;
-	            var decade = _props3.decade;
-	            var maxDate = _props3.maxDate;
-	            var minDate = _props3.minDate;
-	            var selected = _props3.selected;
+	        var date = (0, _moment2.default)(year).add(1, "year");
+	        var inRange = (0, _utils.inRangeDates)(date, "years", null, maxDate);
 
-	            var date = (0, _moment2.default)([decade]);
-	            var firstYear = this.startOfCentury(date);
-	            var lastYear = this.endOfCentury(date);
-	            var centuryYears = _moment2.default.range(firstYear, lastYear);
-	            var years = [];
+	        var classes = (0, _classnames2.default)("year old", {
+	            disabled: !inRange
+	        });
 
-	            centuryYears.by("year", function (y) {
-	                if (y.year() % 10 === 0) {
-	                    years.push(y);
-	                }
-	            });
+	        return _react2.default.createElement(
+	            "span",
+	            { className: classes, onClick: inRange && this.onClickNextCentury },
+	            "…" + date.year()
+	        );
+	    };
 
-	            return _react2.default.createElement(
-	                "div",
-	                { className: "datepicker-decades" },
+	    DatePickerYears.prototype.onClickDecade = function onClickDecade(date) {
+	        var _this2 = this;
+
+	        return function () {
+	            var onSelect = _this2.props.onSelect;
+
+	            onSelect(date, false, true);
+	        };
+	    };
+
+	    DatePickerYears.prototype.render = function render() {
+	        var _this3 = this;
+
+	        var _props3 = this.props;
+	        var dateTime = _props3.dateTime;
+	        var decade = _props3.decade;
+	        var maxDate = _props3.maxDate;
+	        var minDate = _props3.minDate;
+	        var selected = _props3.selected;
+
+	        var date = (0, _moment2.default)([decade]);
+	        var firstYear = this.startOfCentury(date);
+	        var lastYear = this.endOfCentury(date);
+	        var centuryYears = _moment2.default.range(firstYear, lastYear);
+	        var years = [];
+
+	        centuryYears.by("year", function (y) {
+	            if (y.year() % 10 === 0) {
+	                years.push(y);
+	            }
+	        });
+
+	        return _react2.default.createElement(
+	            "div",
+	            { className: "datepicker-decades" },
+	            _react2.default.createElement(
+	                "table",
+	                { className: "table-condensed" },
 	                _react2.default.createElement(
-	                    "table",
-	                    { className: "table-condensed" },
+	                    "thead",
+	                    null,
 	                    _react2.default.createElement(
-	                        "thead",
+	                        "tr",
+	                        null,
+	                        this.renderPrevButton(),
+	                        _react2.default.createElement(
+	                            "th",
+	                            { className: "picker-switch",
+	                                colSpan: "5" },
+	                            firstYear.year() + "-" + lastYear.year()
+	                        ),
+	                        this.renderNextButton()
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    "tbody",
+	                    null,
+	                    _react2.default.createElement(
+	                        "tr",
 	                        null,
 	                        _react2.default.createElement(
-	                            "tr",
-	                            null,
-	                            this.renderPrevButton(),
-	                            _react2.default.createElement(
-	                                "th",
-	                                { className: "picker-switch",
-	                                    colSpan: "5" },
-	                                firstYear.year() + "-" + lastYear.year()
-	                            ),
-	                            this.renderNextButton()
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "tbody",
-	                        null,
-	                        _react2.default.createElement(
-	                            "tr",
-	                            null,
-	                            _react2.default.createElement(
-	                                "td",
-	                                { colSpan: "7" },
-	                                this.renderLeftEdge(firstYear),
-	                                years.map(function (y) {
-	                                    var sameYear = dateTime.year() >= y.year() && dateTime.year() <= y.year() + 9;
-	                                    var inRangeLow = (0, _utils.inRangeDates)(y, "years", null, maxDate);
-	                                    var inRangeHigh = (0, _utils.inRangeDates)((0, _moment2.default)(y).add(9, "years"), "years", minDate);
-	                                    var classes = (0, _classnames2.default)("decade", {
-	                                        active: selected && sameYear,
-	                                        disabled: !inRangeLow || !inRangeHigh
-	                                    });
+	                            "td",
+	                            { colSpan: "7" },
+	                            this.renderLeftEdge(firstYear),
+	                            years.map(function (y) {
+	                                var sameYear = dateTime.year() >= y.year() && dateTime.year() <= y.year() + 9;
+	                                var inRangeLow = (0, _utils.inRangeDates)(y, "years", null, maxDate);
+	                                var inRangeHigh = (0, _utils.inRangeDates)((0, _moment2.default)(y).add(9, "years"), "years", minDate);
+	                                var classes = (0, _classnames2.default)("decade", {
+	                                    active: selected && sameYear,
+	                                    disabled: !inRangeLow || !inRangeHigh
+	                                });
 
-	                                    return _react2.default.createElement(
-	                                        "span",
-	                                        { className: classes,
-	                                            key: y.year(),
-	                                            onClick: inRangeLow && inRangeHigh && _this3.onClickDecade(y) },
-	                                        y.year() + "-" + (0, _moment2.default)(y).add(9, "years").year()
-	                                    );
-	                                }),
-	                                this.renderRightEdge(lastYear)
-	                            )
+	                                return _react2.default.createElement(
+	                                    "span",
+	                                    { className: classes,
+	                                        key: y.year(),
+	                                        onClick: inRangeLow && inRangeHigh && _this3.onClickDecade(y) },
+	                                    y.year() + "-" + (0, _moment2.default)(y).add(9, "years").year()
+	                                );
+	                            }),
+	                            this.renderRightEdge(lastYear)
 	                        )
 	                    )
 	                )
-	            );
-	        }
-	    }]);
+	            )
+	        );
+	    };
 
 	    return DatePickerYears;
 	}(_react.Component);
@@ -20771,8 +20707,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -20805,25 +20739,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var TimePicker = function (_Component) {
 	    _inherits(TimePicker, _Component);
 
 	    function TimePicker() {
-	        var _Object$getPrototypeO;
-
 	        _classCallCheck(this, TimePicker);
 
 	        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	            args[_key] = arguments[_key];
 	        }
 
-	        var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(TimePicker)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+	        var _this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args)));
 
 	        _this.state = {
 	            use24Hours: false,
@@ -20861,62 +20795,56 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return _this;
 	    }
 
-	    _createClass(TimePicker, [{
-	        key: "componentWillReceiveProps",
-	        value: function componentWillReceiveProps() {
-	            this.setState({ use24Hours: this.get24HoursFlag() });
+	    TimePicker.prototype.componentWillReceiveProps = function componentWillReceiveProps() {
+	        this.setState({ use24Hours: this.get24HoursFlag() });
+	    };
+
+	    TimePicker.prototype.get24HoursFlag = function get24HoursFlag() {
+	        var locale = this.props.locale;
+
+	        var momentLocale = (0, _moment2.default)().locale(locale);
+	        var actualFormat = ["LT", "LTS"].map(function (f) {
+	            return momentLocale.localeData().longDateFormat(f);
+	        }).join(" ");
+
+	        return actualFormat.toLowerCase().indexOf("a") < 1 && actualFormat.replace(/\[.*?\]/g, "").indexOf("h") < 1;
+	    };
+
+	    TimePicker.prototype.renderViewMode = function renderViewMode() {
+	        var _state = this.state;
+	        var use24Hours = _state.use24Hours;
+	        var viewMode = _state.viewMode;
+
+
+	        switch (viewMode) {
+	            case _config.VIEW_MODE_HOURS:
+	                return _react2.default.createElement(_hours2.default, _extends({}, this.props, {
+	                    use24Hours: use24Hours,
+	                    onSelect: this.onSelectTime }));
+
+	            case _config.VIEW_MODE_MINUTES:
+	                return _react2.default.createElement(_minutes2.default, _extends({}, this.props, {
+	                    onSelect: this.onSelectTime }));
+
+	            default:
+	                return _react2.default.createElement(_time2.default, _extends({ use24Hours: use24Hours,
+	                    onClickHours: this.onClickHours,
+	                    onClickMinutes: this.onClickMinutes,
+	                    onSelect: this.onSelectTime
+	                }, this.props));
 	        }
-	    }, {
-	        key: "get24HoursFlag",
-	        value: function get24HoursFlag() {
-	            var locale = this.props.locale;
+	    };
 
-	            var momentLocale = (0, _moment2.default)().locale(locale);
-	            var actualFormat = ["LT", "LTS"].map(function (f) {
-	                return momentLocale.localeData().longDateFormat(f);
-	            }).join(" ");
+	    TimePicker.prototype.render = function render() {
+	        var sideBySide = this.props.sideBySide;
 
-	            return actualFormat.toLowerCase().indexOf("a") < 1 && actualFormat.replace(/\[.*?\]/g, "").indexOf("h") < 1;
-	        }
-	    }, {
-	        key: "renderViewMode",
-	        value: function renderViewMode() {
-	            var _state = this.state;
-	            var use24Hours = _state.use24Hours;
-	            var viewMode = _state.viewMode;
-
-
-	            switch (viewMode) {
-	                case _config.VIEW_MODE_HOURS:
-	                    return _react2.default.createElement(_hours2.default, _extends({}, this.props, {
-	                        use24Hours: use24Hours,
-	                        onSelect: this.onSelectTime }));
-
-	                case _config.VIEW_MODE_MINUTES:
-	                    return _react2.default.createElement(_minutes2.default, _extends({}, this.props, {
-	                        onSelect: this.onSelectTime }));
-
-	                default:
-	                    return _react2.default.createElement(_time2.default, _extends({ use24Hours: use24Hours,
-	                        onClickHours: this.onClickHours,
-	                        onClickMinutes: this.onClickMinutes,
-	                        onSelect: this.onSelectTime
-	                    }, this.props));
-	            }
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var sideBySide = this.props.sideBySide;
-
-	            var classes = (0, _classnames2.default)("timepicker", { "col-md-6": sideBySide });
-	            return _react2.default.createElement(
-	                "div",
-	                { className: classes },
-	                this.renderViewMode()
-	            );
-	        }
-	    }]);
+	        var classes = (0, _classnames2.default)("timepicker", { "col-md-6": sideBySide });
+	        return _react2.default.createElement(
+	            "div",
+	            { className: classes },
+	            this.renderViewMode()
+	        );
+	    };
 
 	    return TimePicker;
 	}(_react.Component);
@@ -20939,8 +20867,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -20955,18 +20881,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var TimePickerTime = function (_Component) {
 	    _inherits(TimePickerTime, _Component);
 
 	    function TimePickerTime() {
-	        var _Object$getPrototypeO;
-
 	        var _temp, _this, _ret;
 
 	        _classCallCheck(this, TimePickerTime);
@@ -20975,7 +20901,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            args[_key] = arguments[_key];
 	        }
 
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(TimePickerTime)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.onClickAmPmToggle = function (e) {
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.onClickAmPmToggle = function (e) {
 	            e.preventDefault();
 
 	            var _this$props = _this.props;
@@ -21052,150 +20978,146 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
-	    _createClass(TimePickerTime, [{
-	        key: "renderAmPmSwitch",
-	        value: function renderAmPmSwitch() {
-	            var _props = this.props;
-	            var dateTime = _props.dateTime;
-	            var use24Hours = _props.use24Hours;
-	            var tooltips = _props.tooltips;
+	    TimePickerTime.prototype.renderAmPmSwitch = function renderAmPmSwitch() {
+	        var _props = this.props;
+	        var dateTime = _props.dateTime;
+	        var use24Hours = _props.use24Hours;
+	        var tooltips = _props.tooltips;
 
 
-	            if (use24Hours) {
-	                return false;
-	            }
-
-	            return _react2.default.createElement(
-	                "td",
-	                null,
-	                _react2.default.createElement(
-	                    "button",
-	                    { "data-action": true,
-	                        className: "btn btn-primary",
-	                        title: tooltips.togglePeriod,
-	                        onClick: this.onClickAmPmToggle },
-	                    dateTime.format("A")
-	                )
-	            );
+	        if (use24Hours) {
+	            return false;
 	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var _props2 = this.props;
-	            var dateTime = _props2.dateTime;
-	            var icons = _props2.icons;
-	            var onClickHours = _props2.onClickHours;
-	            var onClickMinutes = _props2.onClickMinutes;
-	            var use24Hours = _props2.use24Hours;
-	            var tooltips = _props2.tooltips;
+
+	        return _react2.default.createElement(
+	            "td",
+	            null,
+	            _react2.default.createElement(
+	                "button",
+	                { "data-action": true,
+	                    className: "btn btn-primary",
+	                    title: tooltips.togglePeriod,
+	                    onClick: this.onClickAmPmToggle },
+	                dateTime.format("A")
+	            )
+	        );
+	    };
+
+	    TimePickerTime.prototype.render = function render() {
+	        var _props2 = this.props;
+	        var dateTime = _props2.dateTime;
+	        var icons = _props2.icons;
+	        var onClickHours = _props2.onClickHours;
+	        var onClickMinutes = _props2.onClickMinutes;
+	        var use24Hours = _props2.use24Hours;
+	        var tooltips = _props2.tooltips;
 
 
-	            return _react2.default.createElement(
-	                "div",
-	                { className: "timepicker-picker" },
+	        return _react2.default.createElement(
+	            "div",
+	            { className: "timepicker-picker" },
+	            _react2.default.createElement(
+	                "table",
+	                { className: "table-condensed" },
 	                _react2.default.createElement(
-	                    "table",
-	                    { className: "table-condensed" },
+	                    "tbody",
+	                    null,
 	                    _react2.default.createElement(
-	                        "tbody",
+	                        "tr",
 	                        null,
 	                        _react2.default.createElement(
-	                            "tr",
+	                            "td",
 	                            null,
 	                            _react2.default.createElement(
-	                                "td",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "a",
-	                                    { href: "#",
-	                                        className: "btn",
-	                                        title: tooltips.incrementHour,
-	                                        onClick: this.onClickAddHour },
-	                                    _react2.default.createElement("span", { className: icons.up })
-	                                )
-	                            ),
-	                            _react2.default.createElement("td", { className: "separator" }),
+	                                "a",
+	                                { href: "#",
+	                                    className: "btn",
+	                                    title: tooltips.incrementHour,
+	                                    onClick: this.onClickAddHour },
+	                                _react2.default.createElement("span", { className: icons.up })
+	                            )
+	                        ),
+	                        _react2.default.createElement("td", { className: "separator" }),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
 	                            _react2.default.createElement(
-	                                "td",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "a",
-	                                    { href: "#",
-	                                        className: "btn",
-	                                        title: tooltips.incrementMinute,
-	                                        onClick: this.onClickAddMinute },
-	                                    _react2.default.createElement("span", { className: icons.up })
-	                                )
-	                            ),
-	                            _react2.default.createElement("td", { className: "separator" })
+	                                "a",
+	                                { href: "#",
+	                                    className: "btn",
+	                                    title: tooltips.incrementMinute,
+	                                    onClick: this.onClickAddMinute },
+	                                _react2.default.createElement("span", { className: icons.up })
+	                            )
+	                        ),
+	                        _react2.default.createElement("td", { className: "separator" })
+	                    ),
+	                    _react2.default.createElement(
+	                        "tr",
+	                        null,
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "span",
+	                                { className: "timepicker-hour",
+	                                    title: tooltips.pickHour,
+	                                    onClick: onClickHours },
+	                                dateTime.format(use24Hours ? "HH" : "hh")
+	                            )
 	                        ),
 	                        _react2.default.createElement(
-	                            "tr",
-	                            null,
-	                            _react2.default.createElement(
-	                                "td",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "span",
-	                                    { className: "timepicker-hour",
-	                                        title: tooltips.pickHour,
-	                                        onClick: onClickHours },
-	                                    dateTime.format(use24Hours ? "HH" : "hh")
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                "td",
-	                                { className: "separator" },
-	                                ":"
-	                            ),
-	                            _react2.default.createElement(
-	                                "td",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "span",
-	                                    { className: "timepicker-minute",
-	                                        title: tooltips.pickMinute,
-	                                        onClick: onClickMinutes },
-	                                    dateTime.format("mm")
-	                                )
-	                            ),
-	                            this.renderAmPmSwitch()
+	                            "td",
+	                            { className: "separator" },
+	                            ":"
 	                        ),
 	                        _react2.default.createElement(
-	                            "tr",
+	                            "td",
 	                            null,
 	                            _react2.default.createElement(
-	                                "td",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "a",
-	                                    { href: "#",
-	                                        className: "btn",
-	                                        title: tooltips.decrementHour,
-	                                        onClick: this.onClickSubtractHour },
-	                                    _react2.default.createElement("span", { className: icons.down })
-	                                )
-	                            ),
-	                            _react2.default.createElement("td", { className: "separator" }),
+	                                "span",
+	                                { className: "timepicker-minute",
+	                                    title: tooltips.pickMinute,
+	                                    onClick: onClickMinutes },
+	                                dateTime.format("mm")
+	                            )
+	                        ),
+	                        this.renderAmPmSwitch()
+	                    ),
+	                    _react2.default.createElement(
+	                        "tr",
+	                        null,
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
 	                            _react2.default.createElement(
-	                                "td",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "a",
-	                                    { href: "#",
-	                                        className: "btn",
-	                                        title: tooltips.decrementMinute,
-	                                        onClick: this.onClickSubtractMinute },
-	                                    _react2.default.createElement("span", { className: icons.down })
-	                                )
-	                            ),
-	                            _react2.default.createElement("td", { className: "separator" })
-	                        )
+	                                "a",
+	                                { href: "#",
+	                                    className: "btn",
+	                                    title: tooltips.decrementHour,
+	                                    onClick: this.onClickSubtractHour },
+	                                _react2.default.createElement("span", { className: icons.down })
+	                            )
+	                        ),
+	                        _react2.default.createElement("td", { className: "separator" }),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "a",
+	                                { href: "#",
+	                                    className: "btn",
+	                                    title: tooltips.decrementMinute,
+	                                    onClick: this.onClickSubtractMinute },
+	                                _react2.default.createElement("span", { className: icons.down })
+	                            )
+	                        ),
+	                        _react2.default.createElement("td", { className: "separator" })
 	                    )
 	                )
-	            );
-	        }
-	    }]);
+	            )
+	        );
+	    };
 
 	    return TimePickerTime;
 	}(_react.Component);
@@ -21224,8 +21146,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -21240,18 +21160,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var TimePickerHours = function (_Component) {
 	    _inherits(TimePickerHours, _Component);
 
 	    function TimePickerHours() {
-	        var _Object$getPrototypeO;
-
 	        var _temp, _this, _ret;
 
 	        _classCallCheck(this, TimePickerHours);
@@ -21260,71 +21180,67 @@ return /******/ (function(modules) { // webpackBootstrap
 	            args[_key] = arguments[_key];
 	        }
 
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(TimePickerHours)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.hours12 = [["12", "01", "02", "03"], ["04", "05", "06", "07"], ["08", "09", "10", "11"]], _this.hours24 = [["00", "01", "02", "03"], ["04", "05", "06", "07"], ["08", "09", "10", "11"], ["12", "13", "14", "15"], ["16", "17", "18", "19"], ["20", "21", "22", "23"]], _temp), _possibleConstructorReturn(_this, _ret);
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.hours12 = [["12", "01", "02", "03"], ["04", "05", "06", "07"], ["08", "09", "10", "11"]], _this.hours24 = [["00", "01", "02", "03"], ["04", "05", "06", "07"], ["08", "09", "10", "11"], ["12", "13", "14", "15"], ["16", "17", "18", "19"], ["20", "21", "22", "23"]], _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
-	    _createClass(TimePickerHours, [{
-	        key: "onClickSetHour",
-	        value: function onClickSetHour(value) {
-	            var _this2 = this;
+	    TimePickerHours.prototype.onClickSetHour = function onClickSetHour(value) {
+	        var _this2 = this;
 
-	            return function () {
-	                var _props = _this2.props;
-	                var dateTime = _props.dateTime;
-	                var onSelect = _props.onSelect;
-	                var use24Hours = _props.use24Hours;
+	        return function () {
+	            var _props = _this2.props;
+	            var dateTime = _props.dateTime;
+	            var onSelect = _props.onSelect;
+	            var use24Hours = _props.use24Hours;
 
-	                var date = (0, _moment2.default)(dateTime).hour(parseInt(value, 10));
+	            var date = (0, _moment2.default)(dateTime).hour(parseInt(value, 10));
 
-	                if (!use24Hours) {
-	                    if (dateTime.hour() >= 12) {
-	                        if (date.hour() !== 12) {
-	                            date.add(12, "hours");
-	                        }
-	                    } else if (date.hour() === 12) {
-	                        date.hour(0);
+	            if (!use24Hours) {
+	                if (dateTime.hour() >= 12) {
+	                    if (date.hour() !== 12) {
+	                        date.add(12, "hours");
 	                    }
+	                } else if (date.hour() === 12) {
+	                    date.hour(0);
 	                }
+	            }
 
-	                onSelect(date.minutes(dateTime.minutes()));
-	            };
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var _this3 = this;
+	            onSelect(date.minutes(dateTime.minutes()));
+	        };
+	    };
 
-	            var use24Hours = this.props.use24Hours;
+	    TimePickerHours.prototype.render = function render() {
+	        var _this3 = this;
 
-	            return _react2.default.createElement(
-	                "div",
-	                { className: "timepicker-hours" },
+	        var use24Hours = this.props.use24Hours;
+
+	        return _react2.default.createElement(
+	            "div",
+	            { className: "timepicker-hours" },
+	            _react2.default.createElement(
+	                "table",
+	                { className: "table-condensed" },
 	                _react2.default.createElement(
-	                    "table",
-	                    { className: "table-condensed" },
-	                    _react2.default.createElement(
-	                        "tbody",
-	                        null,
-	                        (use24Hours ? this.hours24 : this.hours12).map(function (row, i) {
-	                            return _react2.default.createElement(
-	                                "tr",
-	                                { key: i },
-	                                row.map(function (h) {
-	                                    return _react2.default.createElement(
-	                                        "td",
-	                                        { className: "hour",
-	                                            key: h,
-	                                            onClick: _this3.onClickSetHour(h) },
-	                                        h
-	                                    );
-	                                })
-	                            );
-	                        })
-	                    )
+	                    "tbody",
+	                    null,
+	                    (use24Hours ? this.hours24 : this.hours12).map(function (row, i) {
+	                        return _react2.default.createElement(
+	                            "tr",
+	                            { key: i },
+	                            row.map(function (h) {
+	                                return _react2.default.createElement(
+	                                    "td",
+	                                    { className: "hour",
+	                                        key: h,
+	                                        onClick: _this3.onClickSetHour(h) },
+	                                    h
+	                                );
+	                            })
+	                        );
+	                    })
 	                )
-	            );
-	        }
-	    }]);
+	            )
+	        );
+	    };
 
 	    return TimePickerHours;
 	}(_react.Component);
@@ -21347,8 +21263,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -21363,18 +21277,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var TimePickerMinutes = function (_Component) {
 	    _inherits(TimePickerMinutes, _Component);
 
 	    function TimePickerMinutes() {
-	        var _Object$getPrototypeO;
-
 	        var _temp, _this, _ret;
 
 	        _classCallCheck(this, TimePickerMinutes);
@@ -21383,57 +21297,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	            args[_key] = arguments[_key];
 	        }
 
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(TimePickerMinutes)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.minutes = [["00", "05", "10", "15"], ["20", "25", "30", "35"], ["40", "45", "50", "55"]], _temp), _possibleConstructorReturn(_this, _ret);
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.minutes = [["00", "05", "10", "15"], ["20", "25", "30", "35"], ["40", "45", "50", "55"]], _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
-	    _createClass(TimePickerMinutes, [{
-	        key: "onClickSetMinutes",
-	        value: function onClickSetMinutes(value) {
-	            var _this2 = this;
+	    TimePickerMinutes.prototype.onClickSetMinutes = function onClickSetMinutes(value) {
+	        var _this2 = this;
 
-	            return function () {
-	                var _props = _this2.props;
-	                var dateTime = _props.dateTime;
-	                var onSelect = _props.onSelect;
+	        return function () {
+	            var _props = _this2.props;
+	            var dateTime = _props.dateTime;
+	            var onSelect = _props.onSelect;
 
 
-	                onSelect((0, _moment2.default)(dateTime).minutes(parseInt(value, 10)));
-	            };
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var _this3 = this;
+	            onSelect((0, _moment2.default)(dateTime).minutes(parseInt(value, 10)));
+	        };
+	    };
 
-	            return _react2.default.createElement(
-	                "div",
-	                { className: "timepicker-minutes" },
+	    TimePickerMinutes.prototype.render = function render() {
+	        var _this3 = this;
+
+	        return _react2.default.createElement(
+	            "div",
+	            { className: "timepicker-minutes" },
+	            _react2.default.createElement(
+	                "table",
+	                { className: "table-condensed" },
 	                _react2.default.createElement(
-	                    "table",
-	                    { className: "table-condensed" },
-	                    _react2.default.createElement(
-	                        "tbody",
-	                        null,
-	                        this.minutes.map(function (row, i) {
-	                            return _react2.default.createElement(
-	                                "tr",
-	                                { key: i },
-	                                row.map(function (m) {
-	                                    return _react2.default.createElement(
-	                                        "td",
-	                                        { className: "minute",
-	                                            key: m,
-	                                            onClick: _this3.onClickSetMinutes(m) },
-	                                        m
-	                                    );
-	                                })
-	                            );
-	                        })
-	                    )
+	                    "tbody",
+	                    null,
+	                    this.minutes.map(function (row, i) {
+	                        return _react2.default.createElement(
+	                            "tr",
+	                            { key: i },
+	                            row.map(function (m) {
+	                                return _react2.default.createElement(
+	                                    "td",
+	                                    { className: "minute",
+	                                        key: m,
+	                                        onClick: _this3.onClickSetMinutes(m) },
+	                                    m
+	                                );
+	                            })
+	                        );
+	                    })
 	                )
-	            );
-	        }
-	    }]);
+	            )
+	        );
+	    };
 
 	    return TimePickerMinutes;
 	}(_react.Component);
@@ -21455,19 +21365,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var DateTimePickerLayoutInline = function (_Component) {
 	    _inherits(DateTimePickerLayoutInline, _Component);
@@ -21475,29 +21385,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function DateTimePickerLayoutInline() {
 	        _classCallCheck(this, DateTimePickerLayoutInline);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(DateTimePickerLayoutInline).apply(this, arguments));
+	        return _possibleConstructorReturn(this, _Component.apply(this, arguments));
 	    }
 
-	    _createClass(DateTimePickerLayoutInline, [{
-	        key: "render",
-	        value: function render() {
-	            var _props = this.props;
-	            var datePicker = _props.datePicker;
-	            var timePicker = _props.timePicker;
+	    DateTimePickerLayoutInline.prototype.render = function render() {
+	        var _props = this.props;
+	        var datePicker = _props.datePicker;
+	        var timePicker = _props.timePicker;
 
 
-	            return _react2.default.createElement(
+	        return _react2.default.createElement(
+	            "div",
+	            { className: "bootstrap-datetimepicker-widget" },
+	            _react2.default.createElement(
 	                "div",
-	                { className: "bootstrap-datetimepicker-widget" },
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "row" },
-	                    datePicker,
-	                    timePicker
-	                )
-	            );
-	        }
-	    }]);
+	                { className: "row" },
+	                datePicker,
+	                timePicker
+	            )
+	        );
+	    };
 
 	    return DateTimePickerLayoutInline;
 	}(_react.Component);
@@ -21519,8 +21426,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(39);
 
@@ -21564,18 +21469,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var DateTimePickerLayoutInput = function (_Component) {
 	    _inherits(DateTimePickerLayoutInput, _Component);
 
 	    function DateTimePickerLayoutInput() {
-	        var _Object$getPrototypeO;
-
 	        var _temp, _this, _ret;
 
 	        _classCallCheck(this, DateTimePickerLayoutInput);
@@ -21584,7 +21489,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            args[_key] = arguments[_key];
 	        }
 
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DateTimePickerLayoutInput)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = {
 	            show: false
 	        }, _this.onClickInput = function (e) {
 	            e.preventDefault();
@@ -21599,74 +21504,70 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
-	    _createClass(DateTimePickerLayoutInput, [{
-	        key: "componentWillReceiveProps",
-	        value: function componentWillReceiveProps(props) {
-	            var show = this.state.show;
-	            var mode = props.mode;
-	            var keepOpen = props.keepOpen;
-	            var dateTime = props.dateTime;
-	            var selected = props.selected;
+	    DateTimePickerLayoutInput.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
+	        var show = this.state.show;
+	        var mode = props.mode;
+	        var keepOpen = props.keepOpen;
+	        var dateTime = props.dateTime;
+	        var selected = props.selected;
 
 
-	            var dayChanged = (0, _moment2.default)(this.props.dateTime).date() !== (0, _moment2.default)(dateTime).date();
+	        var dayChanged = (0, _moment2.default)(this.props.dateTime).date() !== (0, _moment2.default)(dateTime).date();
 
-	            if (show && selected && dayChanged && !keepOpen && mode === _config.MODE_DATE) {
-	                this.setState({ show: false });
-	            }
+	        if (show && selected && dayChanged && !keepOpen && mode === _config.MODE_DATE) {
+	            this.setState({ show: false });
 	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var _this2 = this;
+	    };
 
-	            var _props = this.props;
-	            var container = _props.container;
-	            var debug = _props.debug;
-	            var sideBySide = _props.sideBySide;
-	            var InputComponent = _props.inputComponent;
-	            var show = this.state.show;
+	    DateTimePickerLayoutInput.prototype.render = function render() {
+	        var _this2 = this;
 
-	            var picker = void 0;
+	        var _props = this.props;
+	        var container = _props.container;
+	        var debug = _props.debug;
+	        var sideBySide = _props.sideBySide;
+	        var InputComponent = _props.inputComponent;
+	        var show = this.state.show;
 
-	            if (sideBySide) {
-	                picker = _react2.default.createElement(_horizontal2.default, this.props);
-	            } else {
-	                picker = _react2.default.createElement(_vertical2.default, _extends({}, this.props, {
-	                    onClickClose: this.onClickClose }));
-	            }
+	        var picker = void 0;
 
-	            var target = function target() {
-	                return (0, _reactDom.findDOMNode)(_this2.refs.input);
-	            };
+	        if (sideBySide) {
+	            picker = _react2.default.createElement(_horizontal2.default, this.props);
+	        } else {
+	            picker = _react2.default.createElement(_vertical2.default, _extends({}, this.props, {
+	                onClickClose: this.onClickClose }));
+	        }
 
-	            return _react2.default.createElement(
-	                "div",
-	                { style: { position: "relative" } },
-	                _react2.default.createElement(InputComponent, _extends({}, this.props, {
+	        var target = function target() {
+	            return (0, _reactDom.findDOMNode)(_this2.refs.input);
+	        };
+
+	        return _react2.default.createElement(
+	            "div",
+	            { style: { position: "relative" } },
+	            _react2.default.createElement(InputComponent, _extends({}, this.props, {
+	                show: show,
+	                ref: "input",
+	                onClick: this.onClickInput })),
+	            _react2.default.createElement(
+	                _reactOverlays.Overlay,
+	                { placement: "bottom",
 	                    show: show,
-	                    ref: "input",
-	                    onClick: this.onClickInput })),
+	                    rootClose: !debug,
+	                    transition: _fade2.default,
+	                    onHide: this.onHidePopup,
+	                    container: container,
+	                    unmountOnExit: true,
+	                    target: target },
 	                _react2.default.createElement(
-	                    _reactOverlays.Overlay,
-	                    { placement: "bottom",
-	                        show: show,
-	                        rootClose: !debug,
-	                        transition: _fade2.default,
-	                        onHide: this.onHidePopup,
-	                        container: container,
-	                        unmountOnExit: true,
-	                        target: target },
-	                    _react2.default.createElement(
-	                        _container2.default,
-	                        _extends({}, this.props, {
-	                            target: target }),
-	                        picker
-	                    )
+	                    _container2.default,
+	                    _extends({}, this.props, {
+	                        target: target }),
+	                    picker
 	                )
-	            );
-	        }
-	    }]);
+	            )
+	        );
+	    };
 
 	    return DateTimePickerLayoutInput;
 	}(_react.Component);
@@ -41803,8 +41704,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -41813,11 +41712,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var TRANSITION_TIMEOUT = 200;
 
@@ -41827,26 +41728,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function Fade() {
 	        _classCallCheck(this, Fade);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Fade).apply(this, arguments));
+	        return _possibleConstructorReturn(this, _Component.apply(this, arguments));
 	    }
 
-	    _createClass(Fade, [{
-	        key: "render",
-	        value: function render() {
-	            var children = this.props.children;
+	    Fade.prototype.render = function render() {
+	        var children = this.props.children;
 
 
-	            return _react2.default.createElement(
-	                _reactOverlays.Transition,
-	                _extends({}, this.props, {
-	                    timeout: TRANSITION_TIMEOUT,
-	                    className: "fade",
-	                    enteringClassName: "in",
-	                    enteredClassName: "in" }),
-	                children
-	            );
-	        }
-	    }]);
+	        return _react2.default.createElement(
+	            _reactOverlays.Transition,
+	            _extends({}, this.props, {
+	                timeout: TRANSITION_TIMEOUT,
+	                className: "fade",
+	                enteringClassName: "in",
+	                enteredClassName: "in" }),
+	            children
+	        );
+	    };
 
 	    return Fade;
 	}(_react.Component);
@@ -41868,8 +41766,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -41888,20 +41784,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var DateTimePickerInput = function (_Component) {
 	    _inherits(DateTimePickerInput, _Component);
 
 	    function DateTimePickerInput() {
-	        var _Object$getPrototypeO;
-
 	        var _temp, _this, _ret;
 
 	        _classCallCheck(this, DateTimePickerInput);
@@ -41910,7 +41806,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            args[_key] = arguments[_key];
 	        }
 
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DateTimePickerInput)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = {
 	            value: _this.props.value
 	        }, _this.onChangeInput = function (e) {
 	            e.preventDefault();
@@ -41925,95 +41821,89 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
-	    _createClass(DateTimePickerInput, [{
-	        key: "componentDidUpdate",
-	        value: function componentDidUpdate() {
-	            var _props = this.props;
-	            var focusOnShow = _props.focusOnShow;
-	            var show = _props.show;
-	            var value = _props.value;
+	    DateTimePickerInput.prototype.componentDidUpdate = function componentDidUpdate() {
+	        var _props = this.props;
+	        var focusOnShow = _props.focusOnShow;
+	        var show = _props.show;
+	        var value = _props.value;
 
-	            var input = (0, _reactDom.findDOMNode)(this.refs.input);
+	        var input = (0, _reactDom.findDOMNode)(this.refs.input);
 
-	            if (show && focusOnShow && input) {
-	                input.focus();
+	        if (show && focusOnShow && input) {
+	            input.focus();
+	        }
+	    };
+
+	    DateTimePickerInput.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+	        if (this.props.value !== nextProps.value) {
+	            this.setState({ value: nextProps.value });
+	        }
+	    };
+
+	    DateTimePickerInput.prototype.commitChange = function commitChange() {
+	        var _props2 = this.props;
+	        var onChange = _props2.onChange;
+	        var displayFormat = _props2.displayFormat;
+	        var propsValue = _props2.value;
+	        var value = this.state.value;
+
+
+	        if (!value) {
+	            onChange(null);
+	            return;
+	        }
+
+	        if (propsValue === value) {
+	            // No change to commit
+	            return;
+	        }
+
+	        var dateTime = (0, _moment2.default)(value, displayFormat);
+
+	        if (dateTime.isValid()) {
+	            onChange(dateTime);
+	        } else {
+	            var dateTimeIso = (0, _moment2.default)(this.state.value);
+
+	            if (dateTimeIso.isValid()) {
+	                onChange(dateTimeIso);
 	            }
 	        }
-	    }, {
-	        key: "componentWillReceiveProps",
-	        value: function componentWillReceiveProps(nextProps) {
-	            if (this.props.value !== nextProps.value) {
-	                this.setState({ value: nextProps.value });
-	            }
-	        }
-	    }, {
-	        key: "commitChange",
-	        value: function commitChange() {
-	            var _props2 = this.props;
-	            var onChange = _props2.onChange;
-	            var displayFormat = _props2.displayFormat;
-	            var propsValue = _props2.value;
-	            var value = this.state.value;
+	    };
+
+	    DateTimePickerInput.prototype.render = function render() {
+	        var _props3 = this.props;
+	        var bsSize = _props3.bsSize;
+	        var icons = _props3.icons;
+	        var inputProps = _props3.inputProps;
+	        var mode = _props3.mode;
+	        var onClick = _props3.onClick;
+	        var value = this.state.value;
 
 
-	            if (!value) {
-	                onChange(null);
-	                return;
-	            }
+	        var classes = (0, _classnames2.default)("input-group", "date", _defineProperty({}, "input-group-" + bsSize, bsSize));
 
-	            if (propsValue === value) {
-	                // No change to commit
-	                return;
-	            }
+	        var iconClasses = mode === _config.MODE_TIME ? icons.time : icons.date;
 
-	            var dateTime = (0, _moment2.default)(value, displayFormat);
-
-	            if (dateTime.isValid()) {
-	                onChange(dateTime);
-	            } else {
-	                var dateTimeIso = (0, _moment2.default)(this.state.value);
-
-	                if (dateTimeIso.isValid()) {
-	                    onChange(dateTimeIso);
-	                }
-	            }
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var _props3 = this.props;
-	            var bsSize = _props3.bsSize;
-	            var icons = _props3.icons;
-	            var inputProps = _props3.inputProps;
-	            var mode = _props3.mode;
-	            var onClick = _props3.onClick;
-	            var value = this.state.value;
-
-
-	            var classes = (0, _classnames2.default)("input-group", "date", _defineProperty({}, "input-group-" + bsSize, bsSize));
-
-	            var iconClasses = mode === _config.MODE_TIME ? icons.time : icons.date;
-
-	            return _react2.default.createElement(
-	                "div",
-	                { className: classes },
-	                _react2.default.createElement("input", _extends({ className: "form-control",
-	                    type: "text",
-	                    ref: "input",
-	                    value: value,
-	                    onChange: this.onChangeInput,
-	                    onBlur: this.onBlur,
-	                    onKeyPress: this.onKeyPress
-	                }, inputProps)),
-	                _react2.default.createElement(
-	                    "span",
-	                    { className: "input-group-addon",
-	                        onClick: onClick },
-	                    _react2.default.createElement("span", { className: iconClasses })
-	                )
-	            );
-	        }
-	    }]);
+	        return _react2.default.createElement(
+	            "div",
+	            { className: classes },
+	            _react2.default.createElement("input", _extends({ className: "form-control",
+	                type: "text",
+	                ref: "input",
+	                value: value,
+	                onChange: this.onChangeInput,
+	                onBlur: this.onBlur,
+	                onKeyPress: this.onKeyPress
+	            }, inputProps)),
+	            _react2.default.createElement(
+	                "span",
+	                { className: "input-group-addon",
+	                    onClick: onClick },
+	                _react2.default.createElement("span", { className: iconClasses })
+	            )
+	        );
+	    };
 
 	    return DateTimePickerInput;
 	}(_react.Component);
@@ -42042,8 +41932,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -42058,18 +41946,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var DateTimePickerContainer = function (_Component) {
 	    _inherits(DateTimePickerContainer, _Component);
 
 	    function DateTimePickerContainer() {
-	        var _Object$getPrototypeO;
-
 	        var _temp, _this, _ret;
 
 	        _classCallCheck(this, DateTimePickerContainer);
@@ -42078,54 +41966,49 @@ return /******/ (function(modules) { // webpackBootstrap
 	            args[_key] = arguments[_key];
 	        }
 
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DateTimePickerContainer)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = {
 	            offset: 0
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
-	    _createClass(DateTimePickerContainer, [{
-	        key: "componentDidMount",
-	        value: function componentDidMount() {
-	            this.setPositionOffset();
-	        }
-	    }, {
-	        key: "setPositionOffset",
-	        value: function setPositionOffset() {
-	            var target = this.props.target;
+	    DateTimePickerContainer.prototype.componentDidMount = function componentDidMount() {
+	        this.setPositionOffset();
+	    };
 
-	            var targetWidth = target().getBoundingClientRect().width;
-	            var width = (0, _reactDom.findDOMNode)(this.refs.container).getBoundingClientRect().width;
-	            var offset = (targetWidth - width) / 2;
-	            this.setState({ offset: offset });
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var _props = this.props;
-	            var children = _props.children;
-	            var className = _props.className;
-	            var placement = _props.placement;
-	            var sideBySide = _props.sideBySide;
-	            var style = _props.style;
-	            var offset = this.state.offset;
+	    DateTimePickerContainer.prototype.setPositionOffset = function setPositionOffset() {
+	        var target = this.props.target;
 
-	            var classes = (0, _classnames2.default)("bootstrap-datetimepicker-widget", "dropdown-menu", placement, { "timepicker-sbs": sideBySide }, className);
+	        var targetWidth = target().getBoundingClientRect().width;
+	        var width = (0, _reactDom.findDOMNode)(this.refs.container).getBoundingClientRect().width;
+	        var offset = (targetWidth - width) / 2;
+	        this.setState({ offset: offset });
+	    };
 
-	            var inlineStyle = Object.assign({}, style, {
-	                position: "absolute",
-	                display: "block",
-	                left: style.left - offset
-	            });
+	    DateTimePickerContainer.prototype.render = function render() {
+	        var _props = this.props;
+	        var children = _props.children;
+	        var className = _props.className;
+	        var placement = _props.placement;
+	        var sideBySide = _props.sideBySide;
+	        var style = _props.style;
+	        var offset = this.state.offset;
 
-	            return _react2.default.createElement(
-	                "div",
-	                { ref: "container",
-	                    className: classes,
-	                    style: inlineStyle },
-	                children
-	            );
-	        }
-	    }]);
+	        var classes = (0, _classnames2.default)("bootstrap-datetimepicker-widget", "dropdown-menu", placement, { "timepicker-sbs": sideBySide }, className);
+
+	        var inlineStyle = Object.assign({}, style, {
+	            position: "absolute",
+	            display: "block",
+	            left: style.left - offset
+	        });
+
+	        return _react2.default.createElement(
+	            "div",
+	            { ref: "container",
+	                className: classes,
+	                style: inlineStyle },
+	            children
+	        );
+	    };
 
 	    return DateTimePickerContainer;
 	}(_react.Component);
@@ -42150,19 +42033,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var DateTimePickerLayoutHorizontal = function (_Component) {
 	    _inherits(DateTimePickerLayoutHorizontal, _Component);
@@ -42170,25 +42053,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function DateTimePickerLayoutHorizontal() {
 	        _classCallCheck(this, DateTimePickerLayoutHorizontal);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(DateTimePickerLayoutHorizontal).apply(this, arguments));
+	        return _possibleConstructorReturn(this, _Component.apply(this, arguments));
 	    }
 
-	    _createClass(DateTimePickerLayoutHorizontal, [{
-	        key: "render",
-	        value: function render() {
-	            var _props = this.props;
-	            var datePicker = _props.datePicker;
-	            var timePicker = _props.timePicker;
+	    DateTimePickerLayoutHorizontal.prototype.render = function render() {
+	        var _props = this.props;
+	        var datePicker = _props.datePicker;
+	        var timePicker = _props.timePicker;
 
 
-	            return _react2.default.createElement(
-	                "div",
-	                { className: "row" },
-	                datePicker,
-	                timePicker
-	            );
-	        }
-	    }]);
+	        return _react2.default.createElement(
+	            "div",
+	            { className: "row" },
+	            datePicker,
+	            timePicker
+	        );
+	    };
 
 	    return DateTimePickerLayoutHorizontal;
 	}(_react.Component);
@@ -42211,8 +42091,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -42229,18 +42107,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var DateTimePickerLayoutVertical = function (_Component) {
 	    _inherits(DateTimePickerLayoutVertical, _Component);
 
 	    function DateTimePickerLayoutVertical() {
-	        var _Object$getPrototypeO;
-
 	        var _temp, _this, _ret;
 
 	        _classCallCheck(this, DateTimePickerLayoutVertical);
@@ -42249,7 +42127,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            args[_key] = arguments[_key];
 	        }
 
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DateTimePickerLayoutVertical)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = {
 	            view: _config.VIEW_DATE
 	        }, _this.onClickSwitch = function (e) {
 	            e.preventDefault();
@@ -42263,58 +42141,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
-	    _createClass(DateTimePickerLayoutVertical, [{
-	        key: "renderDateTimeToolbar",
-	        value: function renderDateTimeToolbar() {
-	            var view = this.state.view;
+	    DateTimePickerLayoutVertical.prototype.renderDateTimeToolbar = function renderDateTimeToolbar() {
+	        var view = this.state.view;
 
 
-	            return _react2.default.createElement(
+	        return _react2.default.createElement(
+	            "li",
+	            { className: "picker-switch" },
+	            _react2.default.createElement(_toolbar2.default, _extends({}, this.props, {
+	                onClickSwitch: this.onClickSwitch,
+	                view: view }))
+	        );
+	    };
+
+	    DateTimePickerLayoutVertical.prototype.renderPicker = function renderPicker(viewType) {
+	        var _props = this.props;
+	        var datePicker = _props.datePicker;
+	        var timePicker = _props.timePicker;
+	        var view = this.state.view;
+
+	        var picker = viewType === _config.VIEW_TIME ? timePicker : datePicker;
+
+	        return _react2.default.createElement(
+	            _slide2.default,
+	            _extends({}, this.props, {
+	                "in": viewType === view }),
+	            _react2.default.createElement(
 	                "li",
-	                { className: "picker-switch" },
-	                _react2.default.createElement(_toolbar2.default, _extends({}, this.props, {
-	                    onClickSwitch: this.onClickSwitch,
-	                    view: view }))
-	            );
-	        }
-	    }, {
-	        key: "renderPicker",
-	        value: function renderPicker(viewType) {
-	            var _props = this.props;
-	            var datePicker = _props.datePicker;
-	            var timePicker = _props.timePicker;
-	            var view = this.state.view;
+	                null,
+	                picker
+	            )
+	        );
+	    };
 
-	            var picker = viewType === _config.VIEW_TIME ? timePicker : datePicker;
-
-	            return _react2.default.createElement(
-	                _slide2.default,
-	                _extends({}, this.props, {
-	                    "in": viewType === view }),
-	                _react2.default.createElement(
-	                    "li",
-	                    null,
-	                    picker
-	                )
-	            );
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var toolbarPlacement = this.props.toolbarPlacement;
+	    DateTimePickerLayoutVertical.prototype.render = function render() {
+	        var toolbarPlacement = this.props.toolbarPlacement;
 
 
-	            return _react2.default.createElement(
-	                "ul",
-	                { className: "list-unstyled" },
-	                toolbarPlacement === _config.PLACEMENT_TOP && this.renderDateTimeToolbar(),
-	                this.renderPicker(_config.VIEW_DATE),
-	                toolbarPlacement === _config.PLACEMENT_DEFAULT && this.renderDateTimeToolbar(),
-	                this.renderPicker(_config.VIEW_TIME),
-	                toolbarPlacement === _config.PLACEMENT_BOTTOM && this.renderDateTimeToolbar()
-	            );
-	        }
-	    }]);
+	        return _react2.default.createElement(
+	            "ul",
+	            { className: "list-unstyled" },
+	            toolbarPlacement === _config.PLACEMENT_TOP && this.renderDateTimeToolbar(),
+	            this.renderPicker(_config.VIEW_DATE),
+	            toolbarPlacement === _config.PLACEMENT_DEFAULT && this.renderDateTimeToolbar(),
+	            this.renderPicker(_config.VIEW_TIME),
+	            toolbarPlacement === _config.PLACEMENT_BOTTOM && this.renderDateTimeToolbar()
+	        );
+	    };
 
 	    return DateTimePickerLayoutVertical;
 	}(_react.Component);
@@ -42337,8 +42210,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -42351,13 +42222,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var DateTimeToolbar = function (_Component) {
 	    _inherits(DateTimeToolbar, _Component);
@@ -42365,119 +42238,112 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function DateTimeToolbar() {
 	        _classCallCheck(this, DateTimeToolbar);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(DateTimeToolbar).apply(this, arguments));
+	        return _possibleConstructorReturn(this, _Component.apply(this, arguments));
 	    }
 
-	    _createClass(DateTimeToolbar, [{
-	        key: "renderToday",
-	        value: function renderToday() {
-	            var _props = this.props;
-	            var icons = _props.icons;
-	            var onClickToday = _props.onClickToday;
-	            var tooltips = _props.tooltips;
+	    DateTimeToolbar.prototype.renderToday = function renderToday() {
+	        var _props = this.props;
+	        var icons = _props.icons;
+	        var onClickToday = _props.onClickToday;
+	        var tooltips = _props.tooltips;
 
 
-	            return _react2.default.createElement(
-	                "td",
+	        return _react2.default.createElement(
+	            "td",
+	            null,
+	            _react2.default.createElement(
+	                "a",
+	                { title: tooltips.today, onClick: onClickToday },
+	                _react2.default.createElement("span", { className: icons.today })
+	            )
+	        );
+	    };
+
+	    DateTimeToolbar.prototype.renderClear = function renderClear() {
+	        var _props2 = this.props;
+	        var icons = _props2.icons;
+	        var onClickClear = _props2.onClickClear;
+	        var tooltips = _props2.tooltips;
+
+
+	        return _react2.default.createElement(
+	            "td",
+	            null,
+	            _react2.default.createElement(
+	                "a",
+	                { title: tooltips.clear, onClick: onClickClear },
+	                _react2.default.createElement("span", { className: icons.clear })
+	            )
+	        );
+	    };
+
+	    DateTimeToolbar.prototype.renderClose = function renderClose() {
+	        var _props3 = this.props;
+	        var icons = _props3.icons;
+	        var onClickClose = _props3.onClickClose;
+	        var tooltips = _props3.tooltips;
+
+
+	        return _react2.default.createElement(
+	            "td",
+	            null,
+	            _react2.default.createElement(
+	                "a",
+	                { title: tooltips.close, onClick: onClickClose },
+	                _react2.default.createElement("span", { className: icons.close })
+	            )
+	        );
+	    };
+
+	    DateTimeToolbar.prototype.renderSwitch = function renderSwitch() {
+	        var _classNames;
+
+	        var _props4 = this.props;
+	        var icons = _props4.icons;
+	        var onClickSwitch = _props4.onClickSwitch;
+	        var tooltips = _props4.tooltips;
+	        var view = _props4.view;
+
+
+	        var iconClasses = (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, icons.date, view === _config.VIEW_TIME), _defineProperty(_classNames, icons.time, view === _config.VIEW_DATE), _classNames));
+
+	        return _react2.default.createElement(
+	            "td",
+	            null,
+	            _react2.default.createElement(
+	                "a",
+	                { title: tooltips.selectTime, onClick: onClickSwitch },
+	                _react2.default.createElement("span", { className: iconClasses })
+	            )
+	        );
+	    };
+
+	    DateTimeToolbar.prototype.render = function render() {
+	        var _props5 = this.props;
+	        var inline = _props5.inline;
+	        var mode = _props5.mode;
+	        var showTodayButton = _props5.showTodayButton;
+	        var showClear = _props5.showClear;
+	        var showClose = _props5.showClose;
+
+
+	        return _react2.default.createElement(
+	            "table",
+	            { className: "table-condensed" },
+	            _react2.default.createElement(
+	                "tbody",
 	                null,
 	                _react2.default.createElement(
-	                    "a",
-	                    { title: tooltips.today, onClick: onClickToday },
-	                    _react2.default.createElement("span", { className: icons.today })
-	                )
-	            );
-	        }
-	    }, {
-	        key: "renderClear",
-	        value: function renderClear() {
-	            var _props2 = this.props;
-	            var icons = _props2.icons;
-	            var onClickClear = _props2.onClickClear;
-	            var tooltips = _props2.tooltips;
-
-
-	            return _react2.default.createElement(
-	                "td",
-	                null,
-	                _react2.default.createElement(
-	                    "a",
-	                    { title: tooltips.clear, onClick: onClickClear },
-	                    _react2.default.createElement("span", { className: icons.clear })
-	                )
-	            );
-	        }
-	    }, {
-	        key: "renderClose",
-	        value: function renderClose() {
-	            var _props3 = this.props;
-	            var icons = _props3.icons;
-	            var onClickClose = _props3.onClickClose;
-	            var tooltips = _props3.tooltips;
-
-
-	            return _react2.default.createElement(
-	                "td",
-	                null,
-	                _react2.default.createElement(
-	                    "a",
-	                    { title: tooltips.close, onClick: onClickClose },
-	                    _react2.default.createElement("span", { className: icons.close })
-	                )
-	            );
-	        }
-	    }, {
-	        key: "renderSwitch",
-	        value: function renderSwitch() {
-	            var _classNames;
-
-	            var _props4 = this.props;
-	            var icons = _props4.icons;
-	            var onClickSwitch = _props4.onClickSwitch;
-	            var tooltips = _props4.tooltips;
-	            var view = _props4.view;
-
-
-	            var iconClasses = (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, icons.date, view === _config.VIEW_TIME), _defineProperty(_classNames, icons.time, view === _config.VIEW_DATE), _classNames));
-
-	            return _react2.default.createElement(
-	                "td",
-	                null,
-	                _react2.default.createElement(
-	                    "a",
-	                    { title: tooltips.selectTime, onClick: onClickSwitch },
-	                    _react2.default.createElement("span", { className: iconClasses })
-	                )
-	            );
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var _props5 = this.props;
-	            var inline = _props5.inline;
-	            var mode = _props5.mode;
-	            var showTodayButton = _props5.showTodayButton;
-	            var showClear = _props5.showClear;
-	            var showClose = _props5.showClose;
-
-
-	            return _react2.default.createElement(
-	                "table",
-	                { className: "table-condensed" },
-	                _react2.default.createElement(
-	                    "tbody",
+	                    "tr",
 	                    null,
-	                    _react2.default.createElement(
-	                        "tr",
-	                        null,
-	                        showTodayButton && this.renderToday(),
-	                        mode === _config.MODE_DATETIME && this.renderSwitch(),
-	                        showClear && this.renderClear(),
-	                        !inline && showClose && this.renderClose()
-	                    )
+	                    showTodayButton && this.renderToday(),
+	                    mode === _config.MODE_DATETIME && this.renderSwitch(),
+	                    showClear && this.renderClear(),
+	                    !inline && showClose && this.renderClose()
 	                )
-	            );
-	        }
-	    }]);
+	            )
+	        );
+	    };
 
 	    return DateTimeToolbar;
 	}(_react.Component);
@@ -42508,8 +42374,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(39);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -42520,11 +42384,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
 	var TRANSITION_DURATION = 200;
 	var TRANSITION_FRAME_DELAY = 5;
@@ -42534,8 +42400,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _inherits(DateTimePickerViewSlide, _Component);
 
 	    function DateTimePickerViewSlide() {
-	        var _Object$getPrototypeO;
-
 	        var _temp, _this, _ret;
 
 	        _classCallCheck(this, DateTimePickerViewSlide);
@@ -42544,7 +42408,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            args[_key] = arguments[_key];
 	        }
 
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DateTimePickerViewSlide)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.transition = function (slide, step) {
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.transition = function (slide, step) {
 	            var start = new Date();
 	            slide.style.overflow = "hidden";
 	            var timer = setInterval(function () {
@@ -42577,64 +42441,57 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
-	    _createClass(DateTimePickerViewSlide, [{
-	        key: "easeDelta",
-	        value: function easeDelta(progress) {
-	            return progress < TRANSITION_HALF ? 2 * progress / 2 : (2 - 2 * (1 - progress)) / 2;
-	        }
-	    }, {
-	        key: "slideToggle",
-	        value: function slideToggle(slide, from, to) {
-	            slide.style.height = from + "px";
+	    DateTimePickerViewSlide.prototype.easeDelta = function easeDelta(progress) {
+	        return progress < TRANSITION_HALF ? 2 * progress / 2 : (2 - 2 * (1 - progress)) / 2;
+	    };
 
-	            this.transition(slide, function (delta) {
-	                var height = void 0;
-	                if (from > to) {
-	                    height = from - from * delta;
-	                } else {
-	                    height = to * delta;
-	                }
-	                slide.style.height = height + "px";
-	            });
-	        }
-	    }, {
-	        key: "renderWithCollapse",
-	        value: function renderWithCollapse() {
-	            var children = this.props.children;
+	    DateTimePickerViewSlide.prototype.slideToggle = function slideToggle(slide, from, to) {
+	        slide.style.height = from + "px";
+
+	        this.transition(slide, function (delta) {
+	            var height = void 0;
+	            if (from > to) {
+	                height = from - from * delta;
+	            } else {
+	                height = to * delta;
+	            }
+	            slide.style.height = height + "px";
+	        });
+	    };
+
+	    DateTimePickerViewSlide.prototype.renderWithCollapse = function renderWithCollapse() {
+	        var children = this.props.children;
 
 
-	            return _react2.default.createElement(
-	                _reactOverlays.Transition,
-	                { ref: "slide",
-	                    "in": this.props.in,
-	                    timeout: TRANSITION_DURATION,
-	                    onEntering: this.onEntering,
-	                    onExiting: this.onExiting,
-	                    enteredClassName: "collapse in",
-	                    exitedClassName: "collapse" },
-	                children
-	            );
-	        }
-	    }, {
-	        key: "renderWithoutCollapse",
-	        value: function renderWithoutCollapse() {
-	            var children = this.props.children;
+	        return _react2.default.createElement(
+	            _reactOverlays.Transition,
+	            { ref: "slide",
+	                "in": this.props.in,
+	                timeout: TRANSITION_DURATION,
+	                onEntering: this.onEntering,
+	                onExiting: this.onExiting,
+	                enteredClassName: "collapse in",
+	                exitedClassName: "collapse" },
+	            children
+	        );
+	    };
 
-	            var child = _react2.default.Children.only(children);
-	            var styles = { display: "none" };
+	    DateTimePickerViewSlide.prototype.renderWithoutCollapse = function renderWithoutCollapse() {
+	        var children = this.props.children;
 
-	            return (0, _react.cloneElement)(child, Object.assign({}, child.props, {
-	                style: Object.assign({}, child.props.style, !this.props.in ? styles : {})
-	            }));
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var collapse = this.props.collapse;
+	        var child = _react2.default.Children.only(children);
+	        var styles = { display: "none" };
 
-	            return collapse ? this.renderWithCollapse() : this.renderWithoutCollapse();
-	        }
-	    }]);
+	        return (0, _react.cloneElement)(child, Object.assign({}, child.props, {
+	            style: Object.assign({}, child.props.style, !this.props.in ? styles : {})
+	        }));
+	    };
+
+	    DateTimePickerViewSlide.prototype.render = function render() {
+	        var collapse = this.props.collapse;
+
+	        return collapse ? this.renderWithCollapse() : this.renderWithoutCollapse();
+	    };
 
 	    return DateTimePickerViewSlide;
 	}(_react.Component);
